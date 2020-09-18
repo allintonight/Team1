@@ -1,0 +1,42 @@
+	*{
+		margin:0;
+		padding:0;
+	}
+	.main{
+		float:left;
+		width:100%;
+		position:absolute;
+	}
+	.left{
+		background-color:#585858;
+		width:30%;
+		height:800px;
+		position:absolute;
+		border:1px solide #ccc;
+	}
+	.left img{
+		width:50%;
+		margin-top:10%;
+		left:25%;
+		align:center;
+		
+	}
+	img{
+		width:70%;
+		position:absolute;
+		left:30%;
+	}
+	.menulist {
+		text-decoration: none;
+        color: #fff;
+	}
+	.menulist:hover{
+		color:black;
+	}
+	.menu{
+		margin-top:60%;
+	}
+	.menu>li{
+		text-align:center;
+		margin-top:20px;
+	}
