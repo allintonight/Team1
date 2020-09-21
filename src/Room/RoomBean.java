@@ -1,17 +1,17 @@
 package Room;
 
 public class RoomBean {
-	private int no;
+	private int rno;
 	private String rname;
 	private int men;
 	private int weekday;
 	private int weekend;
 	private int sweekday;
 	
+	public RoomBean() {}
 	
-	
-	public RoomBean(int no, String rname, int men, int weekday, int weekend, int sweekday) {
-		this.no = no;
+	public RoomBean(int rno, String rname, int men, int weekday, int weekend, int sweekday) {
+		this.rno = rno;
 		this.rname = rname;
 		this.men = men;
 		this.weekday = weekday;
@@ -19,11 +19,11 @@ public class RoomBean {
 		this.sweekday = sweekday;
 	}
 	
-	public int getNo() {
-		return no;
+	public int getRno() {
+		return rno;
 	}
-	public void setNo(int no) {
-		this.no = no;
+	public void setRno(int rno) {
+		this.rno = rno;
 	}
 	public String getRname() {
 		return rname;
