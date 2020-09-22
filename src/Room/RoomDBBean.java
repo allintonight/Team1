@@ -31,7 +31,7 @@ public class RoomDBBean {
 			}
 		return con;
 	}
-	
+	//방 추가
 	public int addRoom(RoomBean roombean)  throws Exception{
 		Connection con=null;
 		PreparedStatement pstmt = null;
@@ -60,7 +60,7 @@ public class RoomDBBean {
 		return re;
 	}
 	
-	
+	//방 정보 불러오기(실시간 예약 사이트 위함)
 	public ArrayList<RoomBean> getAll() throws SQLException {
 		Connection con=null;
 		PreparedStatement pstmt = null;
@@ -87,6 +87,8 @@ public class RoomDBBean {
 		return roomBean;
 		
 	}
+	
+	//특정 룸 정보 받아오기(룸 정보 수정 위함)
 	@SuppressWarnings("null")
 	public ResultSet selectRoom(int rno) throws SQLException {
 		Connection con=null;
@@ -106,6 +108,33 @@ public class RoomDBBean {
 		}
 		return rs;
 	}
+	
+	public int updateRoom(String rname, int men, int weekday, int weekend, int sweekday, int rno) {
+		Connection con=null;
+		PreparedStatement pstmt = null;
+		String sql=null;
+		int re=-1;
+		
+		try {
+			sql="update room set rname=?, men=?, weekday=?, "
+					+ "weekend=?, sweekday=? where rno=?;";
+			con=getConnection();
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, rname);
+			pstmt.setInt(2, men);
+			pstmt.setInt(3, weekday);
+			pstmt.setInt(4, weekend);
+			pstmt.setInt(5, sweekday);
+			pstmt.setInt(6, rno);
+			pstmt.executeUpdate();
+			re = 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+			re = -1;
+		}
+		return re;
+	}
+	
 	
 	public int deleteRoom(int rno) {
 		Connection con=null;
