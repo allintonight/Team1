@@ -13,7 +13,8 @@
 	String name="";
 	String email="";
 	String title="";
-	String content="";	
+	String content="";
+	String comment="";
 	Timestamp date=null;
 	
 	if(qna != null){
@@ -22,6 +23,7 @@
 		title = qna.getTitle();
 		content = qna.getContent();		
 		date = qna.getDate();
+		comment = qna.getComment();
 	}
 %>
 <html>
@@ -69,8 +71,18 @@
 						<pre><%=content%></pre>
 					</td>
 				</tr>
+				<tr height="30" align="center">
+					<td width="100">
+						답변
+					</td>
+					<td width="200">
+						<pre><%=comment%></pre>
+					</td>
+				</tr>
 				<tr height="30">
 					<td colspan="4" align="right">
+						<input type="button" value="답변"
+						onclick="location.href='qna_request.jsp?no=<%=no%>'">
 						<input type="button" value="글수정"
 						onclick="location.href='qna_edit.jsp?no=<%=no%>'">
 						<input type="button" value="글삭제"

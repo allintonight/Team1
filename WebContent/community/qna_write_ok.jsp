@@ -8,10 +8,11 @@
 </jsp:useBean>
 <%
     qna.setDate(new Timestamp(System.currentTimeMillis()));
+	qna.setComment("");
     QnaDBBean db = QnaDBBean.getInstance();
-if (db.insertQna(qna) == 1) {
+	if (db.insertQna(qna) == 1) {
 	response.sendRedirect("qna_list.jsp");
-} else {
+	} else {
 	response.sendRedirect("qna_write.jsp");
-}
+	}
 %>
