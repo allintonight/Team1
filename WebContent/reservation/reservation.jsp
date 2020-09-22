@@ -10,17 +10,6 @@
 	ArrayList<RoomBean> rb = rdb.getAll();
 %>
 
-<%
-	if(session.getAttribute("userid").equals("admin")){
-%>
-	<form action="res_process.jsp" method="post">
-		<input type="text" value="07-25" placeholder="성수기 시작 일">
-	</form>
-<% 		
-		
-	}
-%>
-
 <!-- 달력 시작 -->
 <% 
 Calendar cal = Calendar.getInstance();
@@ -175,8 +164,8 @@ for(int index = 1; index <= endDay; index++)
 <% 	
 	//방이름 뽑도록 하기//////////////////////////////////
 	String sUseDate = Integer.toString(year);
-	sUseDate += Integer.toString(month+1).length() == 1 ? "-0" + Integer.toString(month+1) : "-"+Integer.toString(month+1);
-	sUseDate += Integer.toString(index).length() == 1 ? "-0" + Integer.toString(index) : "-"+Integer.toString(index);
+	sUseDate += Integer.toString(month+1).length() == 1 ? "0" + Integer.toString(month+1) : Integer.toString(month+1);
+	sUseDate += Integer.toString(index).length() == 1 ? "0" + Integer.toString(index) : Integer.toString(index);
 	int iUseDate = Integer.parseInt(sUseDate);
 	
 	
