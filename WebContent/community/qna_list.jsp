@@ -6,13 +6,14 @@
     pageEncoding="UTF-8"%>
 
 <%
-	PostDBBean db=PostDBBean.getInstance();
-	ArrayList<PostBean> PostList = db.listPost();
+	QnaDBBean db =QnaDBBean.getInstance();
+	ArrayList<QnaBean>QnaList = db.listQna();
 	
-	String name,email,title,content,password,upload_file;
+	String name,password,title,content;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	int no=0;
 	Timestamp date;
+	int secret;
 	
 %>
 <html>
@@ -22,12 +23,12 @@
 	</head>
 	<body>
 		<center>
-			<h1>후 기</h1>
+			<h1>질문 QnA</h1>
 		</center>
 		<table width="600">
 			<tr>
 				<td align="right">
-					<a href="post_write.jsp" align="right" >글 쓰 기</a>
+					<a href="qna_write.jsp" align="right" >글 쓰 기</a>
 				</td>
 			</tr>
 		</table>
@@ -43,14 +44,14 @@
 				</td>
 			</tr>
 			<%
-				for(int i=0; i<PostList.size(); i++){
-					PostBean post = PostList.get(i);
+				for(int i=0; i<QnaList.size(); i++){
+					QnaBean qna = QnaList.get(i);
 					
-					no = post.getNo();
-					title = post.getTitle();
-					name = post.getName();
-					email = post.getEmail();
-					date = post.getDate();
+					no = qna.getNo();
+					title = qna.getTitle();
+					name = qna.getName();
+					date = qna.getDate();
+					secret = qna.getSecret();
 					
 			%>
 				<tr height="25" bgcolor="#f7f7f7"
@@ -59,17 +60,21 @@
 					
 				<td align="center">
 						<%= no %>
-				</td>
-					<td><a href="post_show.jsp?no=<%=no%>">
+					</td>
+					<%if(secret==1){
+						%><td><a href="qna_secret.jsp?no=<%=no%>">
+						<%= title %><img src="post_img/lock.jpg">
+						</a>
+					</td><%
+					}else{ %>
+					<td><a href="qna_show.jsp?no=<%=no%>">
 						<%= title %>
 						</a>
-					</td>
+					</td><%} %>
 					<td align="center">
-						<a href="mailto:<%=email%>">
-							<%=name%>
-						</a>
-						</td>
-						<td align="center">
+						<%= name %>
+					</td>			
+					<td align="center">
 						<%= sdf.format(date)%>
 					</td>
 				</tr>
