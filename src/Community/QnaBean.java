@@ -4,14 +4,20 @@ package community;
 import java.sql.Timestamp;
 
 public class QnaBean {
-	int no;
-	String name;
-	String password;
-	String title;
-	String content;
-	Timestamp date;
+	private int no;
+	private String name;
+	private String password;
+	private String title;
+	private String content;
+	private Timestamp date;
+	private int secret;
 	
-	
+	public int getSecret() {
+		return secret;
+	}
+	public void setSecret(int secret) {
+		this.secret = secret;
+	}
 	public Timestamp getDate() {
 		return date;
 	}

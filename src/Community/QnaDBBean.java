@@ -19,14 +19,16 @@ public class QnaDBBean {
 	   }
 	   
 	   public Connection getConnection() throws Exception{
-		   Connection con = null;
-		      String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC"; 
-		      String user = "root";
-		      String pwd = "1234";
-		      
-		      try { 
-		         Class.forName("com.mysql.cj.jdbc.Driver");
-		         con=DriverManager.getConnection(url, user, pwd);
+		 	Connection con = null;
+		String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC";
+		String user = "root";
+		String pwd = "1234";
+		
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection(url, user, pwd);
+
 		         
 		         } catch (Exception e) { 
 		            e.printStackTrace();
@@ -55,14 +57,15 @@ public class QnaDBBean {
 	            number = 1;
 	         }
 	         
-	         sql="insert into qna(no, name, password, title, content, date) values(?, ?, ?, ?, ?,?)";
+	         sql="insert into qna(no, name, password, title, content, date, secret) values(?, ?, ?, ?, ?, ?, ?)";
 	         pstmt = con.prepareStatement(sql);
-	         pstmt.setInt(1, qna.getNo());
+	         pstmt.setInt(1, number);
 	         pstmt.setString(2, HanConv.toKor(qna.getName()));
 	         pstmt.setString(3, qna.getPassword());
 	         pstmt.setString(4, HanConv.toKor(qna.getTitle()));
 	         pstmt.setString(5, HanConv.toKor(qna.getContent()));
 	         pstmt.setTimestamp(6, qna.getDate());
+	         pstmt.setInt(7, qna.getSecret());
 	         
 	         pstmt.executeUpdate();
 	      } catch (Exception e) {
@@ -80,7 +83,7 @@ public class QnaDBBean {
 	      return 1;
 	   }
 	   
-	   public ArrayList<QnaBean> listqna(){
+	   public ArrayList<QnaBean> listQna(){
 	      Connection con=null;
 	      Statement stmt=null;
 	      ResultSet rs=null;
@@ -101,6 +104,8 @@ public class QnaDBBean {
 	        	 qna.setPassword(rs.getString(3));
 	        	 qna.setTitle(rs.getString(4));
 	        	 qna.setContent(rs.getString(5));
+	        	 qna.setDate(rs.getTimestamp(6));
+	        	 qna.setSecret(rs.getInt(7));
 	        	                    
 	          
 	            
@@ -121,7 +126,7 @@ public class QnaDBBean {
 	      return qnaList;
 	   }
 	   
-	   public QnaBean getqna(int no) {
+	   public QnaBean getQna(int no) {
 	      Connection con=null;
 	      PreparedStatement pstmt=null;
 	      ResultSet rs=null;
@@ -129,12 +134,7 @@ public class QnaDBBean {
 	      QnaBean qna=null;
 	      
 	      try {
-	         con=getConnection();
-	         sql="update qna set no=no+1 where no=?";
-	         pstmt = con.prepareStatement(sql);
-	         pstmt.setInt(1, no);
-	         pstmt.executeUpdate();
-	         pstmt.close();
+	         con=getConnection();    
 	         
 	         sql="select * from qna where no=?";
 	         pstmt = con.prepareStatement(sql);
@@ -142,10 +142,13 @@ public class QnaDBBean {
 	         rs = pstmt.executeQuery();
 	         
 	         if(rs.next()) {
-	               qna .setNo(rs.getInt(1));
-	               qna .setName(rs.getString(2));
-	               qna .setTitle(rs.getString(3));
-	               qna .setContent(rs.getString(4));
+	        	   qna = new QnaBean();
+	               qna.setNo(rs.getInt(1));
+	               qna.setName(rs.getString(2));
+	               qna.setPassword(rs.getString(3));
+	               qna.setTitle(rs.getString(4));
+	               qna.setContent(rs.getString(5));
+	               qna.setDate(rs.getTimestamp(6));
 	               
 	              
 		         }
@@ -164,7 +167,7 @@ public class QnaDBBean {
 	      return qna;
 	   }
 	   
-	   public int deleteqna(int no, String password) {
+	   public int deleteQna(int no, String password) {
 	      Connection con=null;
 	      PreparedStatement pstmt=null;
 	      ResultSet rs=null;
@@ -186,7 +189,7 @@ public class QnaDBBean {
 	            if(!pwd.equals(password)) {
 	               re=0;
 	            }else {
-	               sql="delete qna where no=?";
+	               sql="delete from qna where no=?";
 	               pstmt=con.prepareStatement(sql);
 	               pstmt.setInt(1, no);
 	               pstmt.executeUpdate();
@@ -253,7 +256,39 @@ public class QnaDBBean {
 			}
 			return re;
 		}
+	   public String secretQna(QnaBean qna) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			
+			String sql="";
+			String pwd="";
+			int re=-1;
+					
+			try {
+				con=getConnection();
+				sql="select password from qna where no=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, qna.getNo());
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					pwd=rs.getString(1);
+			 		
+						
+			}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(con != null) con.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			return pwd;
+		}
 	}
-
-
-

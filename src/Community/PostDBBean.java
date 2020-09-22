@@ -19,7 +19,7 @@ public class PostDBBean {
 	   }
 	   
 	   public Connection getConnection() throws Exception{
-		   Connection con = null;
+		   	  Connection con = null;
 		      String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC"; 
 		      String user = "root";
 		      String pwd = "1234";
@@ -55,8 +55,7 @@ public class PostDBBean {
 	            number = 1;
 	         }
 	         
-	         sql="insert into post(no, name, password, email, title"
-	               + ", content, upload_file, date) values(?, ?, ?, ?, ?, ?, ?, ?)";
+	         sql="insert into post(no, name, password, email, title, content, upload_file, date) values(?, ?, ?, ?, ?, ?, ?, ?)";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, number);
 	         pstmt.setString(2, HanConv.toKor(post.getName()));
@@ -66,7 +65,6 @@ public class PostDBBean {
 	         pstmt.setString(6, HanConv.toKor(post.getContent()));
 	         pstmt.setString(7, post.getUpload_file());
 	         pstmt.setTimestamp(8, post.getDate());
-	         
 	         pstmt.executeUpdate();
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -83,7 +81,7 @@ public class PostDBBean {
 	      return 1;
 	   }
 	   
-	   public ArrayList<PostBean> listpost(){
+	   public ArrayList<PostBean> listPost(){
 	      Connection con=null;
 	      Statement stmt=null;
 	      ResultSet rs=null;
@@ -100,8 +98,8 @@ public class PostDBBean {
 	         while(rs.next()) {
 	        	 PostBean post=new PostBean();
 	        	 post.setNo(rs.getInt(1));
-	        	 post.setPassword(rs.getString(2));
-	        	 post.setName(rs.getString(3));
+	        	 post.setName(rs.getString(2));
+	        	 post.setPassword(rs.getString(3));
 	        	 post.setEmail(rs.getString(4));
 	        	 post.setTitle(rs.getString(5));
 	        	 post.setContent(rs.getString(6));
@@ -134,27 +132,22 @@ public class PostDBBean {
 	      PostBean post=null;
 	      
 	      try {
-	         con=getConnection();
-	         sql="update post set no=no+1 where no=?";
-	         pstmt = con.prepareStatement(sql);
-	         pstmt.setInt(1, no);
-	         pstmt.executeUpdate();
-	         pstmt.close();
-	         
+	         con=getConnection(); 	         
 	         sql="select * from post where no=?";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, no);
 	         rs = pstmt.executeQuery();
 	         
 	         if(rs.next()) {
-	               post .setNo(rs.getInt(1));
-	               post .setName(rs.getString(2));
-	               post .setEmail(rs.getString(3));
-	               post .setTitle(rs.getString(4));
-	               post .setContent(rs.getString(5));
-	               post .setDate(rs.getTimestamp(5));
-	               post .setPassword(rs.getString(7));
-	               post .setUpload_file(rs.getString(8));  
+	        	   post = new PostBean();
+	               post.setNo(rs.getInt(1));
+	               post.setName(rs.getString(2));
+	               post.setPassword(rs.getString(3));
+	               post.setEmail(rs.getString(4));
+	               post.setTitle(rs.getString(5));
+	               post.setContent(rs.getString(6));
+	               post.setUpload_file(rs.getString(7));  
+	               post.setDate(rs.getTimestamp(8));
 		         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -193,7 +186,7 @@ public class PostDBBean {
 	            if(!pwd.equals(password)) {
 	               re=0;
 	            }else {
-	               sql="delete post where no=?";
+	               sql="delete from post where no=?";
 	               pstmt=con.prepareStatement(sql);
 	               pstmt.setInt(1, no);
 	               pstmt.executeUpdate();
