@@ -57,7 +57,7 @@ public class QnaDBBean {
 	            number = 1;
 	         }
 	         
-	         sql="insert into qna(no, name, password, title, content, date, secret) values(?, ?, ?, ?, ?, ?, ?)";
+	         sql="insert into qna(no, name, password, title, content, date, secret, comment) values(?, ?, ?, ?, ?, ?, ?, ?)";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, number);
 	         pstmt.setString(2, HanConv.toKor(qna.getName()));
@@ -66,7 +66,7 @@ public class QnaDBBean {
 	         pstmt.setString(5, HanConv.toKor(qna.getContent()));
 	         pstmt.setTimestamp(6, qna.getDate());
 	         pstmt.setInt(7, qna.getSecret());
-	         
+	         pstmt.setString(8, HanConv.toKor(qna.getComment()));
 	         pstmt.executeUpdate();
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -106,6 +106,7 @@ public class QnaDBBean {
 	        	 qna.setContent(rs.getString(5));
 	        	 qna.setDate(rs.getTimestamp(6));
 	        	 qna.setSecret(rs.getInt(7));
+	        	 qna.setComment(rs.getString(8));
 	        	                    
 	          
 	            
@@ -149,6 +150,8 @@ public class QnaDBBean {
 	               qna.setTitle(rs.getString(4));
 	               qna.setContent(rs.getString(5));
 	               qna.setDate(rs.getTimestamp(6));
+	               qna.setSecret(rs.getInt(7));
+	               qna.setComment(rs.getString(8));
 	               
 	              
 		         }
@@ -290,5 +293,36 @@ public class QnaDBBean {
 				}
 			}
 			return pwd;
+		}
+	   public int requestQna(String comment, int no) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			
+			String sql="";
+			int re=-1;
+					
+			try {
+				con=getConnection();
+				sql="update qna set Comment = ? where no=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, HanConv.toKor(comment));
+				pstmt.setInt(2, no);
+				pstmt.executeUpdate();
+				re = 1;
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(con != null) con.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			return re;
 		}
 	}

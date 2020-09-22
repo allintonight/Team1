@@ -11,7 +11,14 @@ public class QnaBean {
 	private String content;
 	private Timestamp date;
 	private int secret;
+	private String comment;
 	
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	public int getSecret() {
 		return secret;
 	}
