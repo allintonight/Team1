@@ -1,14 +1,16 @@
 <%@ page import="community.*"%>
+<%@ page import="myUtil.*"%>
 <%@ page import="java.sql.Timestamp"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%
+<%	request.setCharacterEncoding("UTF-8");	
+	String subject = request.getParameter("subject");
+	String word = request.getParameter("word");	
 	PostDBBean db=PostDBBean.getInstance();
-	ArrayList<PostBean> PostList = db.listPost();
-	
+	ArrayList<PostBean> PostList = db.listPost(subject, word);	
 	String name,email,title,content,password,upload_file;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	int no=0;
@@ -78,9 +80,16 @@
 			</tbody>
 			</thead>
 		</table>
+		<form name="form" method="post" action="post_list.jsp">
 		<table width="600" aling="center" class="table table-borderless">
 			<tr>
-				<td align="right">
+			<td align="center">
+			<select name="subject">
+			<option value="1">제목 또는 내용</option>
+			<option value="2">작성자</option>
+		</select>&nbsp;&nbsp;<input type="text" name="word">&nbsp;&nbsp;<input type="submit" value="검색">
+			</td>
+				<td>
 					<a href="post_write.jsp" align="right" >글 쓰 기</a><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
   <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
