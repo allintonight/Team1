@@ -40,21 +40,13 @@
 					<td width="200">
 						<%= no %>
 					</td>
-			    </tr>
-				<tr height="30" align="center">
-					<td width="100">
-						작성자
-					</td>
-					<td width="200">
-						<%= name %>
-					</td>
 					<td width="100">
 						작성일
 					</td>
 					<td width="200">
 						<%= date %>
 					</td>
-				</tr>
+			    </tr>
 				<tr height="30" align="center">
 					<td width="100">
 						글제목
@@ -62,12 +54,20 @@
 					<td width="200">
 						<%= title %>
 					</td>
+					<td width="100">
+						작성자
+					</td>
+					<td width="200">
+						<%= name %>
+					</td>
+					
 				</tr>
+			
 				<tr height="30" align="center">
 					<td width="100">
 						사진업로드
 					</td>
-					<td width="200">
+					<td width="200" colspan="3">
 						<%=upload_file %>
 					</td>
 				</tr>
@@ -75,8 +75,8 @@
 					<td width="100">
 						글내용
 					</td>
-					<td width="200">
-						<pre><%=content%></pre>
+					<td width="200" colspan="3">
+						<textarea rows="10" cols="60" readonly><%=content%></textarea>
 					</td>
 				</tr>
 				<tr height="30">

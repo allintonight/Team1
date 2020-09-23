@@ -32,29 +32,21 @@
 			<h1>
 				글 내 용 보 기
 			</h1>
-			<table border="1" width="600">
+			<table border="1" width="600" align="center">
 				<tr height="30" align="center">
 					<td width="100">
 						글번호
 					</td>
 					<td width="200">
-						<%=no%>
-					</td>
-									</tr>
-				<tr height="30" align="center">
-					<td width="100">
-						작성자
-					</td>
-					<td width="200">
-						<%= name %>
+						<%= no %>
 					</td>
 					<td width="100">
 						작성일
 					</td>
 					<td width="200">
-						<%= sdf.format(date)%>
+						<%= date %>
 					</td>
-				</tr>
+			    </tr>
 				<tr height="30" align="center">
 					<td width="100">
 						글제목
@@ -62,21 +54,27 @@
 					<td width="200">
 						<%= title %>
 					</td>
+					<td width="100">
+						작성자
+					</td>
+					<td width="200">
+						<%= name %>
+					</td>					
 				</tr>
 				<tr height="30" align="center">
 					<td width="100">
 						글내용
 					</td>
-					<td width="200">
-						<pre><%=content%></pre>
+					<td width="200" colspan="3">
+						<textarea rows="10" cols="60" readonly><%=content%></textarea>
 					</td>
 				</tr>
 				<tr height="30" align="center">
 					<td width="100">
 						답변
 					</td>
-					<td width="200">
-						<pre><%=comment%></pre>
+					<td width="200" colspan="3">
+						<textarea rows="5" cols="60" readonly><%=comment%></textarea>
 					</td>
 				</tr>
 				<tr height="30">

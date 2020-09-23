@@ -24,9 +24,9 @@
                <td width="80">
                                    ´äº¯
                </td>
-               <td width="140">
-                  <input type="text" name="comment" size="20">
-               </td>
+               <td width="200" colspan="3">
+						<textarea rows="10" cols="60" name="comment"></textarea>
+					</td>
         
             <tr height="50" align="center">
                <td colspan="4" width="480">
