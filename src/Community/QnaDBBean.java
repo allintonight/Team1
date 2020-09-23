@@ -234,11 +234,12 @@ public class QnaDBBean {
 				if(!pwd.equals(qna.getPassword())) {
 					re = 0;
 				}else {
-					sql="update qna set Title = ?, Content = ? where no=?";
+					sql="update qna set Title = ?, Content = ?, Secret = ? where no=?";
 					pstmt=con.prepareStatement(sql);
 					pstmt.setString(1, HanConv.toKor(qna.getTitle()));
 					pstmt.setString(2, HanConv.toKor(qna.getContent()));
-					pstmt.setInt(3, qna.getNo());
+					pstmt.setInt(3, qna.getSecret());
+					pstmt.setInt(4, qna.getNo());
 					pstmt.executeUpdate();
 					re = 1;
 				}
