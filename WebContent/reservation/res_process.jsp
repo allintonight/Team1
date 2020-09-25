@@ -62,16 +62,18 @@
 		while(roombean.next()){
 		if(rno == roombean.getInt(1)){
 			selected = roombean.getString(2);
-		}
-		if(result < 0 && result2 > 0){ //성수기 시작 날짜보다 작거나 성수기 마지막 날짜보다 클 때 => 성수기 아님
-			if(newLine == 0 || newLine == 6){
-				price = roombean.getInt(4);
+			
+			if(result == -1 || result2 == 1){ //성수기 시작 날짜보다 작거나 성수기 마지막 날짜보다 클 때 => 성수기 아님
+				if(newLine == 0 || newLine == 6){
+					price = roombean.getInt(5); //주말
+				}else{
+					price = roombean.getInt(4); //평일
+				}
 			}else{
-				price = roombean.getInt(5);
+					price = roombean.getInt(6); //성수기
 			}
-		}else{
-				price = roombean.getInt(6);
 		}
+		
 		
 			}
 		String name = null;
@@ -96,22 +98,17 @@
 					<div class="form-group">
 					<input type="hidden" id="mno" value="<%= mno %>" name="mno">
     				<label for="name">이 름</label>
-    				<input type="text" class="form-control" id="name" placeholder="예약자 성명" value="<%= name %>" name="rname">
+    				<input type="text" class="form-control" id="rname" placeholder="예약자 성명" value="<%= name %>" name="rname">
   					<label for="phone">휴대폰 번호</label>
-    				<input type="text" class="form-control" id="phone" placeholder="휴대폰 번호" value="<%= phone %>" name="rphone">
+    				<input type="text" class="form-control" id="rphone" placeholder="휴대폰 번호" value="<%= phone %>" name="rphone">
     				<label for="email">Email address</label>
-    				<input type="email" class="form-control" id="email" placeholder="name@example.com" value="<%= email %>" name="remail">
+    				<input type="email" class="form-control" id="remail" placeholder="name@example.com" value="<%= email %>" name="remail">
  					</div>
  					<div class="form-group">
     				
     				<label for="roomname">방 이름</label>
-    				<select class="form-control" id="roomname" name="rno">
-    				<option value="<%= rno %>"><%= selected %></option>
-    				<option value="1">혼자방</option>
-      				<option value="2">같이방</option>
-      				<option value="3">가족방</option>
-      				<option value="4">서브펜션</option>  
-    				</select>
+    				<input type="text" class="form-control" id="roomname" value="<%= selected %>" readonly>
+    				<input type="hidden" class="form-control" id="rno" value="<%= rno %>" name="rno">
     				</div>
     				
  					<div class="form-row">
@@ -125,7 +122,9 @@
     				<label for="men">기본 인원</label>
     				<select class="form-control" id="men" name="usemen">
      				<option value="1">1</option>
-      				<option value="2">2</option> 
+      				<option value="2">2</option>
+      				<option value="3">3</option>
+      				<option value="4">4</option>  
     				</select>
  					<label for="addmen">추가 인원</label>
     				<select class="form-control" id="addmen" name="addmen">
@@ -140,8 +139,10 @@
  					<input value="<%= price %>"   id="total2" name="price" type="hidden">
  					<div class="form-row">
  					<input type="button" value="예약하기" class="btn btn-dark res" id="btn" >
+ 					<input type="button" value="뒤로가기" class="btn btn-secondary res" id="btn" onClick="history.back()">	
  					<input type="button" value="가능확인" onClick="location.href='roomCheck.jsp?checkin=<%= choday %>&&checkout=<%= nextday %>'"
  							class="btn btn-info" id="submit">
+ 						
  					</div>
 				</form>
 			</div>
@@ -173,13 +174,14 @@ $(function () {
 var UserId = '<%= (String)session.getAttribute("userid") %>';
 
 if(UserId=="null"){
-	document.getElementById("name").value=null;
-	document.getElementById("email").value=null;
-	document.getElementById("phone").value=null;
+	document.getElementById("rname").value=null;
+	document.getElementById("remail").value=null;
+	document.getElementById("rphone").value=null;
 }
 
 $(document).ready(function(){
 	$("#addmen").change(function(){
+		var room=$('#roomname').val();
 		var addmen=$('#addmen').val();
 		var price = $('#price').val();
 		if(addmen==1||addmen==2){
@@ -189,6 +191,19 @@ $(document).ready(function(){
 		$("#total").html("<b>"+"총 금액 : "+total+"</b>");
 		document.getElementById("total2").value=total;
 	});
+});
+
+$(document).ready(function(){
+	var rno = $('#rno').val();
+	if(rno==1){
+		$('#men option:eq(1)').remove();
+		$('#men option:eq(2)').remove();
+		$('#men option:eq(3)').remove();
+	}
+	else if(rno==2){
+		$('#men option:eq(2)').remove();
+		$('#men option:last').remove();
+	}
 });
 
 window.onload = function(){
