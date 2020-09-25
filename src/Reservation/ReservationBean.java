@@ -2,6 +2,7 @@ package Reservation;
 
 import java.sql.Date;
 
+
 public class ReservationBean {
 	private int rsno;
 	private int mno;
@@ -15,12 +16,19 @@ public class ReservationBean {
 	private int price;
 	private String pay_ment;
 	private String paid;
+	private String roomname;
 	
 	public ReservationBean() {}
-		
+	
+	public ReservationBean(String roomname,String paid, Date check_in, Date check_out) {
+		this.roomname = roomname;
+		this.paid = paid;
+		this.check_in = check_in;
+		this.check_out = check_out;
+	}
+	
 	public ReservationBean(int rsno, int mno, int rno, String rname, String remail, String rphone, Date check_in,
 			Date check_out, int usemen, int price, String pay_ment, String paid) {
-		super();
 		this.rsno = rsno;
 		this.mno = mno;
 		this.rno = rno;
@@ -34,12 +42,32 @@ public class ReservationBean {
 		this.pay_ment = pay_ment;
 		this.paid = paid;
 	}
+	
+	
+	
 	public int getRsno() {
 		return rsno;
 	}
+
 	public void setRsno(int rsno) {
 		this.rsno = rsno;
 	}
+
+	public void setRphone(String rphone) {
+		this.rphone = rphone;
+	}
+	public String getRphone() {
+		return rphone;
+	}
+
+	public String getRoomname() {
+		return roomname;
+	}
+
+	public void setRoomname(String roomname) {
+		this.roomname = roomname;
+	}
+
 	public int getMno() {
 		return mno;
 	}
@@ -64,12 +92,7 @@ public class ReservationBean {
 	public void setRemail(String remail) {
 		this.remail = remail;
 	}
-	public String getRphone() {
-		return rphone;
-	}
-	public void setRphone(String rphone) {
-		this.rphone = rphone;
-	}
+	
 	public Date getCheck_in() {
 		return check_in;
 	}
@@ -106,5 +129,7 @@ public class ReservationBean {
 	public void setPaid(String paid) {
 		this.paid = paid;
 	}
+	
+	
 	
 }

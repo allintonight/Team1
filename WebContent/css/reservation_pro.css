@@ -1,0 +1,37 @@
+@charset "UTF-8";
+#form {
+		position:relative;
+		width:80%;
+		height:850px;
+		border:solid 1px #585858;
+		left:15%;
+		margin-top:10%;
+		border-radius:10px;
+	}
+	#left{
+		position:relative;
+		width:24%;
+		height:850px;
+		border:solid 1px #585858;
+		border-radius:10px 0 0 10px;
+		border-top:none;
+		border-left:none;
+		border-bottom:none;
+		background-color:#585858;
+	}
+	#right{
+		position:relative;
+		width:70%;
+		height:600px;
+		top:-800px;
+		left:27%;
+	}
+	.res{
+		margin-right:10px;
+	}
+	.navbtn{
+			color: #fff;
+	}
+	.check{
+		display:inline-block;
+	}

@@ -1,4 +1,4 @@
-package Login;
+package Main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,9 +15,9 @@ private static UserDBBean instance = new UserDBBean();
 	
 	public Connection getConnection() throws Exception{
 		Connection con = null;
-		String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC"; 
-		String user = "root";
-		String pwd = "1234";
+		String url = "jdbc:mysql://203.245.44.74:3306/allintonight?serverTimezone=UTC"; 
+		String user = "allintonight";
+		String pwd = "team1team1";
 		
 		try { 
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -36,8 +36,8 @@ private static UserDBBean instance = new UserDBBean();
 		String sql=null;
 		
 			try {
-				sql = "insert into member(id, password, name, email, phone)"
-						+ " values(?,?,?,?,?);";
+				sql = "insert into member"
+						+ " values(0,?,?,?,?,?);";
 				con = getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setString(1, userbean.getId());
@@ -47,7 +47,6 @@ private static UserDBBean instance = new UserDBBean();
 				pstmt.setString(5, userbean.getPhone());
 				pstmt.executeUpdate();
 				re=1;
-				con.close();
 				System.out.println("추가 성공");
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -104,6 +103,33 @@ private static UserDBBean instance = new UserDBBean();
 			e.printStackTrace();
 		}
 		return re;
+	}
+	
+	//회원정보 및 예약시 사용 
+	public UserBean memberInfo(String id){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
+		String sql=null;
+		UserBean user = null;
+		try {
+			sql="select * from member where id=?;";
+			con = getConnection();
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				user.setMno(rs.getInt(1));
+				user.setId(rs.getString(2));
+				user.setPassword(rs.getString(3));
+				user.setName(rs.getString(4));
+				user.setEmail(rs.getString(5));
+				user.setPhone(rs.getString(6));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 	
 
