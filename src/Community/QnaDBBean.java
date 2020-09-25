@@ -83,17 +83,19 @@ public class QnaDBBean {
 	      return 1;
 	   }
 	   
-	   public ArrayList<QnaBean> listQna(){
+	   public ArrayList<QnaBean> listQna(String subject, String word){
 	      Connection con=null;
 	      Statement stmt=null;
 	      ResultSet rs=null;
 	      
 	      ArrayList<QnaBean> qnaList=new ArrayList<QnaBean>();
-	      
+	      String sql="";
 	      try {
 	         con=getConnection();
 	         stmt = con.createStatement();
-             String sql="select * from qna order by no";
+	         
+	         if(subject == null) {
+             sql="select * from qna order by no";
 	        
 	         rs = stmt.executeQuery(sql);
 	         
@@ -110,8 +112,46 @@ public class QnaDBBean {
 	        	                    
 	          
 	            
-	            qnaList.add(qna);
-	         }
+	            qnaList.add(qna);}
+	         }else if(subject.equals("1")) {
+	        		 sql="select * from qna where title like '%"+word+"%'";
+	        		 rs = stmt.executeQuery(sql);
+	        		 
+	        		 while(rs.next()) {
+	    	        	 QnaBean qna=new QnaBean();
+	    	        	 qna.setNo(rs.getInt(1));
+	    	        	 qna.setName(rs.getString(2));
+	    	        	 qna.setPassword(rs.getString(3));
+	    	        	 qna.setTitle(rs.getString(4));
+	    	        	 qna.setContent(rs.getString(5));
+	    	        	 qna.setDate(rs.getTimestamp(6));
+	    	        	 qna.setSecret(rs.getInt(7));
+	    	        	 qna.setComment(rs.getString(8));
+	    	        	                    
+	    	          
+	    	            
+	    	            qnaList.add(qna);}
+	         }else{
+	        	 sql="select * from qna where name like '%"+word+"%'";
+        		 rs = stmt.executeQuery(sql);
+        		 
+        		 while(rs.next()) {
+    	        	 QnaBean qna=new QnaBean();
+    	        	 qna.setNo(rs.getInt(1));
+    	        	 qna.setName(rs.getString(2));
+    	        	 qna.setPassword(rs.getString(3));
+    	        	 qna.setTitle(rs.getString(4));
+    	        	 qna.setContent(rs.getString(5));
+    	        	 qna.setDate(rs.getTimestamp(6));
+    	        	 qna.setSecret(rs.getInt(7));
+    	        	 qna.setComment(rs.getString(8));
+    	        	                    
+    	          
+    	            
+    	            qnaList.add(qna);}     		 
+        		 
+	         	}
+	         
 	      } catch (Exception e) {
 	         e.printStackTrace();
 	      }finally {

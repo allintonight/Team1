@@ -81,16 +81,19 @@ public class PostDBBean {
 	      return 1;
 	   }
 	   
-	   public ArrayList<PostBean> listPost(){
+	   public ArrayList<PostBean> listPost(String subject, String word){
 	      Connection con=null;
 	      Statement stmt=null;
 	      ResultSet rs=null;
 	      
 	      ArrayList<PostBean> postList=new ArrayList<PostBean>();
 	      
+	      
 	      try {
 	         con=getConnection();
 	         stmt = con.createStatement();
+	         
+	         if(subject == null) {
              String sql="select * from post order by no";
 	        
 	         rs = stmt.executeQuery(sql);
@@ -107,8 +110,43 @@ public class PostDBBean {
 	        	 post.setDate(rs.getTimestamp(8));
 	          
 	            
-	            postList.add(post);
-	         }
+	            postList.add(post);}
+	         }else if(subject.equals("1")) {
+	        		 String sql="select * from post where title like '%"+word+"%'";
+	        		 rs = stmt.executeQuery(sql);
+	    	         
+	    	         while(rs.next()) {
+	    	        	 PostBean post=new PostBean();
+	    	        	 post.setNo(rs.getInt(1));
+	    	        	 post.setName(rs.getString(2));
+	    	        	 post.setPassword(rs.getString(3));
+	    	        	 post.setEmail(rs.getString(4));
+	    	        	 post.setTitle(rs.getString(5));
+	    	        	 post.setContent(rs.getString(6));
+	    	        	 post.setUpload_file(rs.getString(7));                     
+	    	        	 post.setDate(rs.getTimestamp(8));
+	    	          
+	    	            
+	    	            postList.add(post);}
+	        	 }else {
+	        		 String sql="select * from post where name like '%"+word+"%'";
+	        		 rs = stmt.executeQuery(sql);
+	    	         
+	    	         while(rs.next()) {
+	    	        	 PostBean post=new PostBean();
+	    	        	 post.setNo(rs.getInt(1));
+	    	        	 post.setName(rs.getString(2));
+	    	        	 post.setPassword(rs.getString(3));
+	    	        	 post.setEmail(rs.getString(4));
+	    	        	 post.setTitle(rs.getString(5));
+	    	        	 post.setContent(rs.getString(6));
+	    	        	 post.setUpload_file(rs.getString(7));                     
+	    	        	 post.setDate(rs.getTimestamp(8));
+	    	          
+	    	            
+	    	            postList.add(post);}
+	        	 }
+	         
 	      } catch (Exception e) {
 	         e.printStackTrace();
 	      }finally {
@@ -250,10 +288,49 @@ public class PostDBBean {
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
-			}
-			return re;
+			}return re;
+			
 		}
+
+
+		public int searchPost(String word) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			int no=0;
+			String sql="";
+					
+			try {
+				con=getConnection();
+				sql="select no from post where name=? and content=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, word);
+				pstmt.setString(2, word);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					no=rs.getInt(1);
+			 
+				}else {
+					no=0;
+				
+			}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(con != null) con.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}return no;
+			
+		
 	}
+}
+
 
 	
 
