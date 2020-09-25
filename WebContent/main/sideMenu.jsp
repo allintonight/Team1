@@ -19,8 +19,8 @@
 			if(session.getAttribute("userid").equals("admin")){
 %>				
 				<ul class="menu">
+		          <li><a class="menulist" href="#">룸 관리</a></li>
 		          <li><a class="menulist" href="#">예약 관리</a></li>
-		          <li><a class="menulist" href="#">공지사항 관리</a></li>
 		          <li><a class="menulist" href="#">커뮤니티 관리</a></li>
 		        </ul>
 <%		        
