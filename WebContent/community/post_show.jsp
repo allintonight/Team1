@@ -3,7 +3,8 @@
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
+<%	
+	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 	PostDBBean db=PostDBBean.getInstance();
 	PostBean post = db.getPost(no);
@@ -82,11 +83,11 @@
 				<tr height="30">
 					<td colspan="4" align="right">
 						<input type="button" value="글수정"
-						onclick="location.href='post_edit.jsp?no=<%=no%>'">
+						onclick="location.href='post_edit.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
 						<input type="button" value="글삭제"
-						onclick="location.href='post_delete.jsp?no=<%=no%>'">
+						onclick="location.href='post_delete.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
 						<input type="button" value="글목록"
-						onclick="location.href='post_list.jsp'">
+						onclick="location.href='post_list.jsp?pageNUM=<%=pageNUM%>'">
 					</td>
 				</tr>
 			</table>

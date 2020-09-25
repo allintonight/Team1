@@ -5,6 +5,9 @@
 <head>
    <meta charset="EUC-KR">
    <title>Insert title here</title>
+<%
+	String pageNUM = request.getParameter("pageNUM");
+%>
    <script type="text/javascript" src="function.js" charset="utf-8"></script>
 </head>
 <body>
@@ -62,7 +65,7 @@
                      onclick="check_ok()">&nbsp;
                   <input type="reset" value="다시작성">
                   <input type="button" value="글목록"
-                     onclick="location.href='qna_list.jsp'">&nbsp;
+                     onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">&nbsp;
                </td>
             </tr>
          </table>

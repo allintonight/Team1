@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-    
-
+<%
+	String pageNUM = request.getParameter("pageNUM");
+%>
 
 </head>
 <body>
@@ -49,7 +50,7 @@
 					<td colspan="4" width="480"><input type="button" value="글쓰기"
 						onclick="check_ok()">&nbsp; <input type="reset"
 						value="다시작성"> <input type="button" value="글목록"
-						onclick="location.href='post_list.jsp'">&nbsp;</td>
+						onclick="location.href='post_list.jsp?pageNUM=<%=pageNUM%>'">&nbsp;</td>
 				</tr>
 			</table>
 		</form>

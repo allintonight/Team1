@@ -5,7 +5,7 @@
 	    
 	<%	
 		request.setCharacterEncoding("euc-kr");
-		
+		String pageNUM = request.getParameter("pageNUM");
 		PostDBBean db = PostDBBean.getInstance();
 		int no = Integer.parseInt(request.getParameter("no"));
 		PostBean post = db.getPost(no);
@@ -22,7 +22,7 @@
 			<h1>
 				글 수 정 하 기
 			</h1>
-			<form name="form" method="post" action="post_edit_ok.jsp?no=<%=no%>">
+			<form name="form" method="post" action="post_edit_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
 				<table>
 					<tr height="30">
 						<td width="80">
@@ -66,7 +66,7 @@
 								onclick="check_ok()"> -->&nbsp;
 							<input type="reset" value="다시작성">
 							<input type="button" value="글목록"
-								onclick="location.href='post_list.jsp'">&nbsp;
+								onclick="location.href='post_list.jsp?pageNUM=<%=pageNUM%>'">&nbsp;
 						</td>
 					</tr>
 				</table>

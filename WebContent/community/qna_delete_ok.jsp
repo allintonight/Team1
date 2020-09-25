@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="community.*" %>
 <%
+	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 	String password = request.getParameter("password");
 	
@@ -9,7 +10,7 @@
 	int re = db.deleteQna(no, password);
 	
 	if(re == 1){
-		response.sendRedirect("qna_list.jsp");
+		response.sendRedirect("qna_list.jsp?pageNUM="+pageNUM);
 	}else if(re == 0){
 %>
 		<script>

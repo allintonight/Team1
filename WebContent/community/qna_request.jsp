@@ -2,8 +2,9 @@
     pageEncoding="EUC-KR"%>
 <%@ page import="community.*"%>
 <%
-	QnaDBBean db = QnaDBBean.getInstance();
+	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
+	QnaDBBean db = QnaDBBean.getInstance();
 	QnaBean qna = db.getQna(no);
 %>
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
       <h1>
         	 답 변 올 리 기
       </h1>
-      <form name="form" method="post" action="qna_request_ok.jsp?no=<%=no%>">
+      <form name="form" method="post" action="qna_request_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
          <table>
             <tr height="30">
                <td width="80">
@@ -34,7 +35,7 @@
                   >&nbsp;
                   <input type="reset" value="다시작성">
                   <input type="button" value="글목록"
-                     onclick="location.href='qna_list.jsp'">&nbsp;
+                     onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">&nbsp;
                </td>
             </tr>
          </table>

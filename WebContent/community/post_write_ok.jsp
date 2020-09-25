@@ -11,13 +11,14 @@
 
 	
 <%
+		String pageNUM = request.getParameter("pageNUM");
 		post.setUpload_file("no-file");
 		post.setDate(new Timestamp(System.currentTimeMillis()));
 		
 		PostDBBean db=PostDBBean.getInstance();
 		if(db.insertPost(post) == 1){
-			response.sendRedirect("post_list.jsp");
+			response.sendRedirect("post_list.jsp?pageNUM="+pageNUM);
 		}else{
-			response.sendRedirect("post_write.jsp");
+			response.sendRedirect("post_write.jsp?pageNUM="+pageNUM);
 		}
 %>

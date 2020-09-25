@@ -4,14 +4,14 @@
 
 
 
-<%
+<%	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 	String comment = request.getParameter("comment");	
 	QnaDBBean db = QnaDBBean.getInstance();
 	int re = db.requestQna(comment, no);
 	
 	if(re == 1){
-		response.sendRedirect("qna_show.jsp?no="+no);
+		response.sendRedirect("qna_show.jsp?no="+no+"&pageNUM="+pageNUM);
 	}else {
 %>
 		<script>

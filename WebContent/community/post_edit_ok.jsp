@@ -6,7 +6,7 @@
 	<jsp:setProperty property="*" name="post"/>
 	</jsp:useBean>
 	
-	<%
+	<%	String pageNUM = request.getParameter("pageNUM");
 		int no = Integer.parseInt(request.getParameter("no"));
 		post.setNo(no);
 		PostDBBean db = PostDBBean.getInstance();		
@@ -20,7 +20,7 @@
 				
 			</script>
 	<%
-			response.sendRedirect("post_list.jsp");
+			response.sendRedirect("post_list.jsp?pageNUM="+pageNUM);
 		}else if(re == 0){
 	%>
 			<script>

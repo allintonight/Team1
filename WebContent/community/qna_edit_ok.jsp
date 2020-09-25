@@ -6,7 +6,7 @@
 	<jsp:setProperty property="*" name="qna"/>
 </jsp:useBean>
 
-<%
+<%	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 	qna.setNo(no);
 	
@@ -14,7 +14,7 @@
 	int re = db.editQna(qna);
 	
 	if(re == 1){
-		response.sendRedirect("qna_list.jsp");
+		response.sendRedirect("qna_list.jsp?pageNUM="+pageNUM);
 	}else if(re == 0){
 %>
 		<script>

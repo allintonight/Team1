@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="community.*" %>
-<%
+<%	
+	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 	String password = request.getParameter("password");
 	
@@ -9,7 +10,7 @@
 	int re = db.deletePost(no, password);
 	
 	if(re == 1){
-		response.sendRedirect("post_list.jsp");
+		response.sendRedirect("post_list.jsp?pageNUM="+pageNUM);
 	}else if(re == 0){
 %>
 		<script>

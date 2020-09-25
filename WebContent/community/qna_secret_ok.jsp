@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="community.*" %>
-<%
+<%	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 	String password = request.getParameter("password");
 	
@@ -10,7 +10,7 @@
 	String pwd = db.secretQna(qna);
 	
 	if(password.equals(pwd)){
-		response.sendRedirect("qna_show.jsp?no="+no);
+		response.sendRedirect("qna_show.jsp?no="+no+"&pageNUM="+pageNUM);
 	}else{
 %>
 		<script>

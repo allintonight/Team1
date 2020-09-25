@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%
 	int no = Integer.parseInt(request.getParameter("no"));
+	String pageNUM = request.getParameter("pageNUM");
 %>
 
 <html>
@@ -10,7 +11,7 @@
 	</head>
 	<body>
 		<center>
-			<form method="post" name="form" action="qna_secret_ok.jsp?no=<%=no%>">
+			<form method="post" name="form" action="qna_secret_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
 				  <table>
 				  	<tr height="50">
 				  		<td colspan="2" align="left">
@@ -31,7 +32,7 @@
 				  				onclick="delete_ok()">&nbsp;&nbsp;&nbsp;
 				  			<input type="reset" value="다시작성">&nbsp;
 				  			<input type="button" value="글목록" 
-				  			onclick="location.href='qna_list.jsp'">
+				  			onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">
 				  		</td>
 				  	</tr>
 				  </table>

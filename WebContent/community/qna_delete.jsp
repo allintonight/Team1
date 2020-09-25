@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
+<%	
+	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
 %>
 
@@ -11,7 +12,7 @@
 	<body>
 		<center>
 			<form method="post" name="form" 
-				  action="qna_delete_ok.jsp?no=<%=no%>">
+				  action="qna_delete_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
 				  <table>
 				  	<tr height="50">
 				  		<td colspan="2" align="left">
@@ -32,7 +33,7 @@
 				  				onclick="delete_ok()">&nbsp;&nbsp;&nbsp;
 				  			<input type="reset" value="다시작성">&nbsp;
 				  			<input type="button" value="글목록" 
-				  			onclick="location.href='qna_list.jsp'">
+				  			onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">
 				  		</td>
 				  	</tr>
 				  </table>
