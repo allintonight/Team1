@@ -1,13 +1,18 @@
+<%@page import="Reservation.ReservationDBBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.ArrayList "%>
 <%@ page import="Room.*" %>
+<%@ page import="Reservation.*" %>
 <!-- 방 이름 넣기위한 부분 -->
 <%
 	RoomDBBean rdb = RoomDBBean.getinstance();
 	ArrayList<RoomBean> rb = rdb.getAll();
+//수정1. ****** 예약목록위해 추가하였습니다.(위쪽 Reservaion도 import 입니당)*******
+	ReservationDBBean reDB = ReservationDBBean.getinstance(); 
+	ArrayList<ReservationBean> reb =reDB.getAll();
 %>
 
 <!-- 달력 시작 -->
@@ -18,10 +23,11 @@ String strMonth = request.getParameter("month");
 int year = cal.get(Calendar.YEAR);
 int month = cal.get(Calendar.MONTH);
 int date = cal.get(Calendar.DATE);
+
 if(strYear != null)
 {
-  year = Integer.parseInt(strYear);
-  month = Integer.parseInt(strMonth);
+   year = Integer.parseInt(strYear);
+  month = Integer.parseInt(strMonth); 
   
 }else{
 }
@@ -33,7 +39,7 @@ int start = cal.get(java.util.Calendar.DAY_OF_WEEK); //1~7 요일
 int newLine = 0;
 //오늘 날짜 저장.
 Calendar todayCal = Calendar.getInstance();
-SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
+SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 %>
 <HEAD>
@@ -166,8 +172,7 @@ for(int index = 1; index <= endDay; index++)
 	String sUseDate = Integer.toString(year);
 	sUseDate += Integer.toString(month+1).length() == 1 ? "0" + Integer.toString(month+1) : Integer.toString(month+1);
 	sUseDate += Integer.toString(index).length() == 1 ? "0" + Integer.toString(index) : Integer.toString(index);
-	int iUseDate = Integer.parseInt(sUseDate);
-	
+	 int iUseDate = Integer.parseInt(sUseDate); 
 	
 	String backColor = "#EFEFEF";
 	if(iUseDate == intToday ) {
@@ -182,23 +187,57 @@ for(int index = 1; index <= endDay; index++)
 		<br>
 
 <%
+
+	int check_in=0;
+	int check_out=0;
+
 	for(int i=0;i<rb.size();i++){
+		
 		if(iUseDate<=intToday){
 	%>
 		<div id="font">
 		<%= rb.get(i).getRname() %><i class="fas fa-times"></i>
 		</div>
 	<% 			
-		}else{
-	%>
-		<a href="res_process.jsp?newLine=<%= newLine %>&&rno=<%= rb.get(i).getRno() %>&&iUseDate=<%= iUseDate %>">
-		<%= rb.get(i).getRname() %></a><i class="far fa-circle"></i>
-	<% 			
-		}		
+		}else{ 
+			
+//수정2.****** 출력처리위해  추가하였습니다.*******
+			boolean flag=false;//방별로 달력의 날짜가 reservation TABLE에 check_in~check_out에 걸리는지 검사 (true:있는경우, false:없는 경우)
+			int flag_icon=1;//예약 상황 검사(1.예약가능, 2.예약대기, 3.예약완료)
+
+			for(int j=0; j<reb.size();j++){	
+				check_in=reDB.DateToStringToint(reb.get(j).getCheck_in());
+				check_out=reDB.DateToStringToint(reb.get(j).getCheck_out());
+
+					//달력의날짜가 reservation TABLE의 예약날짜 사이에 있으면, 예약 상황 추가 검사
+					if(iUseDate>=check_in && iUseDate<=(check_out)-1&& reb.get(j).getRno()==i+1){
+						flag=true;
+						if(reb.get(j).getPaid().equals("y")){ flag_icon=3;
+						}
+						else {flag_icon=2;
+						;
+						}
+				}
+
+			}//검사완료.
+			
+			//방이름 출력::true이면 그냥 방이름 출력, false이면 링크 걸린 방이름 출력 
+			if (flag==true) {
+			%><div id="font"><%= rb.get(i).getRname() %><%		
+			}else {%><div id="font"><a href="res_process.jsp?newLine=<%= newLine %>&&rno=<%= rb.get(i).getRno() %>&&iUseDate=<%= iUseDate %>"><%= rb.get(i).getRname() %></a><%
+			}
+			
+			//예약상황에 맞는 아이콘 표시
+			if(flag_icon==1){%><i class="far fa-circle"></i></div><%
+			}else if(flag_icon==2){%><i class="fas fa-exclamation-triangle"></i></div><%
+			}else if(flag_icon==3){%><i class="fas fa-times"></i></div><%
+			}
+		}
 	}
-	%>
-	</br>
-<% 
+		
+		%>
+			</br>
+<%  
 	//기능 제거	
 	out.println("</TD>");
 	newLine++;
