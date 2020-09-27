@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="Room.*" %> 
 <%@ page import="Main.*" %> 
-<%@ page import="java.sql.ResultSet" %>   
+<%@ page import="java.sql.*" %>   
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -21,8 +21,14 @@
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> 
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="../css/reservation_pro.css"/>
-<style>
-</style>
+<script>
+function mySubmit(index){
+	if(index==2){
+		document.fm.action='roomCheck.jsp';
+	}
+	document.fm.submit();
+}
+</script>
 </head>
 <body>
 <%
@@ -35,6 +41,15 @@
 		
 		RoomDBBean rdb = RoomDBBean.getinstance();
 		ResultSet roombean = rdb.selectRoom(rno);
+		
+		UserDBBean udb = UserDBBean.getinstance();
+		UserBean ub = udb.memberInfo(userid);
+		
+		int mno = ub.getMno();
+		String name=ub.getName();
+		String email=ub.getEmail();
+		String phone = ub.getPhone();
+		
 		
 		
 		//성수기 날짜 지정 가능하게 할지 안하게할지 물어보기 ㅠㅠ
@@ -76,33 +91,22 @@
 		
 		
 			}
-		String name = null;
-		String phone = null;
-		String email = null;
-		int mno = 0 ;
-		UserDBBean udb = UserDBBean.getinstance();
-		String id = (String)session.getAttribute("userid");
-		UserBean ub = udb.memberInfo(id);
-		if(session.getAttribute("userid")!= null){
-			name = ub.getName();
-			phone = ub.getPhone();
-			email = ub.getEmail();
-			mno = ub.getMno();
-		}
 %>
 
 		<div id="form">
-			<div id="left"></div>
+			<div id="left">
+				<img src="https://raw.githubusercontent.com/allintonight/Team1/master/WebContent/img/main_img/TEAM1%EB%A1%9C%EA%B3%A0%EC%83%88%EB%A1%9C.jpg">
+			</div>
 			<div id="right">
-				<form action="roomCheck.jsp" method="post" name="fm" onSubmit="submit_value();">
+				<form method="post" name="fm" action="res_pay.jsp">
 					<div class="form-group">
-					<input type="hidden" id="mno" value="<%= mno %>" name="mno">
+					<input type="hidden" id="mno" name="mno" value="<%= mno %>" >
     				<label for="name">이 름</label>
-    				<input type="text" class="form-control" id="rname" placeholder="예약자 성명" value="<%= name %>" name="rname">
+    				<input type="text" class="form-control" id="rname" placeholder="예약자 성명" value="<%= name %>" name="rname" required>
   					<label for="phone">휴대폰 번호</label>
-    				<input type="text" class="form-control" id="rphone" placeholder="휴대폰 번호" value="<%= phone %>" name="rphone">
+    				<input type="text" class="form-control" id="rphone" placeholder="휴대폰 번호" value="<%= phone %>" name="rphone" required>
     				<label for="email">Email address</label>
-    				<input type="email" class="form-control" id="remail" placeholder="name@example.com" value="<%= email %>" name="remail">
+    				<input type="email" class="form-control" id="remail" placeholder="name@example.com" value="<%= email %>" name="remail" required>
  					</div>
  					<div class="form-group">
     				
@@ -113,7 +117,7 @@
     				
  					<div class="form-row">
  					<label for="testDatepicker" class="check">체크인 날짜</label>
- 					<input type="Date" class="form-control" id="testDatepicker" value="<%= choday %>" name="check_in">
+ 					<input type="Date" class="form-control" id="testDatepicker" value="<%= choday %>" name="checkin">
  					<label for="testDatepicker2">체크아웃 날짜</label>
 					<input type="Date" class="form-control" id="testDatepicker2" value="<%= nextday %>" name="check_out">
   					</div>
@@ -138,9 +142,9 @@
  					<span id="total"><b>총 금액 : <%= price %></b></span>
  					<input value="<%= price %>"   id="total2" name="price" type="hidden">
  					<div class="form-row">
- 					<input type="button" value="예약하기" class="btn btn-dark res" id="btn" >
+ 					<input type="submit" value="예약하기" class="btn btn-dark res" id="btn">
  					<input type="button" value="뒤로가기" class="btn btn-secondary res" id="btn" onClick="history.back()">	
- 					<input type="button" value="가능확인" onClick="location.href='roomCheck.jsp?checkin=<%= choday %>&&checkout=<%= nextday %>'"
+ 					<input type="submit" value="가능확인" onClick="mySubmit(2)"
  							class="btn btn-info" id="submit">
  						
  					</div>
@@ -162,6 +166,7 @@ $(function () {
 			endDate.datepicker('option', 'maxDate', startDate);
 			endDate.datepicker('option', 'minDate', minDate);
 		}
+    
 	});
     
     $( "#testDatepicker2" ).datepicker({
@@ -198,7 +203,10 @@ $(document).ready(function(){
 	if(rno==1){
 		$('#men option:eq(1)').remove();
 		$('#men option:eq(2)').remove();
-		$('#men option:eq(3)').remove();
+		$('#addmen option:last').remove();
+		$('#addmen option:eq(1)').remove();
+		$('#addmen option:eq(2)').remove();
+		$('#addmen option:last').remove();
 	}
 	else if(rno==2){
 		$('#men option:eq(2)').remove();
@@ -212,6 +220,7 @@ window.onload = function(){
 		return false;
 	}
 }
+
 </script>			
 </body>
 </html>
