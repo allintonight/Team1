@@ -100,7 +100,7 @@ function mySubmit(index){
 			<div id="right">
 				<form method="post" name="fm" action="res_pay.jsp">
 					<div class="form-group">
-					<input type="hidden" id="mno" name="mno" value="<%= mno %>" >
+					<input type="text" id="mno" name="mno" value="<%= mno %>" >
     				<label for="name">이 름</label>
     				<input type="text" class="form-control" id="rname" placeholder="예약자 성명" value="<%= name %>" name="rname" required>
   					<label for="phone">휴대폰 번호</label>
