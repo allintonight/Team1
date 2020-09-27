@@ -3,14 +3,14 @@
 <%@ page import="Reservation.*" %>
 <%@ page import="java.sql.Date" %>   
 <%
-	String scheckin = request.getParameter("checkin");
+	String scheckin = request.getParameter("check_in");
 	Date checkin = Date.valueOf(scheckin);
 	
-	String scheckout = request.getParameter("checkout");
-	Date checkout = Date.valueOf(scheckout);
+	String srno = request.getParameter("rno");
+	int rno = Integer.parseInt(srno);
 	
 	ReservationDBBean resdb = ReservationDBBean.getinstance();
-	int result = resdb.check(checkin, checkout);
+	int result = resdb.check(rno,checkin);
 		if(result == 1){
 %>
 		<script>
