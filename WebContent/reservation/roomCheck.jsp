@@ -33,7 +33,7 @@
 	reservationbean.setPrice(price);
 	reservationbean.setPaid("N");
 %>
-	<div id="rsno"><%= irsno %></div>
+	<div id="rsno"><%= irsno %></div>//나중에 안보이도록 처리 하겠습니다 
 <% 	
 	
 	int result = resdb.check(reservationbean);
