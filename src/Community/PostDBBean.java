@@ -7,7 +7,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import myUtil.HanConv;
 
 
 
@@ -58,11 +57,11 @@ public class PostDBBean {
 	         sql="insert into post(no, name, password, email, title, content, upload_file, date) values(?, ?, ?, ?, ?, ?, ?, ?)";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, number);
-	         pstmt.setString(2, HanConv.toKor(post.getName()));
+	         pstmt.setString(2, post.getName());
 	         pstmt.setString(3, post.getPassword());
 	         pstmt.setString(4, post.getEmail());
-	         pstmt.setString(5, HanConv.toKor(post.getTitle()));
-	         pstmt.setString(6, HanConv.toKor(post.getContent()));
+	         pstmt.setString(5, post.getTitle());
+	         pstmt.setString(6, post.getContent());
 	         pstmt.setString(7, post.getUpload_file());
 	         pstmt.setTimestamp(8, post.getDate());
 	         pstmt.executeUpdate();
@@ -81,24 +80,54 @@ public class PostDBBean {
 	      return 1;
 	   }
 	   
-	   public ArrayList<PostBean> listPost(String subject, String word){
+	   public ArrayList<PostBean> listPost(String pageNumber, String subject, String word){
 	      Connection con=null;
 	      Statement stmt=null;
 	      ResultSet rs=null;
-	      
+	      ResultSet pageset=null;	      
+	     
+	      int absolutepage=1;//ÆäÀÌÂ¡ º¯¼ö
+	      int dbcount=0;
+	      String sql="";
+	     
 	      ArrayList<PostBean> postList=new ArrayList<PostBean>();
 	      
 	      
 	      try {
 	         con=getConnection();
-	         stmt = con.createStatement();
+	         stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	         pageset=stmt.executeQuery("select count(no) from post");
+	         
+	         if(pageset.next()) {
+	        	 dbcount=pageset.getInt(1);
+	        	 pageset.close();
+	         }
+	         if(dbcount % PostBean.pagesize ==0) {
+	        	 PostBean.pagecount = dbcount / (PostBean.pagesize);
+	         }else {
+	        	 PostBean.pagecount = dbcount / (PostBean.pagesize)+1;	        	 
+	         }
+	         
+	         if(pageNumber != null) {
+	        	 PostBean.pageNUM = Integer.parseInt(pageNumber);
+	        	 absolutepage=(PostBean.pageNUM-1)*PostBean.pagesize+1;
+	         }
 	         
 	         if(subject == null) {
-             String sql="select * from post order by no";
+	        	 sql="select * from post order by no desc";
+	         }else if(subject.equals("1")) {
+        		 sql="select * from post where title like '%"+word+"%' or content like '%"+word+"%' desc";
+	         }else {
+	        	 sql="select * from post where name like '%"+word+"%' desc";
+	         }
 	        
 	         rs = stmt.executeQuery(sql);
 	         
-	         while(rs.next()) {
+	         if(rs.next()) {
+	        	 rs.absolute(absolutepage);
+	        	 int count=0;
+	         
+	         while(count < PostBean.pagesize) {
 	        	 PostBean post=new PostBean();
 	        	 post.setNo(rs.getInt(1));
 	        	 post.setName(rs.getString(2));
@@ -110,44 +139,18 @@ public class PostDBBean {
 	        	 post.setDate(rs.getTimestamp(8));
 	          
 	            
-	            postList.add(post);}
-	         }else if(subject.equals("1")) {
-	        		 String sql="select * from post where title like '%"+word+"%'";
-	        		 rs = stmt.executeQuery(sql);
-	    	         
-	    	         while(rs.next()) {
-	    	        	 PostBean post=new PostBean();
-	    	        	 post.setNo(rs.getInt(1));
-	    	        	 post.setName(rs.getString(2));
-	    	        	 post.setPassword(rs.getString(3));
-	    	        	 post.setEmail(rs.getString(4));
-	    	        	 post.setTitle(rs.getString(5));
-	    	        	 post.setContent(rs.getString(6));
-	    	        	 post.setUpload_file(rs.getString(7));                     
-	    	        	 post.setDate(rs.getTimestamp(8));
-	    	          
-	    	            
-	    	            postList.add(post);}
-	        	 }else {
-	        		 String sql="select * from post where name like '%"+word+"%'";
-	        		 rs = stmt.executeQuery(sql);
-	    	         
-	    	         while(rs.next()) {
-	    	        	 PostBean post=new PostBean();
-	    	        	 post.setNo(rs.getInt(1));
-	    	        	 post.setName(rs.getString(2));
-	    	        	 post.setPassword(rs.getString(3));
-	    	        	 post.setEmail(rs.getString(4));
-	    	        	 post.setTitle(rs.getString(5));
-	    	        	 post.setContent(rs.getString(6));
-	    	        	 post.setUpload_file(rs.getString(7));                     
-	    	        	 post.setDate(rs.getTimestamp(8));
-	    	          
-	    	            
-	    	            postList.add(post);}
-	        	 }
-	         
-	      } catch (Exception e) {
+	            postList.add(post);
+	            
+	            if(rs.isLast()) {
+	            	break;
+	            	}else {
+	            		rs.next();
+	            	}
+	            	count++;
+	            }
+	         } 
+	        	      
+	      }catch(Exception e){
 	         e.printStackTrace();
 	      }finally {
 	         try {
@@ -266,11 +269,13 @@ public class PostDBBean {
 				if(!pwd.equals(post.getPassword())) {
 					re = 0;
 				}else {
-					sql="update post set Title = ?, Content = ? where no=?";
+					sql="update post set Password=?, Title = ?, Content = ?, Upload_file=? where no=?";
 					pstmt=con.prepareStatement(sql);
-					pstmt.setString(1, HanConv.toKor(post.getTitle()));
-					pstmt.setString(2, HanConv.toKor(post.getContent()));
-					pstmt.setInt(3, post.getNo());
+					pstmt.setString(1, post.getPassword());
+					pstmt.setString(2, post.getTitle());
+					pstmt.setString(3, post.getContent());
+					pstmt.setString(4, post.getUpload_file());
+					pstmt.setInt(5, post.getNo());
 					pstmt.executeUpdate();
 					re = 1;
 				}

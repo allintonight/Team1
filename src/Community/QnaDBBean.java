@@ -7,7 +7,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import myUtil.HanConv;
 
 
 
@@ -57,16 +56,17 @@ public class QnaDBBean {
 	            number = 1;
 	         }
 	         
-	         sql="insert into qna(no, name, password, title, content, date, secret, comment) values(?, ?, ?, ?, ?, ?, ?, ?)";
+	         sql="insert into qna(no, name, password, email, title, content, date, secret, comment) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, number);
-	         pstmt.setString(2, HanConv.toKor(qna.getName()));
+	         pstmt.setString(2, qna.getName());
 	         pstmt.setString(3, qna.getPassword());
-	         pstmt.setString(4, HanConv.toKor(qna.getTitle()));
-	         pstmt.setString(5, HanConv.toKor(qna.getContent()));
-	         pstmt.setTimestamp(6, qna.getDate());
-	         pstmt.setInt(7, qna.getSecret());
-	         pstmt.setString(8, HanConv.toKor(qna.getComment()));
+	         pstmt.setString(4, qna.getEmail());
+	         pstmt.setString(5, qna.getTitle());
+	         pstmt.setString(6, qna.getContent());
+	         pstmt.setTimestamp(7, qna.getDate());
+	         pstmt.setInt(8, qna.getSecret());
+	         pstmt.setString(9, qna.getComment());
 	         pstmt.executeUpdate();
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -83,76 +83,77 @@ public class QnaDBBean {
 	      return 1;
 	   }
 	   
-	   public ArrayList<QnaBean> listQna(String subject, String word){
+	   public ArrayList<QnaBean> listQna(String pageNumber, String subject, String word){
 	      Connection con=null;
 	      Statement stmt=null;
 	      ResultSet rs=null;
+	      ResultSet pageset=null;
+	      
+	      int absolutepage=1;//ÆäÀÌÂ¡ º¯¼ö
+	      int dbcount=0;
+	      String sql="";
 	      
 	      ArrayList<QnaBean> qnaList=new ArrayList<QnaBean>();
-	      String sql="";
+	      
 	      try {
 	         con=getConnection();
-	         stmt = con.createStatement();
+	         stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	         pageset=stmt.executeQuery("select count(no) from qna");
+	         
+	         if(pageset.next()) {
+	        	 dbcount=pageset.getInt(1);
+	        	 pageset.close();
+	         }
+	         if(dbcount % QnaBean.pagesize ==0) {
+	        	 QnaBean.pagecount = dbcount / (QnaBean.pagesize);
+	         }else {
+	        	 QnaBean.pagecount = dbcount / (QnaBean.pagesize)+1;	        	 
+	         }
+	         
+	         if(pageNumber != null) {
+	        	 QnaBean.pageNUM = Integer.parseInt(pageNumber);
+	        	 absolutepage=(QnaBean.pageNUM-1)*QnaBean.pagesize+1;
+	         }
 	         
 	         if(subject == null) {
-             sql="select * from qna order by no";
-	        
+	        	 sql="select * from qna order by no desc";
+	         }else if(subject.equals("1")) {
+        		 sql="select * from qna where title like '%"+word+"%' or content like '%"+word+"%' desc";
+	         }else {
+	        	 sql="select * from qna where name like '%"+word+"%' desc";
+	         }
+	         
 	         rs = stmt.executeQuery(sql);
 	         
-	         while(rs.next()) {
-	        	 QnaBean qna=new QnaBean();
+	         if(rs.next()) {
+	        	 rs.absolute(absolutepage);
+	        	 int count=0;
+	         
+	         while(count < QnaBean.pagesize) {
+	        	 QnaBean qna =new QnaBean();
 	        	 qna.setNo(rs.getInt(1));
 	        	 qna.setName(rs.getString(2));
 	        	 qna.setPassword(rs.getString(3));
-	        	 qna.setTitle(rs.getString(4));
-	        	 qna.setContent(rs.getString(5));
-	        	 qna.setDate(rs.getTimestamp(6));
-	        	 qna.setSecret(rs.getInt(7));
-	        	 qna.setComment(rs.getString(8));
-	        	                    
+	        	 qna.setEmail(rs.getString(4));
+	        	 qna.setTitle(rs.getString(5));
+	        	 qna.setContent(rs.getString(6));
+	        	 qna.setDate(rs.getTimestamp(7));
+	        	 qna.setSecret(rs.getInt(8));
+	        	 qna.setComment(rs.getString(9));
 	          
 	            
-	            qnaList.add(qna);}
-	         }else if(subject.equals("1")) {
-	        		 sql="select * from qna where title like '%"+word+"%'";
-	        		 rs = stmt.executeQuery(sql);
-	        		 
-	        		 while(rs.next()) {
-	    	        	 QnaBean qna=new QnaBean();
-	    	        	 qna.setNo(rs.getInt(1));
-	    	        	 qna.setName(rs.getString(2));
-	    	        	 qna.setPassword(rs.getString(3));
-	    	        	 qna.setTitle(rs.getString(4));
-	    	        	 qna.setContent(rs.getString(5));
-	    	        	 qna.setDate(rs.getTimestamp(6));
-	    	        	 qna.setSecret(rs.getInt(7));
-	    	        	 qna.setComment(rs.getString(8));
-	    	        	                    
-	    	          
-	    	            
-	    	            qnaList.add(qna);}
-	         }else{
-	        	 sql="select * from qna where name like '%"+word+"%'";
-        		 rs = stmt.executeQuery(sql);
-        		 
-        		 while(rs.next()) {
-    	        	 QnaBean qna=new QnaBean();
-    	        	 qna.setNo(rs.getInt(1));
-    	        	 qna.setName(rs.getString(2));
-    	        	 qna.setPassword(rs.getString(3));
-    	        	 qna.setTitle(rs.getString(4));
-    	        	 qna.setContent(rs.getString(5));
-    	        	 qna.setDate(rs.getTimestamp(6));
-    	        	 qna.setSecret(rs.getInt(7));
-    	        	 qna.setComment(rs.getString(8));
-    	        	                    
-    	          
-    	            
-    	            qnaList.add(qna);}     		 
-        		 
-	         	}
-	         
-	      } catch (Exception e) {
+	            qnaList.add(qna);
+	            
+	            if(rs.isLast()) {
+	            	break;
+	            	}else {
+	            		rs.next();
+	            	}
+	            	count++;
+	            }
+	         } 
+	        	      
+	      }catch(Exception e){
 	         e.printStackTrace();
 	      }finally {
 	         try {
@@ -187,11 +188,12 @@ public class QnaDBBean {
 	               qna.setNo(rs.getInt(1));
 	               qna.setName(rs.getString(2));
 	               qna.setPassword(rs.getString(3));
-	               qna.setTitle(rs.getString(4));
-	               qna.setContent(rs.getString(5));
-	               qna.setDate(rs.getTimestamp(6));
-	               qna.setSecret(rs.getInt(7));
-	               qna.setComment(rs.getString(8));
+	               qna.setEmail(rs.getString(4));
+	               qna.setTitle(rs.getString(5));
+	               qna.setContent(rs.getString(6));
+	               qna.setDate(rs.getTimestamp(7));
+	               qna.setSecret(rs.getInt(8));
+	               qna.setComment(rs.getString(9));
 	               
 	              
 		         }
@@ -276,8 +278,8 @@ public class QnaDBBean {
 				}else {
 					sql="update qna set Title = ?, Content = ?, Secret = ? where no=?";
 					pstmt=con.prepareStatement(sql);
-					pstmt.setString(1, HanConv.toKor(qna.getTitle()));
-					pstmt.setString(2, HanConv.toKor(qna.getContent()));
+					pstmt.setString(1, qna.getTitle());
+					pstmt.setString(2, qna.getContent());
 					pstmt.setInt(3, qna.getSecret());
 					pstmt.setInt(4, qna.getNo());
 					pstmt.executeUpdate();
@@ -335,6 +337,7 @@ public class QnaDBBean {
 			}
 			return pwd;
 		}
+	   
 	   public int requestQna(String comment, int no) {
 			Connection con=null;
 			PreparedStatement pstmt=null;
@@ -347,7 +350,7 @@ public class QnaDBBean {
 				con=getConnection();
 				sql="update qna set Comment = ? where no=?";
 				pstmt=con.prepareStatement(sql);
-				pstmt.setString(1, HanConv.toKor(comment));
+				pstmt.setString(1, comment);
 				pstmt.setInt(2, no);
 				pstmt.executeUpdate();
 				re = 1;
