@@ -1,5 +1,4 @@
 <%@ page import="community.*"%>
-<%@ page import="myUtil.*"%>
 <%@ page import="java.sql.Timestamp"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.text.SimpleDateFormat"%>
@@ -16,7 +15,7 @@
 	String subject = request.getParameter("subject");
 	String word = request.getParameter("word");	
 	PostDBBean db=PostDBBean.getInstance();
-	ArrayList<PostBean> PostList = db.listPost(pageNUM,subject, word);	
+	ArrayList<PostBean> PostList = db.listPost(pageNUM, subject, word);	
 	String name,email,title,content,password,upload_file;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	int no=0;

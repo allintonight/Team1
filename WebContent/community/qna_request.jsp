@@ -1,45 +1,110 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
 <%@ page import="community.*"%>
+<%@ page import="java.sql.Timestamp"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
+
 	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
-	QnaDBBean db = QnaDBBean.getInstance();
+	QnaDBBean db=QnaDBBean.getInstance();
 	QnaBean qna = db.getQna(no);
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	String userid="";
+	
+	
+	String name="";
+	String email="";
+	String title="";
+	String content="";
+	String comment="";
+	Timestamp date=null;
+	
+	if(qna != null){
+		no = qna.getNo();
+		name = qna.getName();
+		email= qna.getEmail();
+		title = qna.getTitle();
+		content = qna.getContent();		
+		date = qna.getDate();
+		comment = qna.getComment();
+	}
 %>
-<!DOCTYPE html>
 <html>
-<head>
-   <meta charset="EUC-KR">
-   <title>Insert title here</title>
-   <script type="text/javascript" src="function.js" charset="utf-8"></script>
-</head>
-<body>
-   <center>
-      <h1>
-        	 �� �� �� �� ��
-      </h1>
-      <form name="form" method="post" action="qna_request_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
-         <table>
-            <tr height="30">
-               <td width="80">
-                                   �亯
-               </td>
-               <td width="200" colspan="3">
-						<textarea rows="10" cols="60" name="comment"></textarea>
+	<body>
+		<center>
+			<h1>
+				글 내 용 보 기
+			</h1>
+			<table border="1" width="600" align="center">
+				<tr height="30" align="center">
+					<td width="100">
+						글번호
 					</td>
-        
-            <tr height="50" align="center">
-               <td colspan="4" width="480">
-                  <input type="submit" value="�Է�"
-                  >&nbsp;
-                  <input type="reset" value="�ٽ��ۼ�">
-                  <input type="button" value="�۸��"
-                     onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">&nbsp;
-               </td>
-            </tr>
-         </table>
-      </form>
-   </center>
-</body>
+					<td width="200">
+						<%= no %>
+					</td>
+					<td width="100">
+						작성일
+					</td>
+					<td width="200">
+						<%= date %>
+					</td>
+			    </tr>
+				<tr height="30" align="center">
+					<td width="100">
+						작성자
+					</td>
+					<td width="200">
+						<%= name %>
+					</td>
+					<td width="100">
+						이메일
+					</td>
+					<td width="200">
+						<%= email %>
+					</td>					
+					
+				</tr>
+				<tr height="30" align="center">
+					<td width="100">
+						글제목
+					</td>
+					<td width="200" colspan="3">
+						<%= title %>
+					</td>
+				</tr>
+				<tr height="30" align="center">
+					<td width="100">
+						글내용
+					</td>
+					<td width="200" colspan="3">
+						<textarea rows="10" cols="60" readonly><%=content%></textarea>
+					</td>
+				</tr>
+				<tr height="30" align="center">
+					<td width="100">
+						답변
+					</td>
+					<td width="200" colspan="3">
+						<textarea rows="5" cols="60" readonly><%if(comment!=null)%><%=comment%></textarea>
+					</td>
+				</tr>
+				<tr height="30">
+					<td colspan="4" align="right">
+						<%if(userid.equals("admin")){ %>
+						<input type="button" value="답변"
+						onclick="location.href='qna_request.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
+						<%} %>
+						<input type="button" value="글수정"
+						onclick="location.href='qna_edit.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
+						<input type="button" value="글삭제"
+						onclick="location.href='qna_delete.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
+						<input type="button" value="글목록"
+						onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">
+					</td>
+				</tr>
+			</table>
+		</center>
+	</body>
 </html>

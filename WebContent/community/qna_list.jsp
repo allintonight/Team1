@@ -23,8 +23,6 @@
 	Timestamp date;
 	int secret;
 	out.println(pageNUM);
-	out.println(subject);
-	out.println(word);
 	
 %>
 <html>

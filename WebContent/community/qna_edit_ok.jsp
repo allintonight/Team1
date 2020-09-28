@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="community.*" %>
-
+<%request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean id="qna" class="community.QnaBean">
-	<jsp:setProperty property="*" name="qna"/>
+	<jsp:setProperty name="qna" property="*" />
 </jsp:useBean>
 
 <%	String pageNUM = request.getParameter("pageNUM");

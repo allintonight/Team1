@@ -10,9 +10,9 @@
 <html>
 <head>
 <title></title>
-<script language="JavaScript" src="fucntion.js" charset="utf-8"></script>
 </head>
 <body>
+<script language="JavaScript" src="fucntion.js" charset="utf-8"></script>
 	<center>
 		<h1>글 수 정 하 기</h1>
 		<form name="form" method="post" action="qna_edit_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">

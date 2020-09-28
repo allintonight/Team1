@@ -10,14 +10,15 @@
 <%
 	String pageNUM = request.getParameter("pageNUM");
 %>
-
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
 <script type="text/javascript" src="function.js" charset="utf-8"></script>
 <body>
 	<center>
 		<h1>글 올 리 기</h1>
-		<form method="post" name="form" action="post_write_ok.jsp">
+		<form method="post" name="form" enctype="multipart/form-data" accept-charset="UTF-8" action="post_write_ok.jsp">
 			<table>
 				<tr height="30">
 					<td width="80">작성자</td>

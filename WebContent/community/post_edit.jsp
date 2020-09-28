@@ -1,17 +1,16 @@
-
-	<%@page import="community.*"%>
-	<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@page import="community.*"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
 	    pageEncoding="EUC-KR"%>
+<%request.setCharacterEncoding("UTF-8"); %>    
 	    
-	<%	
-		request.setCharacterEncoding("euc-kr");
+<%	
 		String pageNUM = request.getParameter("pageNUM");
 		PostDBBean db = PostDBBean.getInstance();
 		int no = Integer.parseInt(request.getParameter("no"));
 		PostBean post = db.getPost(no);
 		String email = post.getEmail();
 		String name = post.getName();
-	%>
+%>
 	
 	<html>
 		<head>
@@ -22,7 +21,7 @@
 			<h1>
 				글 수 정 하 기
 			</h1>
-			<form name="form" method="post" action="post_edit_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
+			<form method="post" name="form" enctype="multipart/form-data" accept-charset="UTF-8" action="post_edit_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
 				<table>
 					<tr height="30">
 						<td width="80">
@@ -46,6 +45,11 @@
 							<input type="text" name="title" size="55">
 						</td>
 					</tr>
+				<tr height="30">
+					<td width="80">파일 업로드</td>
+					<td colspan="3" width="460"><input type="file" value ="파일" name="upload_file"
+						size="55"></td>
+				</tr>
 					<tr>
 						<td colspan="4">
 							<textarea name="content" rows="10" cols="65"><%=post.getContent() %></textarea>

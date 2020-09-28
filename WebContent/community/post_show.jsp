@@ -1,6 +1,7 @@
 <%@ page import="community.*"%>
-<%@ page import="java.sql.Timestamp"%>
+<%@ page import="java.sql.*"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="com.oreilly.servlet.MultipartRequest,com.oreilly.servlet.multipart.DefaultFileRenamePolicy,java.util.*,java.io.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%	
@@ -28,6 +29,8 @@
 	}
 %>
 <html>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<body>
 		<center>
 			<h1>
@@ -66,10 +69,10 @@
 			
 				<tr height="30" align="center">
 					<td width="100">
-						사진업로드
+						사진
 					</td>
 					<td width="200" colspan="3">
-						<%=upload_file %>
+						<img src="../post_img/<%=upload_file%>" width="300" height="210">
 					</td>
 				</tr>
 				<tr height="30" align="center">
