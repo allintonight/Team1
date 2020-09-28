@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="Room.*" %> 
+<%@ page import="Reservation.*" %>
 <%@ page import="Main.*" %> 
 <%@ page import="java.sql.*" %>   
 <%@ page import="java.util.Calendar" %>
@@ -21,14 +22,7 @@
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> 
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="../css/reservation_pro.css"/>
-<script>
-function mySubmit(index){
-	if(index==2){
-		document.fm.action='roomCheck.jsp';
-	}
-	document.fm.submit();
-}
-</script>
+
 </head>
 <body>
 <%
@@ -42,14 +36,23 @@ function mySubmit(index){
 		RoomDBBean rdb = RoomDBBean.getinstance();
 		ResultSet roombean = rdb.selectRoom(rno);
 		
-		UserDBBean udb = UserDBBean.getinstance();
-		UserBean ub = udb.memberInfo(userid);
+		ReservationDBBean reservationdbbean = ReservationDBBean.getinstance();
+		int max = reservationdbbean.max();
 		
-		int mno = ub.getMno();
-		String name=ub.getName();
-		String email=ub.getEmail();
-		String phone = ub.getPhone();
+			int mno = 0;
+			String name=null;
+			String email=null;
+			String phone =null;
 		
+		if(session.getAttribute("userid")!=null){	
+			UserDBBean udb = UserDBBean.getinstance();
+			UserBean ub = udb.memberInfo(userid);
+		
+			 mno = ub.getMno();
+			 name=ub.getName();
+			 email=ub.getEmail();
+			 phone = ub.getPhone();
+		}
 		
 		
 		//성수기 날짜 지정 가능하게 할지 안하게할지 물어보기 ㅠㅠ
@@ -98,13 +101,14 @@ function mySubmit(index){
 				<img src="https://raw.githubusercontent.com/allintonight/Team1/master/WebContent/img/main_img/TEAM1%EB%A1%9C%EA%B3%A0%EC%83%88%EB%A1%9C.jpg">
 			</div>
 			<div id="right">
-				<form method="post" name="fm" action="res_pay.jsp">
+				<form method="post" name="fm" action="roomCheck.jsp ">
 					<div class="form-group">
-					<input type="text" id="mno" name="mno" value="<%= mno %>" >
+					<input type="text" id="rsno" name="rsno" value="<%= max %>" >
+					<input type="hidden" id="mno" name="mno" value="<%= mno %>" >
     				<label for="name">이 름</label>
     				<input type="text" class="form-control" id="rname" placeholder="예약자 성명" value="<%= name %>" name="rname" required>
   					<label for="phone">휴대폰 번호</label>
-    				<input type="text" class="form-control" id="rphone" placeholder="휴대폰 번호" value="<%= phone %>" name="rphone" required>
+    				<input type="text" class="form-control" id="rphone" placeholder="휴대폰 번호" value="<%= phone %>" name="rphone" required maxlength="13">
     				<label for="email">Email address</label>
     				<input type="email" class="form-control" id="remail" placeholder="name@example.com" value="<%= email %>" name="remail" required>
  					</div>
@@ -117,7 +121,7 @@ function mySubmit(index){
     				
  					<div class="form-row">
  					<label for="testDatepicker" class="check">체크인 날짜</label>
- 					<input type="Date" class="form-control" id="testDatepicker" value="<%= choday %>" name="checkin">
+ 					<input type="Date" class="form-control" id="testDatepicker" value="<%= choday %>" name="check_in">
  					<label for="testDatepicker2">체크아웃 날짜</label>
 					<input type="Date" class="form-control" id="testDatepicker2" value="<%= nextday %>" name="check_out">
   					</div>
@@ -144,8 +148,6 @@ function mySubmit(index){
  					<div class="form-row">
  					<input type="submit" value="예약하기" class="btn btn-dark res" id="btn">
  					<input type="button" value="뒤로가기" class="btn btn-secondary res" id="btn" onClick="history.back()">	
- 					<input type="submit" value="가능확인" onClick="mySubmit(2)"
- 							class="btn btn-info" id="submit">
  						
  					</div>
 				</form>
@@ -179,6 +181,7 @@ $(function () {
 var UserId = '<%= (String)session.getAttribute("userid") %>';
 
 if(UserId=="null"){
+	document.getElementById("mno").value=Number(0);
 	document.getElementById("rname").value=null;
 	document.getElementById("remail").value=null;
 	document.getElementById("rphone").value=null;
@@ -220,6 +223,21 @@ window.onload = function(){
 		return false;
 	}
 }
+
+$('#rphone').keydown(function(event) {
+    var key = event.charCode || event.keyCode || 0;
+    $text = $(this);
+    if (key !== 8 && key !== 9) {
+        if ($text.val().length === 3) {
+            $text.val($text.val() + '-');
+        }
+        if ($text.val().length === 8) {
+            $text.val($text.val() + '-');
+        }
+    }
+ 
+    return (key == 8 || key == 9 || key == 46 || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));          
+});
 
 </script>			
 </body>
