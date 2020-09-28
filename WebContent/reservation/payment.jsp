@@ -8,7 +8,6 @@
 </head>
 <body>
 <%
-	session.invalidate();
 	String payment = request.getParameter("payment");
 	
 	if(payment.equals("c")){
