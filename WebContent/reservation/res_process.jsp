@@ -103,7 +103,7 @@
 			<div id="right">
 				<form method="post" name="fm" action="roomCheck.jsp ">
 					<div class="form-group">
-					<input type="text" id="rsno" name="rsno" value="<%= max %>" >
+					<input type="hidden" id="rsno" name="rsno" value="<%= max %>" >
 					<input type="hidden" id="mno" name="mno" value="<%= mno %>" >
     				<label for="name">이 름</label>
     				<input type="text" class="form-control" id="rname" placeholder="예약자 성명" value="<%= name %>" name="rname" required>
@@ -206,7 +206,7 @@ $(document).ready(function(){
 	if(rno==1){
 		$('#men option:eq(1)').remove();
 		$('#men option:eq(2)').remove();
-		$('#addmen option:last').remove();
+		$('#men option:last').remove();
 		$('#addmen option:eq(1)').remove();
 		$('#addmen option:eq(2)').remove();
 		$('#addmen option:last').remove();
