@@ -92,10 +92,10 @@ public class ReservationDBBean {
 			int re=-1;
 
 			try {
-				sql="insert into reservation values(?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql="insert into reservation values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
-				pstmt.setInt(1, reservationbean.getRsno());
+				pstmt.setInt(1, reservationbean.getRsno()); 
 //				pstmt.setInt(1, reservationbean.getRsno()); //=========자동증가처리???한다면 열번호가 하나씩 밀립니다.
 				if(reservationbean.getMno()==0) {
 					pstmt.setNull(2, Types.INTEGER);
@@ -112,6 +112,8 @@ public class ReservationDBBean {
 				pstmt.setInt(10, reservationbean.getPrice());
 				pstmt.setNull(11, Types.CHAR); //결제사이트 이후에 선택 후 업데이트 시키는게 좋을까요 ..?
 				pstmt.setString(12, reservationbean.getPaid());//처음에는 N으로 설정 해 놓고 나중에 관리자가 Y로 업데이트 시키기
+				pstmt.setNull(13, Types.VARCHAR);//나중에 결제사이트 이후에 업데이트 시키기
+				pstmt.setDate(14, reservationbean.getRes_date());
 
 				pstmt.executeUpdate();
 				re = 1;
@@ -125,7 +127,7 @@ public class ReservationDBBean {
 			}
 			return re;
 		}
-		//이메일을 통해 예약 조회 후 결제사이트에서 가격 뽑기 위해서 추가 ㅠㅠ
+		//예약 조회 후 결제사이트에서 가격 뽑기 위해서 추가 ㅠㅠ
 		public ResultSet price(int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -144,6 +146,33 @@ public class ReservationDBBean {
 			}
 			return rs;
 		}
+		public int update(String pay_ment, String pay_name, int rsno) {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			int re=-1;
+			String ypaid="y";
+			String npaid="n";
+			try {
+				sql="update reservation set pay_ment=?, pay_name=?, paid=? where rsno=?;";
+				con = getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, pay_ment);
+				pstmt.setString(2, pay_name);
+				if(pay_ment.equals("c")) {
+					pstmt.setString(3, ypaid);
+				}else {
+					pstmt.setString(3, npaid);
+				}
+				pstmt.setInt(4, rsno);
+				pstmt.executeUpdate();
+				re = 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return re;
+			
+		}
 		
 		public int ReservationBean(int rsno) {
 			Connection con=null;
@@ -154,9 +183,11 @@ public class ReservationDBBean {
 			try {
 				sql="delete from reservation where rsno=?";
 				con=getConnection();
+				con.setAutoCommit(false);
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, rsno);
 				pstmt.executeUpdate();
+				con.setAutoCommit(true);
 				re = 1;
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -164,6 +195,23 @@ public class ReservationDBBean {
 			}
 			return re;
 		}
+		public ResultSet reservationpay(int rsno) throws SQLException {
+			Connection con=null;
+			Statement stmt = null;
+			String sql=null;
+			ResultSet rs = null;
+
+			try {
+				sql=" select r.rname, re.* from room r join reservation re on r.rno = re.rno where rsno = "+rsno;
+				con=getConnection();
+				stmt=con.createStatement();
+				rs = stmt.executeQuery(sql);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return rs;
+		}
+		
 		
 		public ResultSet selectRoom(int rsno) throws SQLException {
 			Connection con=null;
@@ -251,7 +299,9 @@ public class ReservationDBBean {
 							rs.getInt(9),
 							rs.getInt(10),
 							rs.getString(11),
-							rs.getString(12)));
+							rs.getString(12),
+							rs.getString(13),
+							rs.getDate(14)));
 				}
 
 			}catch(Exception e) {
