@@ -2,6 +2,8 @@
     pageEncoding="utf-8" %>
 <%@ page import="Reservation.*" %>
 <%@ page import="java.sql.Date" %>   
+<%@ page import="java.sql.Timestamp" %> 
+<%@ page import="java.text.SimpleDateFormat" %> 
 <%
 	request.setCharacterEncoding("utf-8");	
 
@@ -10,6 +12,11 @@
 	ReservationDBBean rdb = ReservationDBBean.getinstance();
 	ReservationBean reservationbean = new ReservationBean();
 	//빈 사용시 날짜 받을때 오류가 나서 빈 말고 request로 넘겨 주겠습니다 !
+	Timestamp reservationd=new Timestamp(System.currentTimeMillis());
+	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	//예약 날짜 넣어준뒤 24시간 이내에 입금되지 않을 시 자동으로 삭제예정
+	String sreservationd = format.format(reservationd);
+	Date res_date = Date.valueOf(sreservationd);
 	
 	int irsno = Integer.parseInt(request.getParameter("rsno"));	
 	reservationbean.setRsno(irsno);
@@ -32,8 +39,10 @@
 	int price = Integer.parseInt(request.getParameter("price"));
 	reservationbean.setPrice(price);
 	reservationbean.setPaid("N");
+	reservationbean.setRes_date(res_date);
+
 %>
-	<div id="rsno"><%= irsno %></div>//나중에 안보이도록 처리 하겠습니다 
+	<div id="rsno"><%= irsno %></div>
 <% 	
 	
 	int result = resdb.check(reservationbean);
