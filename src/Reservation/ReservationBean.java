@@ -17,6 +17,8 @@ public class ReservationBean {
 	private String pay_ment;
 	private String paid;
 	private String roomname;
+	private String pay_name;
+	private Date res_date; 
 	
 	public ReservationBean() {}
 	
@@ -28,7 +30,7 @@ public class ReservationBean {
 	}
 	
 	public ReservationBean(int rsno, int mno, int rno, String rname, String remail, String rphone, Date check_in,
-			Date check_out, int usemen, int price, String pay_ment, String paid) {
+			Date check_out, int usemen, int price, String pay_ment, String paid, String pay_name, Date res_date) {
 		this.rsno = rsno;
 		this.mno = mno;
 		this.rno = rno;
@@ -41,6 +43,8 @@ public class ReservationBean {
 		this.price = price;
 		this.pay_ment = pay_ment;
 		this.paid = paid;
+		this.pay_name = pay_name;
+		this.res_date = res_date;
 	}
 	
 	
@@ -128,6 +132,22 @@ public class ReservationBean {
 	}
 	public void setPaid(String paid) {
 		this.paid = paid;
+	}
+
+	public String getPay_name() {
+		return pay_name;
+	}
+
+	public void setPay_name(String pay_name) {
+		this.pay_name = pay_name;
+	}
+
+	public Date getRes_date() {
+		return res_date;
+	}
+
+	public void setRes_date(Date res_date) {
+		this.res_date = res_date;
 	}
 	
 	
