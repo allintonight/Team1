@@ -146,7 +146,7 @@ public class ReservationDBBean {
 			}
 			return rs;
 		}
-		public int update(String pay_ment, String pay_name, int rsno) {
+		public int update(String pay_ment, String pay_name, int rsno, String rname) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
 			String sql=null;
@@ -158,7 +158,11 @@ public class ReservationDBBean {
 				con = getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setString(1, pay_ment);
-				pstmt.setString(2, pay_name);
+				if(pay_name.equals("")) {
+					pstmt.setString(2, rname);
+				}else {
+					pstmt.setString(2, pay_name);
+				}
 				if(pay_ment.equals("c")) {
 					pstmt.setString(3, ypaid);
 				}else {
@@ -195,6 +199,28 @@ public class ReservationDBBean {
 			}
 			return re;
 		}
+		
+		public int deleteReservation() {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			int re=-1;
+
+			try {
+				sql="delete from reservation where pay_ment is null";
+				con=getConnection();
+				con.setAutoCommit(false);
+				pstmt=con.prepareStatement(sql);
+				pstmt.executeUpdate();
+				con.setAutoCommit(true);
+				re = 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+				re = -1;
+			}
+			return re;
+		}
+		
 		public ResultSet reservationpay(int rsno) throws SQLException {
 			Connection con=null;
 			Statement stmt = null;
@@ -230,6 +256,55 @@ public class ReservationDBBean {
 			}
 			return rs;
 		}
+		
+		//예약 조회
+		public ArrayList<ReservationBean> search(int rsno, String id){
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			ResultSet rs=null;
+			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
+			try {
+				if(!id.equals(null)) {		//방이름
+					sql = "select re.rsno, r.rname, re.check_in, re.check_out "
+							+ "from reservation re inner join room r "
+							+ "on r.rno = re.rno "
+							+ "inner join member "
+							+ "on re.mno = member.mno where id=?";
+					con=getConnection();
+					pstmt=con.prepareStatement(sql);
+					pstmt.setString(1, id);
+					
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						reservationBean.add(new ReservationBean(
+								rs.getInt(1),
+								rs.getString(2),
+								rs.getDate(3),
+								rs.getDate(4)));
+					}
+				}else {
+					sql="select * from reservation where rsno =?;";
+					pstmt.setInt(1, rsno);
+					
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						reservationBean.add(new ReservationBean(
+								rs.getInt(1),
+								rs.getString(2),
+								rs.getDate(3),
+								rs.getDate(4)));
+					}
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return reservationBean;
+			
+		}
+		
 //		ReservationBean ReservationDBBean reservation	
 //		희순언니~ 혹시 이부분 관리자가 업데이트 하는 부분이면 paid 부분만		
 		public int updateRoom(int rsno,	int mno, int rno,
@@ -245,7 +320,6 @@ public class ReservationDBBean {
 				sql="update room set mno=?, rno=?, rname=?, "
 						+ "remail=?, rphone=? ,check_in=?,check_out=?, usemen=?, price=?,pay_ment=?, paid=?  where rsno=?;";
 				con=getConnection();
-				pstmt=con.prepareStatement(sql);
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, mno);
 				pstmt.setInt(2, rno);
