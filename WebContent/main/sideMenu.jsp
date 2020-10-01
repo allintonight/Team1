@@ -26,7 +26,7 @@
 			}else{
 %>
 			  <ul class="menu">
-         		<li><a class="menulist" href="#">공간소개</a>
+         		<li><a class="menulist" href="space/room.html">공간소개</a>
          			<ul class="sub">
           				<li><a class="room" href="space/roomdetail_1.html">혼자방</a></li>
           				<li><a class="room" href="space/roomdetail_2.html">같이방</a></li>
@@ -41,16 +41,19 @@
           			</ul>
           		</li>
           		<li><a class="menulist" href="#">공지사항</a></li>
-          		<li><a class="menulist" href="#">커뮤니티</a>
-          			
-          		</li>
+          		   <li><a class="menulist" href="community/post_list_link.jsp">커뮤니티</a>
+          			<ul class="sub">
+          				<li><a class="community" href="community/post_list_link.jsp">후 기</a></li>
+          				<li><a class="community" href="community/qna_list_link.jsp">Q&A</a></li>
+          			</ul>
+          			</li>
        		  </ul>
 <% 			
 			}
 		}else{
 %>
 		<ul class="menu">
-          <li><a class="menulist" href="#">공간소개</a>
+          <li><a class="menulist" href="space/room.html">공간소개</a>
           	<ul class="sub">
           		<li><a class="room" href="space/roomdetail_1.html">혼자방</a></li>
           				<li><a class="room" href="space/roomdetail_2.html">같이방</a></li>
@@ -65,12 +68,12 @@
           		</ul>
           </li>
           <li><a class="menulist" href="#">공지사항</a></li>
-          <li><a class="menulist" href="#">커뮤니티</a>
-          	<ul class="sub">
-          		<li><a class="community" href="#">후 기</a></li>
-          		<li><a class="community" href="#">Q&A</a></li>
-          	</ul>
-          </li>
+          <li><a class="menulist" href="community/post_list_link.jsp">커뮤니티</a>
+          			<ul class="sub">
+          				<li><a class="community" href="community/post_list_link.jsp">후 기</a></li>
+          				<li><a class="community" href="community/qna_list_link.jsp">Q&A</a></li>
+          			</ul>
+          	</li>
         </ul>
 <% 			
 		}
