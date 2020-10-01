@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 
@@ -35,7 +35,12 @@
           				<li><a class="room" href="space/roomdetail_4.html">Room4</a></li>
           			</ul>
           		</li>
-          		<li><a class="menulist" href="reservation/reservation_intro.jsp">예약</a></li>
+          		<li><li><a class="menulist" href="#">예약</a>
+          		<ul class="sub">
+          				<li><a class="room" href="../reservation/reservation_intro.jsp">실시간예약</a></li>
+          				<li><a class="room" href="../reservation/searchReservation.jsp">예약조회</a></li>
+          		</ul>
+          			</li>
           		<li><a class="menulist" href="#">공지사항</a></li>
  		        <li><a class="menulist" href="community/post_list_link.jsp">커뮤니티</a>
           			<ul class="sub">
@@ -57,7 +62,12 @@
         		<li><a class="room" href="space/roomdetail_4.html">Room4</a></li>
           	</ul>
           </li>
-          <li><a class="menulist" href="reservation/reservation_intro.jsp">예약</a></li>
+          <li><li><a class="menulist" href="#">예약</a>
+          		<ul class="sub">
+          				<li><a class="room" href="../reservation/reservation_intro.jsp">실시간예약</a></li>
+          				<li><a class="room" href="../reservation/searchReservation.jsp">예약조회</a></li>
+          		</ul>
+          </li>
           <li><a class="menulist" href="#">공지사항</a></li>
           <li><a class="menulist" href="community/post_list_link.jsp">커뮤니티</a>
           	<ul class="sub">
