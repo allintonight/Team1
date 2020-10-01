@@ -11,8 +11,13 @@
 	RoomDBBean rdb = RoomDBBean.getinstance();
 	ArrayList<RoomBean> rb = rdb.getAll();
 //수정1. ****** 예약목록위해 추가하였습니다.(위쪽 Reservaion도 import 입니당)*******
+
+//결제 부분에서 뒤로가기로 달력페이지까지 올 시에 새로고침 한번 되도록 하고
+//결제 방식이 널인 값은삭제 하도록 했습니다
+//한번은 자동 새로 고침, 그리고 새로고침 버튼을 추가하여 사용자가 새로고침 할 수 있도록 하였습니다
 	ReservationDBBean reDB = ReservationDBBean.getinstance(); 
 	ArrayList<ReservationBean> reb =reDB.getAll();
+	reDB.deleteReservation();
 %>
 
 <!-- 달력 시작 -->
@@ -23,7 +28,6 @@ String strMonth = request.getParameter("month");
 int year = cal.get(Calendar.YEAR);
 int month = cal.get(Calendar.MONTH);
 int date = cal.get(Calendar.DATE);
-
 if(strYear != null)
 {
    year = Integer.parseInt(strYear);
@@ -71,6 +75,7 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 <tr>
 	<td align ="right">
 		<input type="button" onclick="javascript:location.href='calendar.jsp'" value="오늘"/>
+		<a href="javascript:location.reload();">새로고침</a>
 	</td>
 
 </tr>
@@ -187,10 +192,8 @@ for(int index = 1; index <= endDay; index++)
 		<br>
 
 <%
-
 	int check_in=0;
 	int check_out=0;
-
 	for(int i=0;i<rb.size();i++){
 		
 		if(iUseDate<=intToday){
@@ -204,11 +207,9 @@ for(int index = 1; index <= endDay; index++)
 //수정2.****** 출력처리위해  추가하였습니다.*******
 			boolean flag=false;//방별로 달력의 날짜가 reservation TABLE에 check_in~check_out에 걸리는지 검사 (true:있는경우, false:없는 경우)
 			int flag_icon=1;//예약 상황 검사(1.예약가능, 2.예약대기, 3.예약완료)
-
 			for(int j=0; j<reb.size();j++){	
 				check_in=reDB.DateToStringToint(reb.get(j).getCheck_in());
 				check_out=reDB.DateToStringToint(reb.get(j).getCheck_out());
-
 					//달력의날짜가 reservation TABLE의 예약날짜 사이에 있으면, 예약 상황 추가 검사
 					if(iUseDate>=check_in && iUseDate<=(check_out)-1&& reb.get(j).getRno()==i+1){
 						flag=true;
@@ -218,7 +219,6 @@ for(int index = 1; index <= endDay; index++)
 						;
 						}
 				}
-
 			}//검사완료.
 			
 			//방이름 출력::true이면 그냥 방이름 출력, false이면 링크 걸린 방이름 출력 
@@ -265,4 +265,11 @@ while(newLine > 0 && newLine < 7)
 </DIV>
 </form>
 </BODY>
+<script>
+window.onpageshow = function(event) {
+    if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+    	location.reload(true);
+    }
+}
+</script>
 </HTML>
