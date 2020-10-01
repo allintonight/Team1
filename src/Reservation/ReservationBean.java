@@ -29,6 +29,13 @@ public class ReservationBean {
 		this.check_out = check_out;
 	}
 	
+	public ReservationBean(int rsno, String roomname,Date check_in, Date check_out) {
+		this.rsno = rsno;
+		this.roomname = roomname;
+		this.check_in = check_in;
+		this.check_out = check_out;
+	}
+	
 	public ReservationBean(int rsno, int mno, int rno, String rname, String remail, String rphone, Date check_in,
 			Date check_out, int usemen, int price, String pay_ment, String paid, String pay_name, Date res_date) {
 		this.rsno = rsno;
