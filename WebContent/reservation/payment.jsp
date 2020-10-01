@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="Reservation.*" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +9,27 @@
 </head>
 <body>
 <%
-	String payment = request.getParameter("payment");
+	request.setCharacterEncoding("utf-8");
+	String pay_ment = request.getParameter("pay_ment");
+	String pay_name = request.getParameter("pay_name");
+	String rname = request.getParameter("rname");
+	int rsno = Integer.parseInt(request.getParameter("rsno"));
+	ReservationDBBean rdb = ReservationDBBean.getinstance();
+	int re = rdb.update(pay_ment, pay_name, rsno, rname);
 	
-	if(payment.equals("c")){
-		response.sendRedirect("pay_card.jsp");
+	if(re == 1){
+		if(pay_ment.equals("c")){
+			response.sendRedirect("pay_card.jsp?rsno="+rsno);
+		}else{
+			response.sendRedirect("pay_money.jsp");
+		}
 	}else{
-		response.sendRedirect("pay_money.jsp");
+%>
+	<script>
+		alert("다시시도해 주세요");
+		history.back();
+	</script>
+<% 				
 	}
 %>
 </body>
