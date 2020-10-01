@@ -64,6 +64,7 @@
           </li>
           <li><a class="menulist" href="#">예약</a>
           		<ul class="sub">
+				<!-- 추가 -->
           				<li><a class="room" href="../reservation/reservation_intro.jsp">실시간예약</a></li>
           				<li><a class="room" href="../reservation/searchReservation.jsp">예약조회</a></li>
           		</ul>
