@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<!-- main에 속해있는 사이드 메뉴라서 ../ 붙여줬습니다 ! -->	
 </head>
 <body>
 	<div class="main">
