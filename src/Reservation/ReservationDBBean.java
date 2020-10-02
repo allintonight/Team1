@@ -26,7 +26,7 @@ public class ReservationDBBean {
 		String pwd = "team1team1";
 		
 		try { 
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			con=DriverManager.getConnection(url, user, pwd);
 			
 			} catch (Exception e) { 
@@ -258,22 +258,24 @@ public class ReservationDBBean {
 		}
 		
 		//예약 조회
-		public ArrayList<ReservationBean> search(int rsno, String id){
+		@SuppressWarnings("null")
+		public ArrayList<ReservationBean> search(int rsno, String id, String remail) throws SQLException{
 			Connection con=null;
 			PreparedStatement pstmt = null;
 			String sql=null;
 			ResultSet rs=null;
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
-			try {
-				if(!id.equals(null)) {		//방이름
-					sql = "select re.rsno, r.rname, re.check_in, re.check_out "
+			try {		//방이름
+					sql = "select re.rsno, r.rname, re.check_in, re.check_out, re.rname "
 							+ "from reservation re inner join room r "
 							+ "on r.rno = re.rno "
 							+ "inner join member "
-							+ "on re.mno = member.mno where id=?";
+							+ "on re.mno = member.mno where id=? or rsno=? or remail=?;";
 					con=getConnection();
 					pstmt=con.prepareStatement(sql);
 					pstmt.setString(1, id);
+					pstmt.setInt(2, rsno);
+					pstmt.setString(3, remail);
 					
 					rs = pstmt.executeQuery();
 					
@@ -282,27 +284,23 @@ public class ReservationDBBean {
 								rs.getInt(1),
 								rs.getString(2),
 								rs.getDate(3),
-								rs.getDate(4)));
+								rs.getDate(4),
+								rs.getString(5)));
 					}
-				}else {
-					sql="select * from reservation where rsno =?;";
-					pstmt.setInt(1, rsno);
-					
-					rs = pstmt.executeQuery();
-					
-					while(rs.next()) {
-						reservationBean.add(new ReservationBean(
-								rs.getInt(1),
-								rs.getString(2),
-								rs.getDate(3),
-								rs.getDate(4)));
-					}
-				}
+				
+			
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
 			return reservationBean;
 			
+		}
+		public String checkNull(String str) {
+			if(str==null) {
+				return null;
+			}else {
+				return str;
+			}
 		}
 		
 //		ReservationBean ReservationDBBean reservation	
@@ -341,10 +339,60 @@ public class ReservationDBBean {
 			}
 			return re;
 		}
+		
+		//관리자 예약관리
+		public ArrayList<ReservationBean> selectList(int start) throws SQLException {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			ResultSet rs=null;
+			int re=-1;
 
+			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
+
+			try {
+				sql="delete from reservation where paid='n' and res_date<DATE_ADD(res_date,INTERVAL 24 hour);";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.executeUpdate();
+				re=1;
+				if(re==1) {
+				
+				sql="select * from reservation where paid='n' and pay_ment='m' Limit ?,5;";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, start);
+				rs=pstmt.executeQuery();
+
+				while(rs.next()) {
+					reservationBean.add(new ReservationBean(
+							rs.getInt(1),
+							rs.getInt(2),
+							rs.getInt(3),
+							rs.getString(4),
+							rs.getString(5),
+							rs.getString(6),
+							rs.getDate(7),
+							rs.getDate(8),
+							rs.getInt(9),
+							rs.getInt(10),
+							rs.getString(11),
+							rs.getString(12),
+							rs.getString(13),
+							rs.getDate(14)));
+					}
+				}
+
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+
+			return reservationBean;
+
+		}
 
 		
-		//====이부분은 일단 적어놓고 만약에 안써도 될꺼같으면 나중에 지워버려요 !===//
+		
 		
 		public ArrayList<ReservationBean> getAll() throws SQLException {
 			Connection con=null;
@@ -355,7 +403,7 @@ public class ReservationDBBean {
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
 
 			try {
-				sql="select * from reservation;";
+				sql="select * from reservation where payment='m' and paid='n';";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				rs=pstmt.executeQuery();
