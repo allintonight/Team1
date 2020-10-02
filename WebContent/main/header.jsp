@@ -25,7 +25,7 @@
 			color: #fff;
 		}
 		.text-right{
-			width:2000px;
+			width:100%;
 		}
 		.btn{
 			margin-top:10px;
