@@ -29,10 +29,15 @@
 	margin-right:5%;
 	margin-top:5%;
 }
+input[type=button]{
+     margin-top: 0px;
+     margin-bottom: 0px;
+}
 li{
 	width:100%; 
 	text-align:center
 }
+
 @media (max-width: 600px) {
   .main {
     flex-direction: column;
@@ -87,6 +92,7 @@ li{
       			<th scope="col">체크아웃</th>
       			<th scope="col">예약날짜</th>
       			<th scope="col">예약자</th>
+      			<th scope="col">결제현황</th>
 			</tr>
 			</thead>
 <%		
@@ -106,6 +112,7 @@ li{
 					<td><%= rbean.get(i).getCheck_out() %></td>
 					<td><%= rbean.get(i).getRes_date() %></td>
 					<td><%= rbean.get(i).getRname() %></td>
+					<td><input type="button" class="checkBtn btn btn-outline-secondary btn-sm" value="결제완료" /></td>
 				</tr>	
 <%
 			}
@@ -113,7 +120,7 @@ li{
 %>			
 	
 			<tr align="center"> 
-			<td colspan="7">
+			<td colspan="8">
 					<ul class="pagination" style="margin:20px;padding:0">
 <%
 					if(startPage==1){
@@ -160,4 +167,24 @@ li{
 			</div>
 <!-- <div class="footer"><jsp:include page="../main/footer.jsp"/></div>	 -->		
 </body>
+<script>
+$(".checkBtn").click(function(){ 
+    
+    var str = ""
+    var tdArr = new Array();    // 배열 선언
+    var checkBtn = $(this);
+    
+    // checkBtn.parent() : checkBtn의 부모는 <td>이다.
+    // checkBtn.parent().parent() : <td>의 부모이므로 <tr>이다.
+    var tr = checkBtn.parent().parent();
+    var td = tr.children();
+    
+    var rsno = td.eq(1).text();  
+    var con = confirm("결제완료 처리하시겠습니까?");
+    if(con==true){
+    	location.href="admin_reservationOk.jsp?rsno="+rsno;	
+    }
+});
+
+</script>
 </html>
