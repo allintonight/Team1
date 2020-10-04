@@ -89,7 +89,7 @@ public class QnaDBBean {
 	      ResultSet rs=null;
 	      ResultSet pageset=null;
 	      
-	      int absolutepage=1;//페이징 변수
+	      int absolutepage=1;
 	      int dbcount=0;
 	      String sql="";
 	      

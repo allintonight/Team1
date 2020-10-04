@@ -19,9 +19,9 @@ public class PostDBBean {
 	   
 	   public Connection getConnection() throws Exception{
 		   	  Connection con = null;
-		      String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC"; 
-		      String user = "root";
-		      String pwd = "1234";
+		   	String url = "jdbc:mysql://203.245.44.74:3306/allintonight?serverTimezone=UTC"; 
+		    String user = "allintonight";
+		    String pwd = "team1team1";
 		      
 		      try { 
 		         Class.forName("com.mysql.cj.jdbc.Driver");
