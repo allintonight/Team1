@@ -305,31 +305,18 @@ public class ReservationDBBean {
 		
 //		ReservationBean ReservationDBBean reservation	
 //		희순언니~ 혹시 이부분 관리자가 업데이트 하는 부분이면 paid 부분만		
-		public int updateRoom(int rsno,	int mno, int rno,
-				String rname,String remail, String rphone, 
-				Date check_in, Date check_out,int usemen, 
-				int price,String pay_ment, String paid) {
+		public int updateRoom(int rsno, String paid) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
 			String sql=null;
 			int re=-1;
 
 			try {
-				sql="update room set mno=?, rno=?, rname=?, "
-						+ "remail=?, rphone=? ,check_in=?,check_out=?, usemen=?, price=?,pay_ment=?, paid=?  where rsno=?;";
+				sql="update reservation set paid=? where rsno=?;";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
-				pstmt.setInt(1, mno);
-				pstmt.setInt(2, rno);
-				pstmt.setString(3, rname);
-				pstmt.setString(4, remail);
-				pstmt.setString(5, rphone);
-				pstmt.setDate(6, check_in);
-				pstmt.setDate(7, check_out);
-				pstmt.setInt(8, usemen);			
-				pstmt.setInt(9, price);			
-				pstmt.setString(10, pay_ment);
-				pstmt.setString(11, paid);
+				pstmt.setString(1, paid);
+				pstmt.setInt(2, rsno);
 
 				pstmt.executeUpdate();
 				re = 1;
@@ -340,7 +327,6 @@ public class ReservationDBBean {
 			return re;
 		}
 		
-		//관리자 예약관리
 		public ArrayList<ReservationBean> selectList(int start) throws SQLException {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -432,6 +418,40 @@ public class ReservationDBBean {
 
 			return reservationBean;
 
+		}
+		public int updateReservation(int rsno,	int mno, int rno,
+				String rname,String remail, String rphone, 
+				Date check_in, Date check_out,int usemen, 
+				int price,String pay_ment, String paid) {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			int re=-1;
+
+			try {
+				sql="update room set mno=?, rno=?, rname=?, "
+						+ "remail=?, rphone=? ,check_in=?,check_out=?, usemen=?, price=?,pay_ment=?, paid=?  where rsno=?;";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, mno);
+				pstmt.setInt(2, rno);
+				pstmt.setString(3, rname);
+				pstmt.setString(4, remail);
+				pstmt.setString(5, rphone);
+				pstmt.setDate(6, check_in);
+				pstmt.setDate(7, check_out);
+				pstmt.setInt(8, usemen);			
+				pstmt.setInt(9, price);			
+				pstmt.setString(10, pay_ment);
+				pstmt.setString(11, paid);
+
+				pstmt.executeUpdate();
+				re = 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+				re = -1;
+			}
+			return re;
 		}
 			
 			
