@@ -171,7 +171,6 @@ li{
 $(".checkBtn").click(function(){ 
     
     var str = ""
-    var tdArr = new Array();    // 배열 선언
     var checkBtn = $(this);
     
     // checkBtn.parent() : checkBtn의 부모는 <td>이다.
