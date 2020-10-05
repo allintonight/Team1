@@ -54,7 +54,7 @@
             <!--Body-->
             <div class="modal-body mb-1">
               <div class="md-form mb-5">
-              	<form method="post" action="login.jsp"><!-- 로그인 폼 -->
+              	<form method="post" action="main/login.jsp"><!-- 로그인 폼 -->
                 <i class="fas fa-user-circle"></i>
                 <label data-error="wrong" data-success="right" for="modalLRInput10">Your ID</label><br>
                 <input type="text" class="form-control form-control-sm validate" 
@@ -144,11 +144,11 @@
    	if(session.getAttribute("userid")!=null){
    		if(userid.equals("admin")){
 %>
-	<a href="logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn">Logout</a>	
+	<a href="main/logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn">Logout</a>	
 <%    			
    		}else{
  %>
- 	<a href="logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn">Logout</a>
+ 	<a href="main/logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn">Logout</a>
 	<a href="">Account</a>
  <%  			
    		}
@@ -166,4 +166,3 @@
 </body>
 
 </html>
-

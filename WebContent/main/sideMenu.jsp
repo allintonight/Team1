@@ -5,13 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
 <!-- main에 속해있는 사이드 메뉴라서 ../ 붙여줬습니다 ! -->	
 </head>
-<body>
+<body >
 	<div class="main">
 	<div class="left">
-	<img src="../img/main_img/team1_logo_black.jpg">
+	<img src="img/main_img/team1_logo_black.jpg">
 <%
 		
 		out.println(session.getAttribute("userid")); //확인 용도 ㅠㅠ 나중에 지울게요 ...~

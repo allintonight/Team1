@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="Login.*" %>
+<%@ page import="Main.*" %>
 <% request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="userbean" class="Login.UserBean"/>
+<jsp:useBean id="userbean" class="Main.UserBean"/>
 <jsp:setProperty property="*" name="userbean"/>    
 
 
@@ -17,14 +17,14 @@
 %>
 		<script>
 			alert("회원가입 성공");
-			location.href="main.jsp"
+			location.href="../index.jsp"
 		</script>
 <%
 			}else{
 %>
 		<script>
 			alert("다시 시도해 주세요");
-			location.href="main.jsp"
+			location.href="../index.jsp"
 		</script>
 <%				
 			}

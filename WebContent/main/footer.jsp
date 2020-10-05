@@ -30,11 +30,9 @@ hr {
   margin-right: -88px;
   padding-left: 13px;
 }
-
 .logo img {
   width: 118px;
 }
-
 .logo {
   width: 270px;
   float: left;
@@ -47,19 +45,16 @@ hr {
   width: 270px;
   float: left;
 }
-
 .resalvation2 {
   width: 270px;
   float: left;
 }
-
 #box1 h4 {
   font-size: 13px;
   font-weight: bold;
   margin-top: 6px;
   margin-bottom: -11px;
 }
-
 #box2 p {
   font-size: 10px;
   height: 60px;
@@ -67,12 +62,10 @@ hr {
   color: whitesmoke;
   margin-bottom: -20px;
 }
-
 #box2 span {
   font-size: 10px;
   font-weight: bolder;
 }
-
 </style>
 </head>
 <body>

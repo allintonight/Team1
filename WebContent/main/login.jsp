@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>    
-<%@ page import="Login.*" %>
+<%@ page import="Main.*" %>
 
 <%
 		String id = request.getParameter("id");
@@ -14,7 +14,7 @@
 
 			<script>
 				alert("관리자님 안녕하세요");
-				location.href="main.jsp"
+				location.href="../index.jsp"
 			</script>
 			
 <%			
@@ -23,7 +23,7 @@
 %>
 			<script>
 				alert("로그인 성공");
-				location.href="main.jsp"
+				location.href="../index.jsp"
 			</script>
 <%				
 		}else{
