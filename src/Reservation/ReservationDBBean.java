@@ -295,6 +295,57 @@ public class ReservationDBBean {
 			return reservationBean;
 			
 		}
+		//결제 취소시 환불금액 계산
+		public ResultSet cancleDate(int rsno) {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			ResultSet rs=null;
+			try {
+				sql="select check_in, price, "
+					+ "date_add(check_in, interval -1 month), "
+					+ "date_add(check_in, interval -2 week) from reservation where rsno=?";
+				
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, rsno);
+				rs = pstmt.executeQuery();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return rs;
+		}
+		
+		public int NoneMembercancle(String rname, String rphone, int rsno) {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			ResultSet rs=null;
+			int re = -1;
+			
+			try {
+				sql="select rname, rphone, price from reservation where rsno=? and rname=?;";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, rsno);
+				pstmt.setString(2, rname);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					if(rs.getString(2).equals(rphone)){
+						re = 1; //예약자 있으면서 번호 같으면 1
+					}else{
+							re = 0; //있는데 번호 틀리면 0
+						}
+					}else {
+						re=-1; //예약자 조회가 안되면 -1
+						System.out.print(rname+rphone+rsno);
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return re;
+		}
+		
 		public String checkNull(String str) {
 			if(str==null) {
 				return null;
