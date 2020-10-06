@@ -128,109 +128,16 @@ a:hover {
 .community:hover > ul {
   display: block;
 }
-
-/* *********Head 메뉴 끝********* */
+/* header menu 끝*********************************** */
+.body .intro_photo img {
+  width: 437px;
+  height: 327px;
+}
 .body {
-  /* text-align: center;
-  margin: 52px 130px 0px 0px; */
-  display: block;
-  margin-left: 218px;
-  margin-right: auto;
-  margin-top: 12px;
-  padding: 80px;
-  max-width: 88%;
-  margin-bottom: -42px;
-}
-.body span {
-  color: #333;
-  font-weight: bold;
-  font-size: 19px;
-}
-.body img {
-  width: 38%;
-  padding-right: 30px;
-  float: left;
-  /* float left 먹히게하려면?? */
-}
-.body p {
-  color: #333;
-  width: 62%;
-  float: right;
+  margin: 62px 60px 150px 60px;
 }
 
-/* **********************body 끝********** */
-hr {
-  width: 100%;
-  margin-bottom: 82px;
-  width: thin;
-}
-/* ***********************라인 끝 **************/
-.cont_02 {
-  margin-top: auto;
-  width: 100%;
-  justify-content: center;
-}
-.cont_02 dt {
-  color: #333;
-  font-size: 16px;
-  font-weight: bolder;
-  font-style: italic;
-  text-align: center;
-  margin: 20px 0px 30px 0px;
-}
-
-.cont_02 ul {
-  display: block;
-  width: 1080px;
-  margin: 0 auto;
-}
-.cont_02 ul li {
-  margin: 0;
-  padding: 13px;
-  margin: 0px 10px 72px 0px;
-}
-
-.cont_02 ul li div h3 {
-  color: #333;
-  line-height: 82%;
-}
-
-.cont_02 ul li div {
-  color: #333;
-  width: 300px;
-  height: 500px;
-  font-size: 13px;
-  background-color: rgb(226, 226, 226);
-  box-shadow: 3px 3px 8px rgb(134, 134, 134);
-}
-
-.cont_02 ul li div img {
-  width: 300px;
-  height: 300px;
-}
-
-.cont_02 button {
-  font-size: 14px;
-  font-weight: bold;
-  background-color: #333;
-  border-color: #333;
-  width: 99px;
-  height: 39px;
-  border-radius: 20px;
-  border-style: hidden;
-}
-
-.cont_02 button a {
-  text-decoration: none;
-  color: azure;
-}
-.cont_02 button:hover {
-  background-color: azure;
-}
-.cont_02 button a:hover {
-  color: #333;
-}
-/* ******************cont_02 끝 */
+/* INTRO BODY 끝**************************************** */
 
 #box1 {
   background-color: #fff;
