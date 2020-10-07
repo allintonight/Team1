@@ -26,7 +26,7 @@ public class ReservationDBBean {
 		String pwd = "team1team1";
 		
 		try { 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			con=DriverManager.getConnection(url, user, pwd);
 			
 			} catch (Exception e) { 
@@ -59,7 +59,11 @@ public class ReservationDBBean {
 			}catch(Exception e) {
 				e.printStackTrace();
 				System.out.println(reservationbean.getCheck_in()+"불가능");
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		public int max() throws Exception{
@@ -81,7 +85,11 @@ public class ReservationDBBean {
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		//예약
@@ -92,7 +100,7 @@ public class ReservationDBBean {
 			int re=-1;
 
 			try {
-				sql="insert into reservation values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql="insert into reservation values(?,?,?,?,?,?,?,?,?,?,?,?,?,now())";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, reservationbean.getRsno()); 
@@ -113,7 +121,6 @@ public class ReservationDBBean {
 				pstmt.setNull(11, Types.CHAR); //결제사이트 이후에 선택 후 업데이트 시키는게 좋을까요 ..?
 				pstmt.setString(12, reservationbean.getPaid());//처음에는 N으로 설정 해 놓고 나중에 관리자가 Y로 업데이트 시키기
 				pstmt.setNull(13, Types.VARCHAR);//나중에 결제사이트 이후에 업데이트 시키기
-				pstmt.setDate(14, reservationbean.getRes_date());
 
 				pstmt.executeUpdate();
 				re = 1;
@@ -122,17 +129,19 @@ public class ReservationDBBean {
 				re = -1;
 				System.out.println(reservationbean.getMno());
 			}finally {
-				con.close();
-				pstmt.close();
-			}
+		       
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		//예약 조회 후 결제사이트에서 가격 뽑기 위해서 추가 ㅠㅠ
-		public ResultSet price(int rsno) {
+		public ReservationBean price(int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
 			String sql=null;
 			ResultSet rs = null;
+			ReservationBean rb = new ReservationBean();
 			
 			try {
 				sql="select * from reservation where rsno=?";
@@ -140,18 +149,39 @@ public class ReservationDBBean {
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, rsno);
 				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					rb.setRsno(rs.getInt(1));
+					rb.setMno(rs.getInt(2));
+					rb.setRno(rs.getInt(3));
+					rb.setRname(rs.getString(4));
+					rb.setRemail(rs.getString(5));
+					rb.setRphone(rs.getString(6));
+					rb.setCheck_in(rs.getDate(7));
+					rb.setCheck_out(rs.getDate(8));
+					rb.setUsemen(rs.getInt(9));
+					rb.setPrice(rs.getInt(10));
+					rb.setPay_ment(rs.getString(11));
+					rb.setPaid(rs.getString(12));
+					rb.setPay_name(rs.getString(13));
+					rb.setRes_date(rs.getTimestamp(14));
+					
+				}
 				
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
-			return rs;
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
+			return rb;
 		}
+		
 		public int update(String pay_ment, String pay_name, int rsno, String rname) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
 			String sql=null;
 			int re=-1;
-			String ypaid="y";
 			String npaid="n";
 			try {
 				sql="update reservation set pay_ment=?, pay_name=?, paid=? where rsno=?;";
@@ -163,17 +193,40 @@ public class ReservationDBBean {
 				}else {
 					pstmt.setString(2, pay_name);
 				}
-				if(pay_ment.equals("c")) {
-					pstmt.setString(3, ypaid);
-				}else {
-					pstmt.setString(3, npaid);
-				}
+				pstmt.setString(3, npaid);
 				pstmt.setInt(4, rsno);
 				pstmt.executeUpdate();
 				re = 1;
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
+			return re;
+			
+		}
+		
+		public int updateCard(int rsno) {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			int re=-1;
+			String ypaid="y";
+			try {
+				sql="update reservation set paid=? where rsno=?;";
+				con = getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, ypaid);
+				pstmt.setInt(2, rsno);
+				pstmt.executeUpdate();
+				re = 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 			
 		}
@@ -196,7 +249,10 @@ public class ReservationDBBean {
 			}catch(Exception e) {
 				e.printStackTrace();
 				re = -1;
-			}
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		
@@ -207,7 +263,7 @@ public class ReservationDBBean {
 			int re=-1;
 
 			try {
-				sql="delete from reservation where pay_ment is null";
+				sql="delete from reservation where pay_ment is null or pay_ment='c' and paid='n'";
 				con=getConnection();
 				con.setAutoCommit(false);
 				pstmt=con.prepareStatement(sql);
@@ -217,45 +273,51 @@ public class ReservationDBBean {
 			}catch(Exception e) {
 				e.printStackTrace();
 				re = -1;
-			}
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		
-		public ResultSet reservationpay(int rsno) throws SQLException {
+		//카드결제시 결제창에 띄우는 용도 pay_card.jsp
+		public ReservationBean reservationpay(int rsno) throws SQLException {
 			Connection con=null;
 			Statement stmt = null;
 			String sql=null;
 			ResultSet rs = null;
+			ReservationBean rb = new ReservationBean();
 
 			try {
 				sql=" select r.rname, re.* from room r join reservation re on r.rno = re.rno where rsno = "+rsno;
 				con=getConnection();
 				stmt=con.createStatement();
 				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					rb.setRoomname(rs.getString(1));
+					rb.setRsno(rs.getInt(2));
+					rb.setMno(rs.getInt(3));
+					rb.setRno(rs.getInt(4));
+					rb.setRname(rs.getString(5));
+					rb.setRemail(rs.getString(6));
+					rb.setRphone(rs.getString(7));
+					rb.setCheck_in(rs.getDate(8));
+					rb.setCheck_out(rs.getDate(9));
+					rb.setUsemen(rs.getInt(10));
+					rb.setPrice(rs.getInt(11));
+					rb.setPay_ment(rs.getString(12));
+					rb.setPaid(rs.getString(13));
+					rb.setPay_name(rs.getString(14));
+					rb.setRes_date(rs.getTimestamp(15));
+				}
+				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			return rs;
+			return rb;
 		}
 		
 		
-		public ResultSet selectRoom(int rsno) throws SQLException {
-			Connection con=null;
-			Statement stmt = null;
-			String sql=null;
-			ResultSet rs = null;
-			ReservationBean reservationbean=null;
-
-			try {
-				sql="select * from reservation where rsno="+rsno;
-				con=getConnection();
-				stmt=con.createStatement();
-				rs = stmt.executeQuery(sql);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return rs;
-		}
 		
 		//예약 조회
 		@SuppressWarnings("null")
@@ -265,20 +327,39 @@ public class ReservationDBBean {
 			String sql=null;
 			ResultSet rs=null;
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
-			try {		//방이름
+			try {	//방이름
+					
+				if(id!=null) {
 					sql = "select re.rsno, r.rname, re.check_in, re.check_out, re.rname "
 							+ "from reservation re inner join room r "
 							+ "on r.rno = re.rno "
 							+ "inner join member "
-							+ "on re.mno = member.mno where id=? or rsno=? or remail=?;";
+							+ "on re.mno = member.mno where member.id=? and paid='y';";
 					con=getConnection();
 					pstmt=con.prepareStatement(sql);
 					pstmt.setString(1, id);
-					pstmt.setInt(2, rsno);
-					pstmt.setString(3, remail);
 					
 					rs = pstmt.executeQuery();
+				}else if(rsno!=0){
+					sql = "select re.rsno, r.rname, re.check_in, re.check_out, re.rname "
+							+ "from reservation re inner join room r "
+							+ "on r.rno = re.rno where rsno=? and paid='y';";
+					con=getConnection();
+					pstmt=con.prepareStatement(sql);
+					pstmt.setInt(1, rsno);
 					
+					rs = pstmt.executeQuery();
+				}
+				else {
+					sql = "select re.rsno, r.rname, re.check_in, re.check_out, re.rname "
+							+ "from reservation re inner join room r "
+							+ "on r.rno = re.rno where remail=? and paid='y';";
+					con=getConnection();
+					pstmt=con.prepareStatement(sql);
+					pstmt.setString(1, remail);
+					
+					rs = pstmt.executeQuery();
+				}
 					while(rs.next()) {
 						reservationBean.add(new ReservationBean(
 								rs.getInt(1),
@@ -291,29 +372,37 @@ public class ReservationDBBean {
 			
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return reservationBean;
 			
 		}
+		
 		//결제 취소시 환불금액 계산
-		public ResultSet cancleDate(int rsno) {
+		public ReservationBean cancleDate(int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
 			String sql=null;
 			ResultSet rs=null;
+			ReservationBean rb = new ReservationBean();
 			try {
-				sql="select check_in, price, "
-					+ "date_add(check_in, interval -1 month), "
-					+ "date_add(check_in, interval -2 week) from reservation where rsno=?";
+				sql="select check_in, price from reservation where rsno=?";
 				
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, rsno);
 				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					rb.setCheck_in(rs.getDate(1));
+					rb.setPrice(rs.getInt(2));
+				}
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			return rs;
+			return rb;
 		}
 		
 		public int NoneMembercancle(String rname, String rphone, int rsno) {
@@ -342,7 +431,11 @@ public class ReservationDBBean {
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		
@@ -374,7 +467,10 @@ public class ReservationDBBean {
 			}catch(Exception e) {
 				e.printStackTrace();
 				re = -1;
-			}
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 		
@@ -383,19 +479,11 @@ public class ReservationDBBean {
 			PreparedStatement pstmt = null;
 			String sql=null;
 			ResultSet rs=null;
-			int re=-1;
 
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
 
 			try {
-				sql="delete from reservation where paid='n' and res_date<DATE_ADD(res_date,INTERVAL 24 hour);";
-				con=getConnection();
-				pstmt=con.prepareStatement(sql);
-				pstmt.executeUpdate();
-				re=1;
-				if(re==1) {
-				
-				sql="select * from reservation where paid='n' and pay_ment='m' Limit ?,5;";
+				sql="select * from reservation Limit ?,5;";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -416,20 +504,108 @@ public class ReservationDBBean {
 							rs.getString(11),
 							rs.getString(12),
 							rs.getString(13),
-							rs.getDate(14)));
+							rs.getTimestamp(14)));
 					}
-				}
-
+				
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 
 			return reservationBean;
 
 		}
+		
+		public ArrayList<ReservationBean> selectListNo(int start) throws SQLException {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			ResultSet rs=null;
 
+			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
+
+			try {
+				sql="select * from reservation where paid='n' Limit ?,5;";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, start);
+				rs=pstmt.executeQuery();
+
+				while(rs.next()) {
+					reservationBean.add(new ReservationBean(
+							rs.getInt(1),
+							rs.getInt(2),
+							rs.getInt(3),
+							rs.getString(4),
+							rs.getString(5),
+							rs.getString(6),
+							rs.getDate(7),
+							rs.getDate(8),
+							rs.getInt(9),
+							rs.getInt(10),
+							rs.getString(11),
+							rs.getString(12),
+							rs.getString(13),
+							rs.getTimestamp(14)));
+				}
+
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
+
+			return reservationBean;
+		}
 		
-		
+		public ArrayList<ReservationBean> selectpayOk(int start) throws SQLException {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			ResultSet rs=null;
+
+			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
+
+			try {
+				sql="select * from reservation where paid='y' Limit ?,5;";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, start);
+				rs=pstmt.executeQuery();
+
+				while(rs.next()) {
+					reservationBean.add(new ReservationBean(
+							rs.getInt(1),
+							rs.getInt(2),
+							rs.getInt(3),
+							rs.getString(4),
+							rs.getString(5),
+							rs.getString(6),
+							rs.getDate(7),
+							rs.getDate(8),
+							rs.getInt(9),
+							rs.getInt(10),
+							rs.getString(11),
+							rs.getString(12),
+							rs.getString(13),
+							rs.getTimestamp(14)));
+				}
+
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
+
+			return reservationBean;
+		}
 		
 		public ArrayList<ReservationBean> getAll() throws SQLException {
 			Connection con=null;
@@ -440,7 +616,7 @@ public class ReservationDBBean {
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
 
 			try {
-				sql="select * from reservation where payment='m' and paid='n';";
+				sql="select * from reservation";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				rs=pstmt.executeQuery();
@@ -460,16 +636,22 @@ public class ReservationDBBean {
 							rs.getString(11),
 							rs.getString(12),
 							rs.getString(13),
-							rs.getDate(14)));
+							rs.getTimestamp(14)));
 				}
 
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 
 			return reservationBean;
 
 		}
+	
+
 		public int updateReservation(int rsno,	int mno, int rno,
 				String rname,String remail, String rphone, 
 				Date check_in, Date check_out,int usemen, 
@@ -501,7 +683,10 @@ public class ReservationDBBean {
 			}catch(Exception e) {
 				e.printStackTrace();
 				re = -1;
-			}
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return re;
 		}
 			
@@ -516,6 +701,7 @@ public class ReservationDBBean {
 				return Integer.valueOf(strDate);	
 			}
 
+			
 
 		}
 

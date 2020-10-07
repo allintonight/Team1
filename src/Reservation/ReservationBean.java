@@ -1,6 +1,7 @@
 package Reservation;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 
 public class ReservationBean {
@@ -18,7 +19,7 @@ public class ReservationBean {
 	private String paid;
 	private String roomname;
 	private String pay_name;
-	private Date res_date; 
+	private Timestamp res_date; 
 	private int rn;
 	
 	public ReservationBean() {}
@@ -39,7 +40,7 @@ public class ReservationBean {
 	}
 	
 	public ReservationBean(int rsno, int mno, int rno, String rname, String remail, String rphone, Date check_in,
-			Date check_out, int usemen, int price, String pay_ment, String paid, String pay_name, Date res_date) {
+			Date check_out, int usemen, int price, String pay_ment, String paid, String pay_name, Timestamp res_date) {
 		this.rsno = rsno;
 		this.mno = mno;
 		this.rno = rno;
@@ -151,11 +152,11 @@ public class ReservationBean {
 		this.pay_name = pay_name;
 	}
 
-	public Date getRes_date() {
+	public Timestamp getRes_date() {
 		return res_date;
 	}
 
-	public void setRes_date(Date res_date) {
+	public void setRes_date(Timestamp res_date) {
 		this.res_date = res_date;
 	}
 
@@ -166,7 +167,5 @@ public class ReservationBean {
 	public void setRn(int rn, int i) {
 		this.rn = rn+i;
 	}
-	
-	
 	
 }

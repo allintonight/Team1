@@ -59,6 +59,7 @@
 	String id = null;
 	int rsno = 0;
 	String remail=null;
+	String kind=null;
 	ReservationDBBean rdb = ReservationDBBean.getinstance();
 	ArrayList<ReservationBean> rbean= null; 
 	if(session.getAttribute("userid")!=null){
@@ -84,7 +85,8 @@
 			<tbody>	
 				<tr align="center"> 
 					<th scope="row"><%= i+1 %></th>
-					<td><%= rbean.get(i).getRsno() %><td>
+					<td><a href="reservationCancle.jsp?rsno=<%= rbean.get(i).getRsno()%>">
+					<%= rbean.get(i).getRsno() %></a></td>
 					<td><%= rbean.get(i).getRoomname() %></td>
 					<td><%= rbean.get(i).getCheck_in() %></td>
 					<td><%= rbean.get(i).getCheck_out() %></td>
@@ -103,13 +105,14 @@
 			<form method='GET' action='./searchReservation.jsp'>
 			<div class="form-row form">
 			<div class="form-group col-sm-1.5 form">
-      		<select id="kind" class="form-control" onchange=select_onchange(this)>
+      		<select name="kind" id="kind" class="form-control" onchange=select_onchange(this)>
         		<option value="1" selected>아이디</option>
 				<option value="2">예약번호</option>
 				<option value="3">이메일</option>
       		</select>
    		 	</div>
     		<div class="form-group col-sm-3 form">
+    			<input name="kind" type="hidden" id="kind">
     			<input name="id" placeholder="아이디 입력" type="text" id="id" style="display:inline-block" class="form-control">
 				<input name="rsno" placeholder="예약번호 입력" type="text" id="rsno" style="display:none" class="form-control">
 				<input name="remail" placeholder="이메일 입력" type="email" id="email" style="display:none" class="form-control">
@@ -120,19 +123,10 @@
    		 	</div>
    		 	</form>	
 <%
-			id=rdb.checkNull(request.getParameter("id"));
-			String no=rdb.checkNull(request.getParameter("rsno"));
-			if(no==null){
-				rsno=0;
-			}else if(no==""){
-				rsno=0;
-			}else{
-				rsno=Integer.parseInt(no);
-			}
-			remail=rdb.checkNull(request.getParameter("remail"));
-				rbean = rdb.search(rsno, id, remail);
+		 	
+			
 %>	
-			<table class="table table-sm table-striped">
+			<table class="table table-sm table-striped" id="refund">
 			<thead class="thead-dark">
 			<tr align="center">
 				<th scope="col">#</th>
@@ -144,12 +138,39 @@
 			</tr>
 			</thead>
 <%				
-				for(int i=0;i<rbean.size();i++){
+		kind = rdb.checkNull(request.getParameter("kind"));
+		if(kind != null){
+			int ikind = Integer.parseInt(kind);
+		switch(ikind){
+		case 1:
+			id=rdb.checkNull(request.getParameter("id"));
+			rbean = rdb.search(rsno, id, remail);
+		break;
+		case 2:
+			String no=request.getParameter("rsno");
+			rsno=Integer.parseInt(no);
+			rbean = rdb.search(rsno, id, remail);
+		break;
+		default:
+			remail=rdb.checkNull(request.getParameter("remail"));
+			rbean = rdb.search(rsno, id, remail);
+		break;	
+		}
+		if(rbean.size()==0){
 %>
+		<script>
+			alert("검색결과 없음");
+		</script>
+<% 			
+		}
+				for(int i=0;i<rbean.size();i++){
+					rsno=rbean.get(i).getRsno();
+%>					
 				<tbody>		
 					<tr align="center">
 						<th scope="row"><%= i+1 %></th>
-						<td><%= rbean.get(i).getRsno() %></td>
+						<td><a href="reservationCancle.jsp?rsno=<%= rsno %>">
+							<%= rsno %></a></td>
 						<td><%= rbean.get(i).getRoomname() %></td>
 						<td><%= rbean.get(i).getCheck_in() %></td>
 						<td><%= rbean.get(i).getCheck_out() %></td>
@@ -158,12 +179,13 @@
 				</tbody>	
 <% 				
 		}
+			}
 %>
 			</table>
 			</div>
 <% 
 	}
-%>
+%>						
 <div class="footer"><jsp:include page="../main/footer.jsp"/></div>
 </body>
 <script>
@@ -185,6 +207,9 @@ function select_onchange(obj) {
 	      email.style.display = "inline-block";
 	      break;
 	  }
+	  document.getElementById('#kind').value = obj.value;
 	}
+
+	
 </script>
 </html>

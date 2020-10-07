@@ -1,21 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="Reservation.*" %>
-<%@ page import="java.util.ArrayList" %>   
+<%@ page import="java.util.ArrayList" %> 
 <%@ page import="java.sql.Timestamp" %>   
 <%@ page import="java.text.SimpleDateFormat" %> 
+     
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="../bootstrap/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="../bootstrap/bootstrap.min.css"/>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> 
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="../css/style.css"/>
+<title>Insert title here</title>
 <style>
 	nav{
 		margin:20px;
@@ -24,16 +26,15 @@
 </head>
 <body>
 <div><jsp:include page="../main/header.jsp"/></div>
-<div class="main">
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" href="admin_reservation.jsp">예약현황</a>
+    <a class="nav-link"  href="admin_reservation.jsp">예약현황</a>
     <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" href="admin_reservation2.jsp">입금대기</a>
+    <a class="nav-link" href="admin_reservation2.jsp">결제대기</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="admin_reservation3.jsp">결제완료</a>
+    <a class="nav-item nav-link active" href="admin_reservation3.jsp">결제완료</a>
   </li>
   <li class="nav-item">
     <a class="nav-link disabled" href="#">MENU</a>
@@ -41,19 +42,19 @@
 </ul>
   </div>
 </nav>
-	<%
+<div class="main">
+<%
 	ReservationDBBean rdb = ReservationDBBean.getinstance();
 	ReservationBean rb = new ReservationBean();
 	Tool tool = Tool.getinstance();
-	String payment=null;
+	String payment = null;
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-	
+		
 	String tempPage = request.getParameter("page");
 	int cPage;
 	int totalPages;
 	int pageLength=5;
-	int totalRows = tool.getPage();
+	int totalRows = tool.getPage3();
 	
 	if(tempPage==null||tempPage.length()==0){
 		cPage=1;
@@ -74,7 +75,7 @@
 	}
 	int start = (cPage -1)*5;
 	
-	ArrayList<ReservationBean> rbean= rdb.selectList(start);
+	ArrayList<ReservationBean> rbean= rdb.selectpayOk(start);
 	
 %>	
 		<div class="right">
@@ -88,8 +89,8 @@
       			<th scope="col">체크아웃</th>
       			<th scope="col">예약날짜</th>
       			<th scope="col">예약자</th>
+      			<th scope="col">결제금액</th>
       			<th scope="col">결제방식</th>
-      			<th scope="col">결제현황</th>
 			</tr>
 			</thead>
 <%		
@@ -109,6 +110,7 @@
 					<td><%= rbean.get(i).getCheck_out() %></td>
 					<td><%= format.format(rbean.get(i).getRes_date()) %></td>
 					<td><%= rbean.get(i).getRname() %></td>
+					<td><%= rbean.get(i).getPrice() %></td>
 					<% if(rbean.get(i).getPay_ment().equals("m")){
 							 payment = "계좌이체";
 						}else{
@@ -116,10 +118,10 @@
 						} 
 					%>
 					<td><%= payment %></td>
-					<td><%= rbean.get(i).getPaid() %></td>
 				</tr>	
-<%		
+<%
 			}
+
 %>			
 	
 			<tr align="center"> 
@@ -133,7 +135,7 @@
 <% 						
 					}else{
 %>
-					<li class="page-item"><a class="page-link" href="admin_reservation.jsp?page=<%=startPage-1 %>" 
+					<li class="page-item"><a class="page-link" href="admin_reservation3.jsp?page=<%=startPage-1 %>" 
 							tabindex="-1" aria-disabled="true">Previous</a></li>
 		
 <% 						
@@ -143,7 +145,7 @@
 					for(int i=startPage;i<=endPage;i++){
 %>
 					<li class="page-item">
-					<a class="page-link" href="admin_reservation.jsp?page=<%=i %>">
+					<a class="page-link" href="admin_reservation3.jsp?page=<%=i %>">
 					<%= i %></a></li>
 <% 	
 					}
@@ -157,7 +159,7 @@
 						}else{
 %>
 						<li class="page-item">
-						<a class="page-link" href="admin_reservation.jsp?page=<%= endPage+1 %>">Next</a></li>
+						<a class="page-link" href="admin_reservation3.jsp?page=<%= endPage+1 %>">Next</a></li>
 <% 		
 						}
 %>
@@ -167,7 +169,6 @@
 				</tbody>
 			</table>
 			</div>
-			</div>
-<!-- <div class="footer"><jsp:include page="../main/footer.jsp"/></div>	 -->		
+</div>
 </body>
 </html>

@@ -36,7 +36,47 @@ public class Tool {
 		PreparedStatement pstmt = null;
 		ResultSet rs =  null;
 		
-		String sql="select count(*) cnt from reservation where paid='n' and pay_ment='m';";
+		String sql="select count(*) cnt from reservation;";
+		
+		try {
+			con=getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	public int getPage2() {
+		int cnt=0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =  null;
+		
+		String sql="select count(*) cnt from reservation where paid='n';";
+		
+		try {
+			con=getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	public int getPage3() {
+		int cnt=0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =  null;
+		
+		String sql="select count(*) cnt from reservation where paid='y';";
 		
 		try {
 			con=getConnection();

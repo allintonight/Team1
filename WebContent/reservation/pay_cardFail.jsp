@@ -15,7 +15,7 @@
 		if(re==1){
 	%>
 		<script>
-			alert("메인화면으로 돌아갑니다");
+			alert("결제 실패! 메인화면으로 돌아갑니다");
 			location.href="../index.jsp";
 		</script>
 	<% 		

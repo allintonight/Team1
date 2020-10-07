@@ -19,7 +19,7 @@
 	<%
 		int rsno = Integer.parseInt(request.getParameter("rsno"));
 		ReservationDBBean rdb = ReservationDBBean.getinstance();
-		ResultSet reservation = rdb.reservationpay(rsno);
+		ReservationBean rb= rdb.reservationpay(rsno);
 		
 		String rname = null;
 		int irsno = 0;
@@ -27,13 +27,13 @@
 		String remail=null;
 		String rphone=null;
 		String pay_name= null;
-		if(reservation.next()){
-			rname = reservation.getString(1);
-			irsno = reservation.getInt(2);
-			remail = reservation.getString(6);
-			rphone = reservation.getString(7);
-			price = reservation.getInt(11);
-			pay_name = reservation.getString(14);
+		if(rb!=null){
+			rname = rb.getRoomname();
+			irsno = rb.getRno();
+			remail = rb.getRemail();
+			rphone = rb.getRphone();
+			price = rb.getPrice();
+			pay_name = rb.getPay_name();
 		}
 	%>
 	<form>
@@ -69,8 +69,12 @@ IMP.request_pay({
    // m_redirect_url : 'payOk.jsp?rsno='+rsno
 }, function(rsp) {
     if ( rsp.success ) {
-        var msg = '결제가 완료되었습니다.';
-        location.href='payOk.jsp?rsno='+rsno;
+        var success = '결제가 완료되었습니다.';
+        var card = rsp.imp_uid+";";
+        card += rsp.paid_amount+";";
+        card += 'test_apply_num';
+        alert(success);
+        location.href='payCardOk.jsp?rsno='+rsno+'&card='+card;
     } else {
         var msg = '결제에 실패하였습니다.';
         msg += '에러내용 : ' + rsp.error_msg;
