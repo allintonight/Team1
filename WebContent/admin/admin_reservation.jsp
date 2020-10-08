@@ -16,9 +16,13 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> 
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> <!-- 드롭다운 사용시 필수 -->
 <style>
 	nav{
 		margin:20px;
+	}
+	.pagination{
+		justify-content: center;
 	}
 </style>
 </head>
@@ -34,6 +38,13 @@
   </li>
   <li class="nav-item">
     <a class="nav-link" href="admin_reservation3.jsp">결제완료</a>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">예약취소</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="admin_resCancleMoney.jsp">현금결제</a>
+      <a class="dropdown-item" href="admin_resCancleCard.jsp">카드결제</a>
+    </div>
   </li>
   <li class="nav-item">
     <a class="nav-link disabled" href="#">MENU</a>
@@ -121,20 +132,30 @@
 <%		
 			}
 %>			
-	
-			<tr align="center"> 
-			<td colspan="9">
-					<ul class="pagination" style="margin:20px;padding:0">
-<%
-					if(startPage==1){
-%>
-					<li class="page-item disabled"><a class="page-link" href="#"
-							tabindex="-1" aria-disabled="true">Previous</a></li>
+			</tbody>
+			</table>
+			</div>
+			
+			<div class="text-center">
+<%			
+			if(startPage==1){
+%>				
+				<ul class="pagination" style="margin:20px;padding:0">
+					<li class="page-item disabled">
+					<a class="page-link" href="#" aria-label="Previous">
+       				<span aria-hidden="true">&laquo;</span>
+        			<span class="sr-only">Previous</span>	
+     			 	</a>
+     			 	</li>
 <% 						
 					}else{
 %>
-					<li class="page-item"><a class="page-link" href="admin_reservation.jsp?page=<%=startPage-1 %>" 
-							tabindex="-1" aria-disabled="true">Previous</a></li>
+					<li class="page-item">
+					<a class="page-link" href="admin_reservation.jsp?page=<%=startPage-1 %>" aria-label="Previous">
+       				<span aria-hidden="true">&laquo;</span>
+        			<span class="sr-only">Previous</span>	
+     			 	</a>
+     			 	</li>
 		
 <% 						
 					}
@@ -142,7 +163,7 @@
 <% 
 					for(int i=startPage;i<=endPage;i++){
 %>
-					<li class="page-item">
+					<li class="page-item ">
 					<a class="page-link" href="admin_reservation.jsp?page=<%=i %>">
 					<%= i %></a></li>
 <% 	
@@ -152,20 +173,25 @@
 					if(totalPages==endPage){
 %>
 						<li class="page-item disabled">
-						<a class="page-link" href="#">Next</a></li>
+						<a class="page-link" href="#" aria-label="Next">
+        				<span aria-hidden="true">&raquo;</span>
+        				<span class="sr-only">Next</span>
+      					</a>
+						</li>
 <% 		
 						}else{
 %>
 						<li class="page-item">
-						<a class="page-link" href="admin_reservation.jsp?page=<%= endPage+1 %>">Next</a></li>
+						<a class="page-link" href="admin_reservation.jsp?page=<%= endPage+1 %>" aria-label="Next">
+        				<span aria-hidden="true">&raquo;</span>
+        				<span class="sr-only">Next</span>
+      					</a>
+      					</li>
+      				</ul>	
 <% 		
 						}
 %>
-				</ul>
-				</td>
-				</tr>
-				</tbody>
-			</table>
+			
 			</div>
 			</div>
 <!-- <div class="footer"><jsp:include page="../main/footer.jsp"/></div>	 -->		
