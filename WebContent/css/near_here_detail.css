@@ -69,7 +69,6 @@ ul > li > a {
   transition-timing-function: 1s ease;
   transition-delay: 7s;
   border: rgba(240, 240, 240, 0.966);
-  background-color: rgba(240, 240, 240, 0.966);
 }
 .resalvation > ul > li {
   padding: 6px;
@@ -77,7 +76,6 @@ ul > li > a {
   transition-timing-function: 1s ease;
   transition-delay: 7s;
   border: rgba(240, 240, 240, 0.966);
-  background-color: rgba(240, 240, 240, 0.966);
 }
 .community > ul > li {
   padding: 6px;
@@ -85,7 +83,6 @@ ul > li > a {
   transition-timing-function: 1s ease;
   transition-delay: 7s;
   border: rgba(240, 240, 240, 0.966);
-  background-color: rgba(240, 240, 240, 0.966);
 }
 
 a:hover {
