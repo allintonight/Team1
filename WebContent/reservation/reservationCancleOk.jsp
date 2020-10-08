@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="Reservation.*" %>    
+<%@ page import="Reservation.*" %>  
+<%@ page import="java.sql.ResultSet" %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,14 +14,30 @@
 	 컬럼하나 더 생성해야할것 같아요 ! 
 	 내일 상의하고 해야할것 같아서 아직 만들지는 않았습니다 :)  --> 
 <% 
+
 	if(session.getAttribute("userid")==null){	
 		request.setCharacterEncoding("utf-8");
 		ReservationDBBean rdb = ReservationDBBean.getinstance();
+		PayDBBean pdb = PayDBBean.getinstance();
+		PayBean paybean = new PayBean();
+		ResultSet rs = null;
+		String pay_name=null;
 		int rsno = Integer.parseInt(request.getParameter("rsno"));
 		String rname = request.getParameter("rname"); 
 		String rphone = request.getParameter("rphone");
+		int refund_price = Integer.parseInt(request.getParameter("refund_price"));
 		int result = rdb.NoneMembercancle(rname, rphone, rsno);
+		paybean = pdb.selectPay(rsno);
+		
 		if(result==1){
+			if(paybean!=null){
+				pay_name=paybean.getPay_name();
+			}
+			paybean.setRsno(rsno);
+			paybean.setRefund_price(refund_price);
+			paybean.setPay_name(pay_name);
+			pdb.payCancle(paybean);
+		
 %>
 		<script>
 			var con = confirm("예약 취소 하시겠습니까?")

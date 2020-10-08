@@ -33,39 +33,36 @@
 </head>
 <body>
 <%
-	int rsno = Integer.parseInt(request.getParameter("rsno"));
+	
 	ReservationDBBean rdb = ReservationDBBean.getinstance();
-	ResultSet rs = rdb.cancleDate(rsno);
+	int rsno = Integer.parseInt(request.getParameter("rsno"));
+	ReservationBean rb = rdb.cancleDate(rsno);
+	
 	int result=0;
 	Date nowTime = new Date();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyMMdd");
 	DecimalFormat df = new DecimalFormat("0.##");
 	int today = Integer.parseInt(sf.format(nowTime));
+	Calendar cal = Calendar.getInstance();
 	Date check_in = null;
 	double price =0;
-	Date mcheck_in =null;
-	Date wcheck_in = null;
 	int icheck_in = 0;
-	int imcheck_in = 0;
-	int iwcheck_in = 0;
 	
-	if(rs.next()){
-		check_in = rs.getDate(1);
-		price = rs.getInt(2);
-		mcheck_in = rs.getDate(3);
-		wcheck_in = rs.getDate(4);
+	if(rb !=null){
+		check_in = rb.getCheck_in();
+		price = rb.getPrice();
 		icheck_in = Integer.parseInt(sf.format(check_in));
-		imcheck_in = Integer.parseInt(sf.format(mcheck_in));
-		iwcheck_in = Integer.parseInt(sf.format(wcheck_in));
+		int day=icheck_in-today;
 		
-		if(imcheck_in<=today&&today<iwcheck_in){
+		if(day<14&&day>=7){
 			price = price*0.5;
-		}else if(iwcheck_in<=today&&today<icheck_in){
+		}else if(day<7&&day>=5){
 			price = price*0.3;
-		}else if(icheck_in==today){
+		}else if(day<5&&day>=3){
+			price = price*0.1;
+		
+		}else if(day<3){
 			price = 0;
-		}else if(imcheck_in>today){
-			price = price;
 		}
 	}else{
 %>
@@ -78,9 +75,17 @@
 %>
 	<div class="rigth">
 	 <div class="reservationNumber">
+<%
+		if(price==0){
+%>
+			체크인 기준 3일전부터는 예약취소 및 환불이 불가능 합니다.
+<% 			
+		}else{
+%>
 		고객님이 환불 받으실 수 있는 금액은 <%= df.format(price) %>원 입니다.<br>
 		예약 취소를 원하시면 버튼을 눌러 주세요.<br>
 <% 
+		
 	String userid = (String)session.getAttribute("userid");
 	if(session.getAttribute("userid")==null){
 %>
@@ -89,9 +94,11 @@
 }
 else{
 	%>
-	<a class="btn btn-dark btn-sm" href="reservationCancleOk.jsp?rsno=<%= rsno %>">예약취소</a>
+	<a class="btn btn-dark btn-sm" href="reservationCancleOk.jsp?rsno=<%= rsno %>&refund_price="<%=df.format(price)%>>예약취소</a>
 <% 	
-}
+	}
+		}
+	
 %>
 </div>
 </div>
@@ -110,7 +117,7 @@ else{
             <!--Body-->
             <div class="modal-body mb-1">
               <div class="md-form mb-5">
-              	<form method="post" action="reservationCancleOk.jsp?rsno=<%= rsno %>" name="fm">
+              	<form method="post" action="reservationCancleOk.jsp?rsno=<%= rsno %>&refund_price=<%=df.format(price)%>" name="fm">
                 <i class="fas fa-user-circle"></i>
                 <label data-error="wrong" data-success="right" for="modalLRInput10" class="text-left">예약자 성함</label><br>
                 <input type="text" class="form-control form-control-sm " 

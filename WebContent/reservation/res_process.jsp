@@ -34,7 +34,7 @@
 		int price = 0;
 		
 		RoomDBBean rdb = RoomDBBean.getinstance();
-		ResultSet roombean = rdb.selectRoom(rno);
+		RoomBean roombean = rdb.selectRoom(rno);
 		
 		ReservationDBBean reservationdbbean = ReservationDBBean.getinstance();
 		int max = reservationdbbean.max();
@@ -77,23 +77,21 @@
 		int result2 = reday.compareTo(end); // 선택 날짜와 성수기 마지막 날짜 비교 +값 : 성수기 후 -값 : 성수기
 		
 		String selected=null;
-		while(roombean.next()){
-		if(rno == roombean.getInt(1)){
-			selected = roombean.getString(2);
+		
+		if(rno == roombean.getRno()){
+			selected = roombean.getRname();
 			
 			if(result == -1 || result2 == 1){ //성수기 시작 날짜보다 작거나 성수기 마지막 날짜보다 클 때 => 성수기 아님
 				if(newLine == 0 || newLine == 6){
-					price = roombean.getInt(5); //주말
+					price = roombean.getWeekend(); //주말
 				}else{
-					price = roombean.getInt(4); //평일
+					price = roombean.getWeekday(); //평일
 				}
 			}else{
-					price = roombean.getInt(6); //성수기
+					price = roombean.getSweekday(); //성수기
 			}
 		}
 		
-		
-			}
 %>
 
 		<div id="form">
@@ -101,7 +99,7 @@
 				<img src="https://raw.githubusercontent.com/allintonight/Team1/master/WebContent/img/main_img/TEAM1%EB%A1%9C%EA%B3%A0%EC%83%88%EB%A1%9C.jpg">
 			</div>
 			<div id="right">
-				<form method="post" name="fm" action="roomCheck.jsp ">
+				<form method="post" name="fm" action="roomCheck.jsp">
 					<div class="form-group">
 					<input type="hidden" id="rsno" name="rsno" value="<%= max %>" >
 					<input type="hidden" id="mno" name="mno" value="<%= mno %>" >
