@@ -177,6 +177,7 @@ public class ReservationDBBean {
 			return rb;
 		}
 		
+		//현금 결제 시 계좌번호 및 결제자 성명 업데이트
 		public int update(String pay_ment, String pay_name, int rsno, String rname) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -207,6 +208,7 @@ public class ReservationDBBean {
 			
 		}
 		
+		//카드 결제 완료 후 결제 상태 결제 완료로 업데이트
 		public int updateCard(int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -230,6 +232,7 @@ public class ReservationDBBean {
 			return re;
 			
 		}
+		
 		
 		public int ReservationBean(int rsno) {
 			Connection con=null;
@@ -256,6 +259,8 @@ public class ReservationDBBean {
 			return re;
 		}
 		
+		//예약 페이지에정보 입력 후 결제창에서 취소 누르거나 그냥 뒤로 가기 들어왔을 떄 
+		//디비에 들어간 내역 삭제
 		public int deleteReservation() {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -313,7 +318,11 @@ public class ReservationDBBean {
 				
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
+			}finally {
+		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+		        if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
 			return rb;
 		}
 		
@@ -404,7 +413,7 @@ public class ReservationDBBean {
 			}
 			return rb;
 		}
-		
+		//예약 취소 -> 비회원이거나 로그인되어지 않을 경우
 		public int NoneMembercancle(String rname, String rphone, int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -439,6 +448,7 @@ public class ReservationDBBean {
 			return re;
 		}
 		
+		//널 넘어올때 오류 많이 걸려서 넣어 줌
 		public String checkNull(String str) {
 			if(str==null) {
 				return null;
@@ -447,8 +457,7 @@ public class ReservationDBBean {
 			}
 		}
 		
-//		ReservationBean ReservationDBBean reservation	
-//		희순언니~ 혹시 이부분 관리자가 업데이트 하는 부분이면 paid 부분만		
+		//관리자가 입금 확인 후 결제완료 처리 함 admin_reservation2.jsp	
 		public int updateRoom(int rsno, String paid) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -474,6 +483,7 @@ public class ReservationDBBean {
 			return re;
 		}
 		
+		//관리자 예약 현황 조회(전체예약 ) admin_reservation.jsp
 		public ArrayList<ReservationBean> selectList(int start) throws SQLException {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -519,6 +529,7 @@ public class ReservationDBBean {
 
 		}
 		
+		//admin_reservation2.jsp 미결제 현황
 		public ArrayList<ReservationBean> selectListNo(int start) throws SQLException {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -563,6 +574,7 @@ public class ReservationDBBean {
 			return reservationBean;
 		}
 		
+		//admin_reservation3.jsp 결제완료 
 		public ArrayList<ReservationBean> selectpayOk(int start) throws SQLException {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -651,7 +663,7 @@ public class ReservationDBBean {
 
 		}
 	
-
+		
 		public int updateReservation(int rsno,	int mno, int rno,
 				String rname,String remail, String rphone, 
 				Date check_in, Date check_out,int usemen, 

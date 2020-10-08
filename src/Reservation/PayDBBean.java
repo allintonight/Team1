@@ -149,4 +149,42 @@ public class PayDBBean {
 		}
 		return re;
 	}
+	
+	public ArrayList<PayBean> adminCancle(String pay_method) {
+		Connection con=null;
+		PreparedStatement pstmt = null;
+		String sql=null;
+		ResultSet rs = null;
+		ArrayList<PayBean> paybean = new ArrayList<PayBean>();
+		
+		try {
+			if(pay_method.equals("m")) {
+				sql="select c.refund_price, p.*  from cancle c join pay p on c.rsno = p.rsno where pay_method='m';";
+			}else {
+				sql="select c.refund_price, p.*  from cancle c join pay p on c.rsno = p.rsno where pay_method='c';";
+			}
+			con=getConnection();
+			pstmt=con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				paybean.add(new PayBean(
+						rs.getInt(1),
+						rs.getInt(2),
+						rs.getInt(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getString(6),
+						rs.getString(7),
+						rs.getString(8),
+						rs.getString(9)));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+	        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
+		return paybean;
+	}
 }

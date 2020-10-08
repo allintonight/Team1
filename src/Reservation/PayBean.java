@@ -10,6 +10,23 @@ public class PayBean {
 	private String bank_num;
 	private String pay_method;
 	private int refund_price;
+	private int rn;
+	
+	
+	public PayBean() {}
+	
+	public PayBean(int refund_price, int rsno, int paid_amout, String pay_name, String imp_uid, String apply_num, String bank_name,
+			String bank_num, String pay_method) {
+		this.refund_price = refund_price;
+		this.rsno = rsno;
+		this.paid_amout = paid_amout;
+		this.pay_name = pay_name;
+		this.imp_uid = imp_uid;
+		this.apply_num = apply_num;
+		this.bank_name = bank_name;
+		this.bank_num = bank_num;
+		this.pay_method = pay_method;
+	}
 	
 	public int getRsno() {
 		return rsno;
@@ -65,6 +82,12 @@ public class PayBean {
 	public void setRefund_price(int refund_price) {
 		this.refund_price = refund_price;
 	}
-	
+	public int getRn() {
+		return rn;
+	}
+
+	public void setRn(int rn, int i) {
+		this.rn = rn+i;
+	}
 	
 }
