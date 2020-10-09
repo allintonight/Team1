@@ -135,7 +135,7 @@ public class ReservationDBBean {
 		    }
 			return re;
 		}
-		//예약 조회 후 결제사이트에서 가격 뽑기 위해서 추가 ㅠㅠ
+		//예약 조회 후 결제사이트에서 가격 뽑기 위해서 추가 ㅠㅠ, 예약 취소 시에도 사용
 		public ReservationBean price(int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -285,7 +285,7 @@ public class ReservationDBBean {
 			return re;
 		}
 		
-		//카드결제시 결제창에 띄우는 용도 pay_card.jsp
+		//카드결제시 결제창에 띄우는 용도 pay_card.jsp, 관리자 예약 상세조회에서도 사용 admin_resInfo.jsp
 		public ReservationBean reservationpay(int rsno) throws SQLException {
 			Connection con=null;
 			Statement stmt = null;
@@ -493,7 +493,7 @@ public class ReservationDBBean {
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
 
 			try {
-				sql="select * from reservation Limit ?,5;";
+				sql="select * from reservation order by rsno desc Limit ?,5;";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -539,7 +539,7 @@ public class ReservationDBBean {
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
 
 			try {
-				sql="select * from reservation where paid='n' Limit ?,5;";
+				sql="select * from reservation where paid='n' order by rsno desc Limit ?,5;";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -584,7 +584,7 @@ public class ReservationDBBean {
 			ArrayList<ReservationBean> reservationBean = new ArrayList<ReservationBean>();
 
 			try {
-				sql="select * from reservation where paid='y' Limit ?,5;";
+				sql="select * from reservation where paid='y' order by rsno desc Limit ?,5 ;";
 				con=getConnection();
 				pstmt=con.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -661,6 +661,26 @@ public class ReservationDBBean {
 
 			return reservationBean;
 
+		}
+		public int updateReservationDate(int rsno){
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			int re=-1;
+			
+			try {
+				sql="updqte reservation set check_in=null, check_out=null where rsno=?";
+				con=getConnection();
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, rsno);
+				re = 1;
+			}catch(Exception e){
+				e.printStackTrace();
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
+			return re;
 		}
 	
 		
