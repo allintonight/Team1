@@ -4,11 +4,11 @@
 <%@ page import="java.util.ArrayList" %> 
 <%@ page import="java.sql.Timestamp" %>   
 <%@ page import="java.text.SimpleDateFormat" %> 
-     
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="../bootstrap/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="../bootstrap/bootstrap.min.css"/>
@@ -18,7 +18,7 @@
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="../css/style.css"/>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> <!-- 드롭다운 사용시 필수 -->
-<title>Insert title here</title>
+	<title>Insert title here</title>
 <style>
 	nav{
 		margin:20px;
@@ -38,7 +38,7 @@
     <a class="nav-link"  href="admin_reservation.jsp">예약현황</a>
     <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-item nav-link active" href="admin_reservation2.jsp">입금대기</a>
+    <a class="nav-item nav-link active" href="admin_reservation2.jsp">결제대기</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="admin_reservation3.jsp">결제완료</a>
@@ -48,6 +48,7 @@
     <div class="dropdown-menu">
       <a class="dropdown-item" href="admin_resCancleMoney.jsp">현금결제</a>
       <a class="dropdown-item" href="admin_resCancleCard.jsp">카드결제</a>
+       <a class="dropdown-item" href="admin_resCancleOk.jsp">취소완료건</a>
     </div>
   </li>
   <li class="nav-item">
@@ -92,7 +93,8 @@
 	ArrayList<ReservationBean> rbean= rdb.selectListNo(start);
 	
 %>	
-		<div class="right">
+	<div class="right">
+		<div class="container-fluid">	
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">
@@ -119,20 +121,18 @@
 			<tbody>	
 				<tr align="center"> 
 					<th scope="row"><%= rb.getRn() %></th>
-					<td><%= rbean.get(i).getRsno() %></td>
+					<td>
+					<a href="admin_resInfo.jsp?rsno=<%= rbean.get(i).getRsno() %>">
+						<%= rbean.get(i).getRsno() %>
+					</a>
+					</td>
 					<td><%= rbean.get(i).getRno() %></td>
 					<td><%= rbean.get(i).getCheck_in() %></td>
 					<td><%= rbean.get(i).getCheck_out() %></td>
 					<td><%= format.format(rbean.get(i).getRes_date()) %></td>
 					<td><%= rbean.get(i).getRname() %></td>
 					<td><%= rbean.get(i).getPrice() %></td>
-					<% if(rbean.get(i).getPay_ment().equals("m")){
-							 payment = "계좌이체";
-						}else{
-							 payment = "카드결제";
-						} 
-					%>
-					<td><%= payment %></td>
+					<td><%= rbean.get(i).getPay_ment() %></td>
 					<td><input type="button" class="checkBtn btn btn-outline-secondary btn-sm" value="결제완료" /></td>
 				</tr>	
 <%
@@ -140,6 +140,7 @@
 %>			
 			</tbody>
 			</table>
+			</div>
 			</div>	
 				<div>
 					<ul class="pagination" style="margin:20px;padding:0">

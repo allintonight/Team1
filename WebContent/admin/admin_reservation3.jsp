@@ -45,6 +45,7 @@
     <div class="dropdown-menu">
       <a class="dropdown-item" href="admin_resCancleMoney.jsp">현금결제</a>
       <a class="dropdown-item" href="admin_resCancleCard.jsp">카드결제</a>
+       <a class="dropdown-item" href="admin_resCancleOk.jsp">취소완료건</a>
     </div>
   </li>
   <li class="nav-item">
@@ -89,7 +90,8 @@
 	ArrayList<ReservationBean> rbean= rdb.selectpayOk(start);
 	
 %>	
-		<div class="right">
+	<div class="right">
+		<div class="container-fluid">
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">
@@ -115,20 +117,18 @@
 			<tbody>	
 				<tr align="center"> 
 					<th scope="row"><%= rb.getRn() %></th>
-					<td><%= rbean.get(i).getRsno() %></td>
+					<td>
+					<a href="admin_resInfo.jsp?rsno=<%= rbean.get(i).getRsno() %>">
+						<%= rbean.get(i).getRsno() %>
+					</a>
+					</td>
 					<td><%= rbean.get(i).getRno() %></td>
 					<td><%= rbean.get(i).getCheck_in() %></td>
 					<td><%= rbean.get(i).getCheck_out() %></td>
 					<td><%= format.format(rbean.get(i).getRes_date()) %></td>
 					<td><%= rbean.get(i).getRname() %></td>
 					<td><%= rbean.get(i).getPrice() %></td>
-					<% if(rbean.get(i).getPay_ment().equals("m")){
-							 payment = "계좌이체";
-						}else{
-							 payment = "카드결제";
-						} 
-					%>
-					<td><%= payment %></td>
+					<td><%= rbean.get(i).getPay_ment() %></td>
 				</tr>	
 <%
 			}
@@ -136,6 +136,7 @@
 %>		
 			</tbody>
 			</table>
+			</div>
 			<div>
 					<ul class="pagination" style="margin:20px;padding:0">
 <%
@@ -164,7 +165,7 @@
 					for(int i=startPage;i<=endPage;i++){
 %>
 					<li class="page-item">
-					<a class="page-link" href="admin_reservation3.jsp?page=<%=i %>">
+					<a class="page-link" href="admin_reservation3.jsp?page=<%= i %>">
 					<%= i %></a></li>
 <% 	
 					}
