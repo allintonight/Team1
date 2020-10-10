@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDBBean {
 	
@@ -54,7 +56,7 @@ private static UserDBBean instance = new UserDBBean();
 			}return re;
 	}
 	
-	public int checkid(String id) {
+	public int checkid(String id) throws Exception{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int re = -1;
@@ -76,7 +78,7 @@ private static UserDBBean instance = new UserDBBean();
 		}
 		return re;
 	}
-	public int login(String id, String password) {
+	public int login(String id, String password) throws Exception{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int re = -1;
@@ -106,7 +108,8 @@ private static UserDBBean instance = new UserDBBean();
 	}
 	
 	//회원정보 및 예약시 사용 
-	public UserBean memberInfo(String id){
+	@SuppressWarnings("null")
+	public UserBean memberInfo(String id) throws Exception{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
@@ -119,6 +122,7 @@ private static UserDBBean instance = new UserDBBean();
 			pstmt.setString(1,id);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
+				user = new UserBean();
 				user.setMno(rs.getInt(1));
 				user.setId(rs.getString(2));
 				user.setPassword(rs.getString(3));
@@ -128,9 +132,35 @@ private static UserDBBean instance = new UserDBBean();
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
+			System.out.println(id);
+			System.out.println(rs.getInt(1)+rs.getString(2)+rs.getString(3));
 		}
 		return user;
 	}
 	
+	@SuppressWarnings("null")
+	public int updateAccount(String password, String email, String phone, String id){
+		Connection con = null;
+		Statement stmt = null;
+		int re=-1;
+		String sql=null;
+		try {
+				sql="update member set password='"+password+"', email='"+email+"', phone='"+phone+"' where id='"+id+"';";
+				con=getConnection();
+				stmt=con.prepareStatement(sql);
+				stmt.executeUpdate(sql);
+				re = 1;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			re = -1;
+		}finally {
+	        if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
+		return re;
+	}
+}	
 
-}
+
+
