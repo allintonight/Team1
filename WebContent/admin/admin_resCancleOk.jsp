@@ -68,7 +68,8 @@
 			}
 			int re = pdb.updateCancle(rsno);
 			if(re==1){
-				int red = rdb.ReservationBean(rsno);
+				int pre = pdb.updateRsno(rsno);
+				int red = rdb.ReservationBean(rsno); //예약테이블에서 삭제 위해서 cancle 부분 예약 번호 null 로 업데이트 시키기
 				if(red==1){
 	%>
 				<script>
@@ -107,6 +108,7 @@
 			ArrayList<PayBean> apb = pdb.adminCancleOk();
 	%>
 	<div class="container-fluid">
+		<p class="text-center" style="color:#767676;">예약 취소 완료 건은 삼개월간 보관됩니다.</p>
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">
@@ -130,7 +132,7 @@
 			<tbody>	
 				<tr align="center"> 
 					<th scope="row"><%= pb.getRn() %></th>
-					<td><%= apb.get(i).getRsno() %></td>
+					<td>&nbsp;</td>
 					<td><%= apb.get(i).getRname() %></td>
 					<td><%= apb.get(i).getRphone() %></td>
 					<td><%= apb.get(i).getCancle_date() %></td>

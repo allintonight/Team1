@@ -41,7 +41,7 @@
 	int refund_price=0, price=0;
 	Date cancle_date=null, pay_date=null;
 	
-	if(rb!=null && pb!=null){
+	if(rb!=null){
 		roomname=rb.getRoomname();
 		rname=rb.getRname();
 		remail=rb.getRemail();
@@ -145,6 +145,10 @@
 			<%
 				if(pay_ment.equals("m")){
 					out.print("계좌이체</td>");
+					if(bank_name==null){
+						bank_name="미납";
+						bank_num="미납";
+					}
 			%>
 				<th>은행</th>
 				<td>
@@ -157,6 +161,9 @@
 			<% 		
 				}else{
 					out.print("카드결제</td>");
+					if(apply_num==null){
+						apply_num="미납";
+					}
 			%>
 				<th>승인번호</th>
 				<td>
@@ -174,7 +181,7 @@
 			<tr>
 				<td colspan="6" class="text-center">
 				<% 
-						if(cancle_date!=null){
+						if(refund_price!=0){
 				%>
 						<a href="admin_resCancleOk.jsp?rsno=<%= rsno%>" class="btn btn-dark">예약취소</a>
 				<% 			

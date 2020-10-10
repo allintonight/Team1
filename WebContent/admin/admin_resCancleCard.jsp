@@ -47,6 +47,7 @@
     <div class="dropdown-menu">
       <a class="dropdown-item" href="admin_resCancleMoney.jsp">현금결제</a>
       <a class="dropdown-item" href="admin_resCancleCard.jsp">카드결제</a>
+      <a class="dropdown-item" href="admin_resCancleOk.jsp">취소완료건</a>
     </div>
   </li>
   <li class="nav-item">
@@ -92,12 +93,17 @@
 	
 %>
 <div class="rightCard">
+		<div class="container-fluid">
+			<p class="text-center" style="color:#767676;">
+				예약변호 클릭 시 상세 조회가 가능합니다
+			</p>
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">
 				<th scope="col">#</th>
 				<th scope="col">예약번호</th>
 				<th scope="col">결제금액</th>
+				<th scope="col">예약자성명</th>
       			<th scope="col">결제자성명</th>
 	   			<th scope="col">고유ID</th>
       			<th scope="col">카드승인번호</th>
@@ -115,8 +121,12 @@
 			<tbody>	
 				<tr align="center"> 
 					<th scope="row"><%= pb.getRn() %></th>
-					<td><%= pbean.get(i).getRsno() %></td>
+					<td><a href="admin_resInfo.jsp?rsno=<%= pbean.get(i).getRsno() %>">
+						<%= pbean.get(i).getRsno() %>
+						</a>
+					</td>
 					<td><%= pbean.get(i).getPaid_amout() %></td>
+					<td><%= pbean.get(i).getRname() %></td>
 					<td><%= pbean.get(i).getPay_name() %></td>
 					<td><%= pbean.get(i).getImp_uid() %></td>
 					<td><%= pbean.get(i).getApply_num() %></td>
@@ -127,6 +137,7 @@
 %>			
 			</tbody>
 			</table>
+			</div>
 				<div>
 					<ul class="pagination" style="margin:20px;padding:0">
 <%
@@ -142,7 +153,7 @@
 					}else{
 %>
 					<li class="page-item disabled">
-					<a class="page-link" href="admin_resCancleMoney.jsp?page=<%=startPage-1 %> aria-label="Previous">
+					<a class="page-link" href="admin_resCancleCard.jsp?page=<%=startPage-1 %> aria-label="Previous">
        				<span aria-hidden="true">&laquo;</span>
         			<span class="sr-only">Previous</span>	
      			 	</a>
@@ -155,7 +166,7 @@
 					for(int i=startPage;i<=endPage;i++){
 %>
 					<li class="page-item">
-					<a class="page-link" href="admin_resCancleMoney.jsp?page=<%=i %>">
+					<a class="page-link" href="admin_resCancleCard.jsp?page=<%=i %>">
 					<%= i %></a></li>
 <% 	
 					}
@@ -173,7 +184,7 @@
 						}else{
 %>
 						<li class="page-item disabled">
-						<a class="page-link" href="admin_resCancleMoney.jsp?page=<%= endPage+1 %>" aria-label="Next">
+						<a class="page-link" href="admin_resCancleCard.jsp?page=<%= endPage+1 %>" aria-label="Next">
         				<span aria-hidden="true">&raquo;</span>
         				<span class="sr-only">Next</span>
       					</a>

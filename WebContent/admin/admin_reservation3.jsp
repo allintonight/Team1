@@ -92,6 +92,9 @@
 %>	
 	<div class="right">
 		<div class="container-fluid">
+			<p class="text-center" style="color:#767676;">
+				예약번호 클릭 시 상세 조회가 가능합니다
+			</p>
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">

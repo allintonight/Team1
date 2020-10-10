@@ -46,6 +46,7 @@
     <div class="dropdown-menu">
       <a class="dropdown-item" href="admin_resCancleMoney.jsp">현금결제</a>
       <a class="dropdown-item" href="admin_resCancleCard.jsp">카드결제</a>
+      <a class="dropdown-item" href="admin_resCancleOk.jsp">취소완료건</a>
     </div>
   </li>
   <li class="nav-item">
@@ -90,13 +91,18 @@
 	ArrayList<PayBean> pbean= pdb.adminCancle(pay_method);
 	
 %>	
-		<div class="rightMoney">
+	<div class="rightMoney">
+		<div class="container-fluid">
+			<p class="text-center" style="color:#767676;">
+				예약변호 클릭 시 상세 조회가 가능합니다
+			</p>
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">
 				<th scope="col">#</th>
 				<th scope="col">예약번호</th>
 				<th scope="col">결제금액</th>
+				<th scope="col">예약자성명</th>
       			<th scope="col">결제자성명</th>
 	   			<th scope="col">은행</th>
       			<th scope="col">계좌번호</th>
@@ -114,8 +120,12 @@
 			<tbody>	
 				<tr align="center"> 
 					<th scope="row"><%= pb.getRn() %></th>
-					<td><%= pbean.get(i).getRsno() %></td>
+					<td><a href="admin_resInfo.jsp?rsno=<%= pbean.get(i).getRsno() %>">
+						<%= pbean.get(i).getRsno() %>
+						</a>
+					</td>
 					<td><%= pbean.get(i).getPaid_amout() %></td>
+					<td><%= pbean.get(i).getRname() %></td>
 					<td><%= pbean.get(i).getPay_name() %></td>
 					<td><%= pbean.get(i).getBank_name() %></td>
 					<td><%= pbean.get(i).getBank_num() %></td>
@@ -126,6 +136,7 @@
 %>			
 			</tbody>
 			</table>
+			</div>
 			<div>
 				<ul class="pagination" style="margin:20px;padding:0">
 <%

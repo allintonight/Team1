@@ -44,6 +44,7 @@
     <div class="dropdown-menu">
       <a class="dropdown-item" href="admin_resCancleMoney.jsp">현금결제</a>
       <a class="dropdown-item" href="admin_resCancleCard.jsp">카드결제</a>
+      <a class="dropdown-item" href="admin_resCancleOk.jsp">취소완료건</a>
     </div>
   </li>
   <li class="nav-item">
@@ -84,11 +85,15 @@
 	}
 	int start = (cPage -1)*5;
 	
+	rdb.deleteOneDay(); // 24이내 미 입금건
 	ArrayList<ReservationBean> rbean= rdb.selectList(start);
 	
 %>	
 	<div class="container-fluid">
 		<div class="right">
+			<p class="text-center" style="color:#767676;">
+				예약번호 클릭 시 상세 조회가 가능합니다
+			</p>
 			<table class="table table-sm">
 			<thead class="thead-dark">
 			<tr align="center">
@@ -110,6 +115,7 @@
 				if(cPage>1){ //페이지 1이상일 경우 6부터 일씩 증가하도록 해줌
 					rb.setRn((cPage-1)*5+1, i);
 				}
+				
 %>
 			<tbody>	
 				<tr align="center"> 

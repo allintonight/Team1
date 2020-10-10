@@ -12,8 +12,10 @@
 		int rsno = Integer.parseInt(request.getParameter("rsno"));
 		String paid="y";
 		ReservationDBBean rdb = ReservationDBBean.getinstance(); 
+		PayDBBean pdb = PayDBBean.getinstance();
 		int re = rdb.updateRoom(rsno, paid);
-		if(re==1){
+		int pre = pdb.updatePayDate(rsno);
+		if(re==1&&pre==1){
 	%>
 		<script>
 			alert("완료");
