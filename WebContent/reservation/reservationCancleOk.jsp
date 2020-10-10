@@ -18,16 +18,21 @@
 	if(session.getAttribute("userid")==null){	
 		request.setCharacterEncoding("utf-8");
 		ReservationDBBean rdb = ReservationDBBean.getinstance();
+		ReservationBean rb = new ReservationBean();
 		PayDBBean pdb = PayDBBean.getinstance();
 		PayBean paybean = new PayBean();
 		ResultSet rs = null;
 		String pay_name=null;
+		
 		int rsno = Integer.parseInt(request.getParameter("rsno"));
 		String rname = request.getParameter("rname"); 
 		String rphone = request.getParameter("rphone");
+		
+		rdb.reservationpay(rsno);
+		
+		
 		int refund_price = Integer.parseInt(request.getParameter("refund_price"));
 		int result = rdb.NoneMembercancle(rname, rphone, rsno);
-		paybean = pdb.selectPay(rsno);
 		
 		if(result==1){
 			if(paybean!=null){
@@ -36,13 +41,15 @@
 			paybean.setRsno(rsno);
 			paybean.setRefund_price(refund_price);
 			paybean.setPay_name(pay_name);
+			paybean.setRname(rname);
+			paybean.setRphone(rphone);
 			pdb.payCancle(paybean);
 		
 %>
 		<script>
 			var con = confirm("예약 취소 하시겠습니까?")
 			if(con==true){
-				alert("예약취소! 환불까지는 시간이 소요될 수 있습니다.");
+				alert("예약취소완료! 환불까지는 시간이 소요될 수 있습니다.");
 				location.href=indext.jsp;
 			}
 		</script>
@@ -57,7 +64,7 @@
 		}else if(result==-1){
 %>
 		<script>			
-			alert("다시 시도 부탁드립니다");
+			alert("예약자가 존재하지 않습니다");
 			history.back();
 		</script>
 <%				
@@ -68,7 +75,7 @@
 		<script>
 			var con = confirm("예약 취소 하시겠습니까?")
 			if(con==true){
-				alert("예약취소! 환불까지는 시간이 소요될 수 있습니다.");
+				alert("예약취소완료. 환불까지는 시간이 소요될 수 있습니다.");
 				location.href=indext.jsp;
 			}
 		</script>

@@ -38,6 +38,10 @@
 	int rsno = Integer.parseInt(request.getParameter("rsno"));
 	ReservationBean rb = rdb.cancleDate(rsno);
 	
+	PayDBBean pdb = PayDBBean.getinstance();
+	int re = pdb.selectCantcle(rsno);
+	
+	
 	int result=0;
 	Date nowTime = new Date();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyMMdd");
@@ -48,56 +52,65 @@
 	double price =0;
 	int icheck_in = 0;
 	
-	if(rb !=null){
-		check_in = rb.getCheck_in();
-		price = rb.getPrice();
-		icheck_in = Integer.parseInt(sf.format(check_in));
-		int day=icheck_in-today;
-		
-		if(day<14&&day>=7){
-			price = price*0.5;
-		}else if(day<7&&day>=5){
-			price = price*0.3;
-		}else if(day<5&&day>=3){
-			price = price*0.1;
-		
-		}else if(day<3){
-			price = 0;
-		}
+	if(re==1){
+%>
+		<script>
+			alert("이미 취소된 예약건 입니다.");
+		</script>
+<% 				
 	}else{
+			if(rb !=null){
+				check_in = rb.getCheck_in();
+				price = rb.getPrice();	
+				icheck_in = Integer.parseInt(sf.format(check_in));
+				int day=icheck_in-today;
+		
+				if(day<14&&day>=7){
+					price = price*0.5;
+				}else if(day<7&&day>=5){
+					price = price*0.3;
+				}else if(day<5&&day>=3){
+					price = price*0.1;
+		
+				}else if(day<3){
+					price = 0;
+				}
+				
+			}else{
 %>
-	<script>
-		alert("다시시도 해 주세요");
-		history.back();
-	</script>
+				<script>
+					alert("다시시도 해 주세요");
+					history.back();
+				</script>
 <% 		
-	}
+			}
 %>
-	<div class="rigth">
-	 <div class="reservationNumber">
+				<div class="rigth">
+				 <div class="reservationNumber">
 <%
-		if(price==0){
+
+				if(price==0){
 %>
-			체크인 기준 3일전부터는 예약취소 및 환불이 불가능 합니다.
+					체크인 기준 3일전부터는 예약취소 및 환불이 불가능 합니다.
 <% 			
-		}else{
+				}else{
 %>
-		고객님이 환불 받으실 수 있는 금액은 <%= df.format(price) %>원 입니다.<br>
-		예약 취소를 원하시면 버튼을 눌러 주세요.<br>
+					고객님이 환불 받으실 수 있는 금액은 <%= df.format(price) %>원 입니다.<br>
+					예약 취소를 원하시면 버튼을 눌러 주세요.<br>
 <% 
 		
-	String userid = (String)session.getAttribute("userid");
-	if(session.getAttribute("userid")==null){
+				String userid = (String)session.getAttribute("userid");
+				if(session.getAttribute("userid")==null){
 %>
-		<button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#modalForm">예약취소</button>
+					<button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#modalForm">예약취소</button>
 <%	
-}
-else{
-	%>
-	<a class="btn btn-dark btn-sm" href="reservationCancleOk.jsp?rsno=<%= rsno %>&refund_price="<%=df.format(price)%>>예약취소</a>
+					}else{
+%>
+					<a class="btn btn-dark btn-sm" href="reservationCancleOk.jsp?rsno=<%= rsno %>&refund_price="<%=df.format(price)%>>예약취소</a>
 <% 	
-	}
-		}
+					}
+				}
+			} 	
 	
 %>
 </div>
