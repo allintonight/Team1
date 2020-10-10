@@ -1,4 +1,4 @@
-package Reservation;
+ package Reservation;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -233,7 +233,7 @@ public class ReservationDBBean {
 			
 		}
 		
-		
+		//예약 취소 완료 건 삭제(결제테이블, 예약 테이블)
 		public int ReservationBean(int rsno) {
 			Connection con=null;
 			PreparedStatement pstmt = null;
@@ -241,7 +241,7 @@ public class ReservationDBBean {
 			int re=-1;
 
 			try {
-				sql="delete from reservation where rsno=?";
+				sql="delete r,p from pay p inner join reservation r on r.rsno = p.rsno where p.rsno=?";
 				con=getConnection();
 				con.setAutoCommit(false);
 				pstmt=con.prepareStatement(sql);
@@ -269,6 +269,32 @@ public class ReservationDBBean {
 
 			try {
 				sql="delete from reservation where pay_ment is null or pay_ment='c' and paid='n'";
+				con=getConnection();
+				con.setAutoCommit(false);
+				pstmt=con.prepareStatement(sql);
+				pstmt.executeUpdate();
+				con.setAutoCommit(true);
+				re = 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+				re = -1;
+			}finally {
+		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+		        if (con != null) try { con.close(); } catch(SQLException ex) {}
+		    }
+			return re;
+		}
+		
+		//24시간 이내 입금 안될경우 삭제
+		public int deleteOneDay() {
+			Connection con=null;
+			PreparedStatement pstmt = null;
+			String sql=null;
+			int re=-1;
+
+			try {
+				sql="delete r,p from reservation r INNER JOIN pay p on r.rsno = p.rsno "
+						+ "where r.paid='n' and date_add(r.res_date, interval 24 hour)<=now()";
 				con=getConnection();
 				con.setAutoCommit(false);
 				pstmt=con.prepareStatement(sql);
@@ -519,6 +545,7 @@ public class ReservationDBBean {
 				
 			}catch(Exception e) {
 				e.printStackTrace();
+				System.out.println(start);
 			}finally {
 		        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
 		        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}

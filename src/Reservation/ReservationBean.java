@@ -51,7 +51,11 @@ public class ReservationBean {
 		this.check_out = check_out;
 		this.usemen = usemen;
 		this.price = price;
-		this.pay_ment = pay_ment;
+		if(pay_ment.equals("m")) {
+			this.pay_ment="계좌이체";
+		}else {
+			this.pay_ment="카드결제";
+		}
 		this.paid = paid;
 		this.pay_name = pay_name;
 		this.res_date = res_date;

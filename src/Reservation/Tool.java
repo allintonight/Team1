@@ -21,7 +21,7 @@ public class Tool {
 		String pwd = "team1team1";
 		
 		try { 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			con=DriverManager.getConnection(url, user, pwd);
 			
 			} catch (Exception e) { 
@@ -47,9 +47,14 @@ public class Tool {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-		}
+		}finally {
+	        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
 		return cnt;
 	}
+	
 	public int getPage2() {
 		int cnt=0;
 		Connection con = null;
@@ -67,9 +72,14 @@ public class Tool {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-		}
+		}finally {
+	        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
 		return cnt;
 	}
+	
 	public int getPage3() {
 		int cnt=0;
 		Connection con = null;
@@ -87,7 +97,61 @@ public class Tool {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-		}
+		}finally {
+	        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
+		return cnt;
+	}
+	
+	public int getPage4() {
+		int cnt=0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =  null;
+		
+		String sql="select count(*) cnt from cancle where cancled='n';";
+		
+		try {
+			con=getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+	        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
+		return cnt;
+	}
+	
+	public int getPage6() {
+		int cnt=0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =  null;
+		
+		String sql="select count(*) cnt from cancle where cancled='y';";
+		
+		try {
+			con=getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+	        if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+	        if (con != null) try { con.close(); } catch(SQLException ex) {}
+	    }
 		return cnt;
 	}
 }	

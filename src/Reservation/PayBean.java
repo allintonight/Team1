@@ -1,7 +1,11 @@
 package Reservation;
 
+import java.sql.Date;
+
 public class PayBean {
 	private int rsno;
+	private String rname;
+	private String rphone;
 	private int paid_amout;
 	private String pay_name;
 	private String imp_uid;
@@ -11,12 +15,16 @@ public class PayBean {
 	private String pay_method;
 	private int refund_price;
 	private int rn;
+	private Date pay_date;
+	private Date cancle_date;
+	private Date cancleOk_date;
 	
 	
 	public PayBean() {}
 	
-	public PayBean(int refund_price, int rsno, int paid_amout, String pay_name, String imp_uid, String apply_num, String bank_name,
-			String bank_num, String pay_method) {
+	public PayBean(int refund_price, Date cancle_date, int rsno, int paid_amout, 
+			String pay_name, String imp_uid, String apply_num, String bank_name,
+			String bank_num, String pay_method, String rname) {
 		this.refund_price = refund_price;
 		this.rsno = rsno;
 		this.paid_amout = paid_amout;
@@ -26,8 +34,20 @@ public class PayBean {
 		this.bank_name = bank_name;
 		this.bank_num = bank_num;
 		this.pay_method = pay_method;
+		this.rname = rname;
 	}
 	
+	public PayBean(int rsno, int refund_price, String pay_name, Date cancle_date,
+				   Date cancleOk_date, String rname, String rphone) {
+		this.rsno = rsno;
+		this.rname = rname;
+		this.pay_name = pay_name;
+		this.refund_price = refund_price;
+		this.cancle_date = cancle_date;
+		this.cancleOk_date = cancleOk_date;
+		this.rphone = rphone;
+	}
+
 	public int getRsno() {
 		return rsno;
 	}
@@ -88,6 +108,46 @@ public class PayBean {
 
 	public void setRn(int rn, int i) {
 		this.rn = rn+i;
+	}
+
+	public Date getCancle_date() {
+		return cancle_date;
+	}
+
+	public void setCancle_date(Date cancle_date) {
+		this.cancle_date = cancle_date;
+	}
+
+	public Date getCancleOk_date() {
+		return cancleOk_date;
+	}
+
+	public void setCancleOk_date(Date cancleOk_date) {
+		this.cancleOk_date = cancleOk_date;
+	}
+
+	public String getRname() {
+		return rname;
+	}
+
+	public void setRname(String rname) {
+		this.rname = rname;
+	}
+
+	public Date getPay_date() {
+		return pay_date;
+	}
+
+	public void setPay_date(Date pay_date) {
+		this.pay_date = pay_date;
+	}
+
+	public String getRphone() {
+		return rphone;
+	}
+
+	public void setRphone(String rphone) {
+		this.rphone = rphone;
 	}
 	
 }
