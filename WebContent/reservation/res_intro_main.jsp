@@ -14,6 +14,12 @@
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
 	
 </head>
+<style>
+	.accordion{
+		margin-bottom: 5%;
+		margin-top: 10%;
+	}
+</style>
 <body>
 
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -48,6 +54,124 @@
     <!--/.Content-->
   </div>
 </div>
+<div class="container text-center">
+<div class="accordion" id="accordionExample">
+  <div class="card" >
+    <div class="card-header" id="headingOne" style="background-color:#585858;">
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:#fff;">
+         룸 가격 안내
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="container table-responsive">
+        	<table class="table">
+  				<thead>
+   					<tr>
+      				<th scope="col">#</th>
+      				<th scope="col">방 이름</th>
+      				<th scope="col">인원</th>
+      				<th scope="col">평일</th>
+      				<th scope="col">주말</th>
+      				<th scope="col">성수기</th>
+    				</tr>
+  				</thead>
+  				<tbody>
+    				<tr>
+      				<th scope="row">1</th>
+      				<td>혼자방</td>
+      				<td>1명</td>
+      				<td>100,000원</td>
+      				<td>150,000원</td>
+      				<td>200,0000원</td>
+    				</tr>
+    				<tr>
+     		 		<th scope="row">2</th>
+      				<td>같이방</td>
+      				<td>2명</td>
+      				<td>100,000원</td>
+      				<td>150,000원</td>
+      				<td>200,0000원</td>
+    				</tr>
+    				<tr>
+     			 	<th scope="row">3</th>
+      				<td>가족방</td>
+      				<td>4명</td>
+      				<td>20,0000원</td>
+      				<td>250,000원</td>
+      				<td>300,0000원</td>
+    				</tr>
+    				<tr>
+     			 	<th scope="row">4</th>
+      				<td>서브펜션</td>
+      				<td>4명</td>
+      				<td>20,0000원</td>
+      				<td>250,000원</td>
+      				<td>300,0000원</td>
+    				</tr>
+  				</tbody>
+			</table>
+			<p class="text-sm-left" style="color:#616161;">인원 추가는 1인당 20,000원씩 추가 됩니다.<br>
+									성수가는 7월 15일부터 8월 20일에 해당 됩니다.
+			</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo"  style="background-color:#585858;">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="color:#fff;">
+          예약 취소 안내
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+      	<div class="container table-responsive">
+        	<table class="table">
+  				<thead>
+   					<tr>
+      				<th scope="col">기준</th>
+      				<th scope="col">환불규정</th>
+      				</tr>
+  				</thead>
+  				<tbody>
+    				<tr>
+      				<th scope="row">2주~1주일 전</th>
+      				<td>결제 금액의 50% 환불</td>
+      				</tr>
+  				</tbody>
+  				<tbody>
+    				<tr>
+      				<th scope="row">6일~4일 전</th>
+      				<td>결제 금액의 30% 환불</td>
+      				</tr>
+  				</tbody>
+  				<tbody>
+    				<tr>
+      				<th scope="row">3일~하루 전</th>
+      				<td>결제 금액의 10% 환불</td>
+      				</tr>
+  				</tbody>
+  				<tbody>
+    				<tr>
+      				<th scope="row">당일</th>
+      				<td>환불 불가</td>
+      				</tr>
+  				</tbody>
+			</table>
+			<p class="text-sm-left" style="color:#616161;">예약 전 꼭 확인 부탁 드립니다.<br>
+									계좌 이체의 경우 입금 계좌로 환불 됩니다.
+			</p>
+        </div>	
+      </div>
+    </div>
+  </div>
+</div>
+
 	<% 
 		if(session.getAttribute("userid")!=null){
 	%>
@@ -61,5 +185,6 @@
     <% 
     }
 	%>
+</div>	
 </body>
 </html>
