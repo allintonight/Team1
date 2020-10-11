@@ -64,7 +64,7 @@
         </button>
       </h5>
     </div>
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
         <div class="container table-responsive">
         	<table class="table">
@@ -187,4 +187,7 @@
 	%>
 </div>	
 </body>
+<script>
+
+</script>
 </html>
