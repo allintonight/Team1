@@ -1,6 +1,7 @@
 package Room;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -88,25 +89,33 @@ public class RoomDBBean {
 		
 	}
 	
-	//특정 룸 정보 받아오기(룸 정보 수정 위함)
+	//특정 룸 정보 받아오기(룸 정보 수정 위함), res_process.jsp, update_room.jsp
 	@SuppressWarnings("null")
-	public ResultSet selectRoom(int rno) throws SQLException {
+	public RoomBean selectRoom(int rno) throws SQLException {
 		Connection con=null;
 		Statement stmt = null;
 		String sql=null;
 		ResultSet rs = null;
-		RoomBean roombean=null;
+		RoomBean roombean=new RoomBean();
 		
 		try {
 			sql="select * from room where rno="+rno;
 			con=getConnection();
 			stmt=con.createStatement();
 			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				roombean.setRno(rs.getInt(1));
+				roombean.setRname(rs.getString(2));
+				roombean.setMen(rs.getInt(3));
+				roombean.setWeekday(rs.getInt(4));
+				roombean.setWeekend(rs.getInt(5));
+				roombean.setSweekday(rs.getInt(6));
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			System.out.println(rno);
 		}
-		return rs;
+		return roombean;
 	}
 	
 	public int updateRoom(String rname, int men, int weekday, int weekend, int sweekday, int rno) {
@@ -155,4 +164,6 @@ public class RoomDBBean {
 		}
 		return re;
 	}
+	
+		
 }
