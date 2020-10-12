@@ -24,7 +24,7 @@ public class PostBean {
 	   int startPage = pageNUM - temp;
 	   
 	   if((startPage-limit)>0) {
-		   str = "<a href='post_list.jsp?pageNUM="+(startPage-1)+"'>[ÀÌÀü]</a>&nbsp;&nbsp;";
+		   str = "<a href='post_list.jsp?pageNUM="+(startPage-1)+"'>[ì´ì „]</a>&nbsp;&nbsp;";
 	   }
 	   for(int i = startPage; i<(startPage+limit);i++) {
 		   if(i==pageNUM) {
@@ -35,7 +35,7 @@ public class PostBean {
 		   if(i >= pagecount) break;
 	   }
 	   if((startPage+limit) <= pagecount) {
-		   str += "<a href='post_list.jsp?pageNUM="+(startPage+limit)+"'>[´ÙÀ½]</a>";
+		   str += "<a href='post_list.jsp?pageNUM="+(startPage+limit)+"'>[ë‹¤ìŒ]</a>";
 		   
 	   }
 	   

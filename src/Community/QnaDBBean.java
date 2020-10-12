@@ -118,9 +118,9 @@ public class QnaDBBean {
 	         if(subject == null) {
 	        	 sql="select * from qna order by no desc";
 	         }else if(subject.equals("1")) {
-        		 sql="select * from qna where title like '%"+word+"%' or content like '%"+word+"%' desc";
+        		 sql="select * from qna where title like '%"+word+"%' or content like '%"+word+"%'";
 	         }else {
-	        	 sql="select * from qna where name like '%"+word+"%' desc";
+	        	 sql="select * from qna where name like '%"+word+"%'";
 	         }
 	         
 	         rs = stmt.executeQuery(sql);

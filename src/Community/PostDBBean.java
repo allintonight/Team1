@@ -19,12 +19,13 @@ public class PostDBBean {
 	   
 	   public Connection getConnection() throws Exception{
 		   	  Connection con = null;
-		   	String url = "jdbc:mysql://203.245.44.74:3306/allintonight?serverTimezone=UTC"; 
-		    String user = "allintonight";
-		    String pwd = "team1team1";
+		   	  String url = "jdbc:mysql://203.245.44.74:3306/allintonight?serverTimezone=UTC"; 
+		
+		   	  String user = "allintonight";
+		   	  String pwd = "team1team1";
 		      
 		      try { 
-		         Class.forName("com.mysql.cj.jdbc.Driver");
+		         Class.forName("com.mysql.jdbc.Driver");
 		         con=DriverManager.getConnection(url, user, pwd);
 		         
 		         } catch (Exception e) { 
@@ -86,7 +87,7 @@ public class PostDBBean {
 	      ResultSet rs=null;
 	      ResultSet pageset=null;	      
 	     
-	      int absolutepage=1;//∆‰¿Ã¬° ∫Øºˆ
+	      int absolutepage=1;//ÌéòÏù¥Ïßï Î≥ÄÏàò
 	      int dbcount=0;
 	      String sql="";
 	     
@@ -116,9 +117,9 @@ public class PostDBBean {
 	         if(subject == null) {
 	        	 sql="select * from post order by no desc";
 	         }else if(subject.equals("1")) {
-        		 sql="select * from post where title like '%"+word+"%' or content like '%"+word+"%' desc";
+        		 sql="select * from post where title like '%"+word+"%' or content like '%"+word+"%'";
 	         }else {
-	        	 sql="select * from post where name like '%"+word+"%' desc";
+	        	 sql="select * from post where name like '%"+word+"%'";
 	         }
 	        
 	         rs = stmt.executeQuery(sql);
@@ -334,6 +335,173 @@ public class PostDBBean {
 			
 		
 	}
+		 public int insertPostCmt(int no, PostCmt postcmt) {
+		      Connection con=null;
+		      PreparedStatement pstmt=null;
+		      ResultSet rs=null;
+		      String sql="";
+		      int cno=0;
+		      
+		      try {
+		         con=getConnection();    
+		         sql="select max(cno) from post_comment";
+		         pstmt = con.prepareStatement(sql);
+		         rs = pstmt.executeQuery();
+		         
+		         if(rs.next()) {
+		            cno = rs.getInt(1)+1;
+		         }else {
+		            cno = 1;
+		         }
+		         sql="insert into post_comment(cno, no, name, password, comment, date) values(?, ?, ?, ?, ?, ?)";
+		         pstmt = con.prepareStatement(sql);
+		         pstmt.setInt(1, cno);
+		         pstmt.setInt(2, no);
+		         pstmt.setString(3, postcmt.getName());
+		         pstmt.setString(4, postcmt.getPassword());
+		         pstmt.setString(5, postcmt.getComment());
+		         pstmt.setTimestamp(6, postcmt.getDate());
+		         pstmt.executeUpdate();
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }finally {
+		         try {
+		            if(rs != null) rs.close();
+		            if(pstmt != null) pstmt.close();
+		            if(con != null) con.close();
+		         } catch (Exception e2) {
+		            e2.printStackTrace();
+		         }
+		      }
+		      
+		      return 1;
+		   }
+		 public PostCmt getPostCmt(int no) {
+		      Connection con=null;
+		      PreparedStatement pstmt=null;
+		      ResultSet rs=null;
+		      String sql="";
+		      PostCmt postcmt=null;
+		      
+		      try {
+		         con=getConnection(); 	         
+		         sql="select * from post_comment where no=?";
+		         pstmt = con.prepareStatement(sql);
+		         pstmt.setInt(1, no);
+		         rs = pstmt.executeQuery();
+		         
+		         if(rs.next()) {
+		        	   postcmt = new PostCmt();
+		        	   postcmt.setCno(rs.getInt(1));
+		        	   postcmt.setNo(rs.getInt(2));
+		        	   postcmt.setName(rs.getString(3));
+		        	   postcmt.setPassword(rs.getString(4));
+		        	   postcmt.setComment(rs.getString(5));
+		        	   postcmt.setDate(rs.getTimestamp(6));
+			         }
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }finally {
+		         try {
+		            if(rs != null) rs.close();
+		            if(pstmt != null) pstmt.close();
+		            if(con != null) con.close();
+		         } catch (Exception e2) {
+		            e2.printStackTrace();
+		         }
+		      }
+		      
+		      return postcmt;
+		   }
+		 public ArrayList<PostCmt> listPostCmt(int no){
+		      Connection con=null;
+		      PreparedStatement pstmt=null;
+		      ResultSet rs=null;      
+		     
+		      String sql="";
+		     
+		      ArrayList<PostCmt> postCmtList=new ArrayList<PostCmt>();
+		      
+		      
+		      try {
+		         con=getConnection();
+		         sql="select * from post_comment where no=?";
+		         pstmt = con.prepareStatement(sql);
+		         pstmt.setInt(1, no);
+		         rs = pstmt.executeQuery();
+		         
+		         
+		         while(rs.next()) {
+		        	 PostCmt postcmt=new PostCmt();
+		        	 postcmt.setCno(rs.getInt(1));
+		        	 postcmt.setNo(rs.getInt(2));
+		        	 postcmt.setName(rs.getString(3));
+		        	 postcmt.setPassword(rs.getString(4));
+		        	 postcmt.setComment(rs.getString(5));                     
+		        	 postcmt.setDate(rs.getTimestamp(6));
+		          
+		            
+		        	 postCmtList.add(postcmt);
+		         }
+		         
+		        	      
+		      }catch(Exception e){
+		         e.printStackTrace();
+		      }finally {
+		         try {
+		            if(rs != null) rs.close();
+		            if(pstmt != null) pstmt.close();
+		            if(con != null) con.close();
+		         } catch (Exception e2) {
+		            e2.printStackTrace();
+		         }
+		      }
+		      
+		      return postCmtList;
+		   }
+		 public int deletePostCmt(int cno, String password) {
+		      Connection con=null;
+		      PreparedStatement pstmt=null;
+		      ResultSet rs=null;
+		      
+		      String sql="";
+		      String pwd="";
+		      int re=-1;
+		      
+		      try {
+		         con=getConnection();
+		         sql="select password from post_comment where cno=?";
+		         pstmt=con.prepareStatement(sql);
+		         pstmt.setInt(1, cno);
+		         rs = pstmt.executeQuery();
+		         
+		         if(rs.next()) {
+		            pwd = rs.getString(1);
+		            
+		            if(!pwd.equals(password)) {
+		               re=0;
+		            }else {
+		               sql="delete from post_comment where cno=?";
+		               pstmt=con.prepareStatement(sql);
+		               pstmt.setInt(1, cno);
+		               pstmt.executeUpdate();
+		               re=1;
+		            }
+		         }
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }finally {
+		         try {
+		            if(rs != null) rs.close();
+		            if(pstmt != null) pstmt.close();
+		            if(con != null) con.close();
+		         } catch (Exception e2) {
+		            e2.printStackTrace();
+		         }
+		      }
+		      return re;
+		   }
+
 }
 
 
