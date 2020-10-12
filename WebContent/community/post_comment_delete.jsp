@@ -3,6 +3,8 @@
 <%
 	int no = Integer.parseInt(request.getParameter("no"));
 	String pageNUM = request.getParameter("pageNUM");
+	int cno = Integer.parseInt(request.getParameter("cno"));
+
 %>
 
 <html>
@@ -11,7 +13,7 @@
 	</head>
 	<body>
 		<center>
-			<form method="post" name="form" action="post_delete_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
+			<form method="post" name="form" action="post_comment_delete_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>&cno=<%=cno%>">
 				  <table>
 				  	<tr height="50">
 				  		<td colspan="2" align="left">

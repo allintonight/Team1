@@ -19,6 +19,5 @@
 	response.sendRedirect("qna_write.jsp");
 	}
     
-    
 	
 %>
