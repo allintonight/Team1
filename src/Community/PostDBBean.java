@@ -1,4 +1,4 @@
-package community;
+package Community;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class PostDBBean {
 	            number = 1;
 	         }
 	         
-	         sql="insert into post(no, name, password, email, title, content, upload_file, date) values(?, ?, ?, ?, ?, ?, ?, ?)";
+	         sql="insert into post(no, name, password, email, title, content, upload_file, date) values(?, ?, ?, ?, ?, ?, ?, now())";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, number);
 	         pstmt.setString(2, post.getName());
@@ -64,7 +64,6 @@ public class PostDBBean {
 	         pstmt.setString(5, post.getTitle());
 	         pstmt.setString(6, post.getContent());
 	         pstmt.setString(7, post.getUpload_file());
-	         pstmt.setTimestamp(8, post.getDate());
 	         pstmt.executeUpdate();
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -270,7 +269,7 @@ public class PostDBBean {
 				if(!pwd.equals(post.getPassword())) {
 					re = 0;
 				}else {
-					sql="update post set Password=?, Title = ?, Content = ?, Upload_file=? where no=?";
+					sql="update post set Password=?, Title = ?, Content = ?, Upload_file=?, date=now() where no=?";
 					pstmt=con.prepareStatement(sql);
 					pstmt.setString(1, post.getPassword());
 					pstmt.setString(2, post.getTitle());
@@ -353,14 +352,13 @@ public class PostDBBean {
 		         }else {
 		            cno = 1;
 		         }
-		         sql="insert into post_comment(cno, no, name, password, comment, date) values(?, ?, ?, ?, ?, ?)";
+		         sql="insert into post_comment(cno, no, name, password, comment, date) values(?, ?, ?, ?, ?, now())";
 		         pstmt = con.prepareStatement(sql);
 		         pstmt.setInt(1, cno);
 		         pstmt.setInt(2, no);
 		         pstmt.setString(3, postcmt.getName());
 		         pstmt.setString(4, postcmt.getPassword());
 		         pstmt.setString(5, postcmt.getComment());
-		         pstmt.setTimestamp(6, postcmt.getDate());
 		         pstmt.executeUpdate();
 		      } catch (Exception e) {
 		         e.printStackTrace();

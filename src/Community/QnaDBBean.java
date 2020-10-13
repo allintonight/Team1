@@ -1,4 +1,4 @@
-package community;
+package Community;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class QnaDBBean {
 	            number = 1;
 	         }
 	         
-	         sql="insert into qna(no, name, password, email, title, content, date, secret, comment) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	         sql="insert into qna(no, name, password, email, title, content, date, secret, comment) values(?, ?, ?, ?, ?, ?, now(), ?, ?)";
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, number);
 	         pstmt.setString(2, qna.getName());
@@ -64,9 +64,8 @@ public class QnaDBBean {
 	         pstmt.setString(4, qna.getEmail());
 	         pstmt.setString(5, qna.getTitle());
 	         pstmt.setString(6, qna.getContent());
-	         pstmt.setTimestamp(7, qna.getDate());
-	         pstmt.setInt(8, qna.getSecret());
-	         pstmt.setString(9, qna.getComment());
+	         pstmt.setInt(7, qna.getSecret());
+	         pstmt.setString(8, qna.getComment());
 	         pstmt.executeUpdate();
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -276,7 +275,7 @@ public class QnaDBBean {
 				if(!pwd.equals(qna.getPassword())) {
 					re = 0;
 				}else {
-					sql="update qna set Title = ?, Content = ?, Secret = ? where no=?";
+					sql="update qna set Title = ?, Content = ?, Date=now(), Secret = ? where no=?";
 					pstmt=con.prepareStatement(sql);
 					pstmt.setString(1, qna.getTitle());
 					pstmt.setString(2, qna.getContent());

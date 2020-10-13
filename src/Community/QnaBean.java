@@ -1,4 +1,4 @@
-package community;
+package Community;
 
 
 import java.sql.Timestamp;
