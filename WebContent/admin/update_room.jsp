@@ -50,35 +50,35 @@
 	String roomno = request.getParameter("rno");
 	int rno = Integer.parseInt(roomno);
 	RoomDBBean rdb = RoomDBBean.getinstance();
-	ResultSet roombean = rdb.selectRoom(rno);
-	while(roombean.next()){
+	RoomBean roombean = rdb.selectRoom(rno);
+	
 	%>
 		<div class="form">
 			<form method="post" action="update_roomOk.jsp?rno=<%= rno %>">
 			<table align="center">
 				<tr>
 					<td width="200px">방 번호</td>
-					<td><input type="text" name="rno" value="<%= roombean.getInt(1) %>" readonly></td>
+					<td><input type="text" name="rno" value="<%= roombean.getRno() %>" readonly></td>
 				</tr>
 				<tr>
 					<td width="200px">방 이름</td>
-					<td><input type="text" name="rname" value="<%= roombean.getString(2) %>"></td>
+					<td><input type="text" name="rname" value="<%= roombean.getRname() %>"></td>
 				</tr>
 				<tr>
 					<td width="200px">인원수</td>
-					<td><input type="text" name="men" value="<%= roombean.getInt(3) %>"></td>
+					<td><input type="text" name="men" value="<%= roombean.getMen() %>"></td>
 				</tr>
 				<tr>
 					<td width="200px">평일가격</td>
-					<td><input type="text" name="weekday" value="<%= roombean.getInt(4) %>"></td>
+					<td><input type="text" name="weekday" value="<%= roombean.getWeekday() %>"></td>
 				</tr>
 				<tr>
 					<td width="200px">주말가격</td>
-					<td><input type="text" name="weekend" value="<%= roombean.getInt(5) %>"></td>
+					<td><input type="text" name="weekend" value="<%= roombean.getWeekend() %>"></td>
 				</tr>
 				<tr>
 					<td width="200px">성수기가격</td>
-					<td><input type="text" name="sweekday" value="<%= roombean.getInt(6) %>"></td>
+					<td><input type="text" name="sweekday" value="<%= roombean.getSweekday() %>"></td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -91,8 +91,6 @@
 			</form>
 			
 		</div>
-	<%
-	}
-	%>	
+	
 </body>
 </html>
