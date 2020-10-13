@@ -7,11 +7,12 @@
 <title>Insert title here</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<script type ="text/javascript" src="javascript.js" defer> </script>
+	<script type ="text/javascript" src="../js/javascript.js" defer> </script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="../bootstrap/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="../bootstrap/bootstrap.min.css"/>
 	<script src="https://kit.fontawesome.com/9db93bd103.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> <!-- 드롭다운 사용시 필수 -->
 	<style>
 		.navbar{
 			background-color:#585858;
@@ -20,9 +21,6 @@
 			margin:0;
 			padding:0;
 			padding-top:20px;
-		}
-		.navbtn{
-			color: #fff;
 		}
 		.text-right{
 			width:100%;
@@ -54,7 +52,7 @@
             <!--Body-->
             <div class="modal-body mb-1">
               <div class="md-form mb-5">
-              	<form method="post" action="main/login.jsp"><!-- 로그인 폼 -->
+              	<form method="post" action="../main/login.jsp"><!-- 로그인 폼 -->
                 <i class="fas fa-user-circle"></i>
                 <label data-error="wrong" data-success="right" for="modalLRInput10">Your ID</label><br>
                 <input type="text" class="form-control form-control-sm validate" 
@@ -96,7 +94,7 @@
       </div>
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
-        <form action="register.jsp" method="post" name="rf">
+        <form action="../main/register.jsp" method="post" name="rf">
         
           <i class="fas fa-users"></i>
           <label data-error="wrong" data-success="right" for="orangeForm-name">Your name</label>
@@ -122,7 +120,7 @@
           <label data-error="wrong" data-success="right" for="orangeForm-pass" >Check password</label><br>
           <input type="password" id="pwd2" class="form-control validate" 
           			name="password2" placeholder="비밀번호 확인 ">
-          			
+          <br>			
           <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
           <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
 			
@@ -144,19 +142,19 @@
    	if(session.getAttribute("userid")!=null){
    		if(userid.equals("admin")){
 %>
-	<a href="main/logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn">Logout</a>	
+	<a href="../main/logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn" style="color:#fff;">Logout</a>	
 <%    			
    		}else{
  %>
- 	<a href="main/logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn">Logout</a>
-	<a href="">Account</a>
+ 	<a href="../main/logout.jsp" class="btn btn-default btn-rounded mb-4 navbtn" style="color:#fff;">Logout</a>
+	<a href="../main/account.jsp?id=<%= userid %>" class="btn btn-default btn-rounded mb-4 navbtn" style="color:#fff;">Account</a>
  <%  			
    		}
    	}else{
 %>
-	<a href="" class="btn btn-default btn-rounded mb-4 navbtn" data-toggle="modal" data-target="#modalLRForm">
+	<a href="" class="btn btn-default btn-rounded mb-4 navbtn" data-toggle="modal" data-target="#modalLRForm" style="color:#fff;">
     Login</a>
-  	<a href="" class="btn btn-default btn-rounded mb-4 navbtn" data-toggle="modal" data-target="#modalRegisterForm">
+  	<a href="" class="btn btn-default btn-rounded mb-4 navbtn" data-toggle="modal" data-target="#modalRegisterForm" style="color:#fff;">
     Register</a>
 <%    		
    	}
