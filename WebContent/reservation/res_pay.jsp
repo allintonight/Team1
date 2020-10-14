@@ -91,8 +91,8 @@
 3. 개인정보 보유 및 이용기간 전자상거래법 등 관계 법령에 의거 구매 후 5년간 보관 ※ 동의를 거부할 수 있으나 거부시 비회원 구매 서비스 이용이 불가합니다.
     			</textarea>
     		</p>
-    		<form method="post" name="fm" action="payment.jsp?rsno=<%= rsno %>&price=<%= price %>">
     		<div class="form-group form-check">	
+    		<form method="post" name="fm" action="payment.jsp?rsno=<%= rsno %>&price=<%= price %>">
     		<input type="checkbox" class="form-check-input" id="exampleCheck1" required>
    		 	<label class="form-check-label" for="exampleCheck1">동의합니다.</label>
    		 	</div>
@@ -129,8 +129,8 @@
     		<h6 class="card-subtitle mb-2 text-muted">결제 수단</h6>
     		<hr>
 			<p id="date" class="card-text2">
-			<p><input type="radio" name="pay_ment" value="c" id="c" onchange="setDisplay()" selected>&nbsp&nbsp카드결제</p>
-			<p><input type="radio" name="pay_ment" value="m" id="m" onchange="setDisplay()">&nbsp&nbsp계좌이체</p>
+			<p><input type="radio" name="pay_ment" value="c" id="c" onchange="setDisplay()" required>&nbsp&nbsp카드결제</p>
+			<p><input type="radio" name="pay_ment" value="m" id="m" onchange="setDisplay()" >&nbsp&nbsp계좌이체</p>
 			<div class="paycash" id="paycash">
 			<p><input type="text" name="pay_name" placeholder="입금자 명" style="width:350px;"></p>
 			<p><input type="text" name="bank_num" placeholder="계좌번호" style="width:350px;"></p>
