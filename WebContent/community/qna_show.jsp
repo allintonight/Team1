@@ -1,4 +1,4 @@
-<%@ page import="community.*"%>
+<%@ page import="Community.*"%>
 <%@ page import="java.sql.Timestamp"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -10,8 +10,10 @@
 	QnaDBBean db=QnaDBBean.getInstance();
 	QnaBean qna = db.getQna(no);
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-	
+	String userid = (String)session.getAttribute("userid");
+	if(userid==null){
+		userid="ghost";
+	}
 	
 	String name="";
 	String email="";
@@ -92,9 +94,9 @@
 				</tr>
 				<tr height="30">
 					<td colspan="4" align="right">
-						
+						<%if(userid.equals("admin")){ %>
 						<input type="button" value="답변"
-						onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">					
+						onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'"><%}%>					
 						<input type="button" value="글수정"
 						onclick="location.href='qna_edit.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
 						<input type="button" value="글삭제"
