@@ -46,6 +46,7 @@ Calendar todayCal = Calendar.getInstance();
 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 %>
+<jsp:include page="../main/pre.jsp"></jsp:include>
 <HEAD>
 	<TITLE>캘린더</TITLE>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -61,10 +62,10 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 		overflow:hidden;
 		text-overflow:ellipsis;
 		}
-A:link { font-size:9pt; font-family:"돋움";color:#000000; text-decoration:none; }
-A:visited { font-size:9pt; font-family:"돋움";color:#000000; text-decoration:none; }
-A:active { font-size:9pt; font-family:"돋움";color:red; text-decoration:none; }
-A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
+.reser_a:link { font-size:9pt; font-family:"돋움";color:#000000; text-decoration:none; }
+.reser_a:visited { font-size:9pt; font-family:"돋움";color:#000000; text-decoration:none; }
+.reser_a:active { font-size:9pt; font-family:"돋움";color:red; text-decoration:none; }
+.reser_a:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 	</style>
 </HEAD>
 <BODY>
@@ -75,7 +76,7 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 <tr>
 	<td align ="right">
 		<input type="button" onclick="javascript:location.href='calendar.jsp'" value="오늘"/>
-		<a href="javascript:location.reload();">새로고침</a>
+		<a href="javascript:location.reload();" class="reser_a">새로고침</a>
 	</td>
 
 </tr>
@@ -94,11 +95,11 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 	
 	<tr>
 		<td align="center" >
-			<a href="reservation.jsp?year=<%=year-1%>&amp;month=<%=month%>" target="_self">
+			<a href="reservation.jsp?year=<%=year-1%>&amp;month=<%=month%>" target="_self" class="reser_a">
 				<b>&lt;&lt;</b><!-- 이전해 -->
 			</a>
 			<%if(month > 0 ){ %>
-			<a href="reservation.jsp?year=<%=year%>&amp;month=<%=month-1%>" target="_self">
+			<a href="reservation.jsp?year=<%=year%>&amp;month=<%=month-1%>" target="_self" class="reser_a">
 				<b>&lt;</b><!-- 이전달 -->
 			</a>
 			<%} else {%>
@@ -110,13 +111,13 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 			<%=month+1%>월
 			&nbsp;&nbsp;
 			<%if(month < 11 ){ %>
-			<a href="reservation.jsp?year=<%=year%>&amp;month=<%=month+1%>" target="_self">
+			<a href="reservation.jsp?year=<%=year%>&amp;month=<%=month+1%>" target="_self" class="reser_a">
 				<!-- 다음달 --><b>&gt;</b>
 			</a>
 			<%}else{%>
 				<b>&gt;</b>
 			<%} %>
-			<a href="reservation.jsp?year=<%=year+1%>&amp;month=<%=month%>" target="_self">
+			<a href="reservation.jsp?year=<%=year+1%>&amp;month=<%=month%>" target="_self" class="reser_a">
 				<!-- 다음해 --><b>&gt;&gt;</b>
 			</a>
 		</td>
@@ -224,7 +225,7 @@ for(int index = 1; index <= endDay; index++)
 			//방이름 출력::true이면 그냥 방이름 출력, false이면 링크 걸린 방이름 출력 
 			if (flag==true) {
 			%><div id="font"><%= rb.get(i).getRname() %><%		
-			}else {%><div id="font"><a href="res_process.jsp?newLine=<%= newLine %>&&rno=<%= rb.get(i).getRno() %>&&iUseDate=<%= iUseDate %>"><%= rb.get(i).getRname() %></a><%
+			}else {%><div id="font"><a href="res_process.jsp?newLine=<%= newLine %>&&rno=<%= rb.get(i).getRno() %>&&iUseDate=<%= iUseDate %> class="reser_a""><%= rb.get(i).getRname() %></a><%
 			}
 			
 			//예약상황에 맞는 아이콘 표시
@@ -264,6 +265,7 @@ while(newLine > 0 && newLine < 7)
 </TABLE>
 </DIV>
 </form>
+<jsp:include page="../main/after.jsp"></jsp:include>
 </BODY>
 <script>
 window.onpageshow = function(event) {
