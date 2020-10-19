@@ -4,7 +4,6 @@
 	int no = Integer.parseInt(request.getParameter("no"));
 	String pageNUM = request.getParameter("pageNUM");
 	int cno = Integer.parseInt(request.getParameter("cno"));
-
 %>
 
 <html>
@@ -17,18 +16,15 @@
 	background-color: #585858;
 	height: 50px;
 }
-
 .alert button a {
 	text-decoration: none;
 	color: azure;
 }
-
 .badge button {
 	border-radius: 70px;
 	background-color: #585858;
 	height: 27px;
 }
-
 .badge button a {
 	text-decoration: none;
 	color: azure;
@@ -83,7 +79,7 @@
 					</form>
 					<button
 						onclick="location.href='post_show.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>&cno=<%=cno%>'">
-						<a>글목록</a>
+						<a>취소</a>
 					</button>
 				</div></td>
 		</tr>

@@ -3,7 +3,7 @@
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="java.awt.print.Printable"%>
 <%@page import="java.sql.Timestamp" %>
-<%@ page import="community.*"%>
+<%@ page import="Community.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 		

@@ -1,16 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="community.*" %>
+<%@ page import="Community.*" %>
+
 <%	
 	String pageNUM = request.getParameter("pageNUM");
 	int no = Integer.parseInt(request.getParameter("no"));
+	int cno = Integer.parseInt(request.getParameter("cno"));
 	String password = request.getParameter("password");
 	
 	PostDBBean db = PostDBBean.getInstance();
-	int re = db.deletePost(no, password);
+	int re = db.deletePostCmt(cno, password);
 	
 	if(re == 1){
-		response.sendRedirect("post_list.jsp?pageNUM="+pageNUM);
+		response.sendRedirect("post_show.jsp?pageNUM="+pageNUM+"&no="+no);
 	}else if(re == 0){
 %>
 		<script>

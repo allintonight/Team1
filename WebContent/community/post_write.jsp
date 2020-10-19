@@ -1,6 +1,6 @@
 <%@ page import="Community.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,20 +9,26 @@
 
 <%
 	String pageNUM = request.getParameter("pageNUM");
+	String userid = (String) session.getAttribute("userid");
+	if (userid == null) {
+		userid = "guest";
+	}
 %>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
-		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
 </head>
 <body>
-<script type="text/javascript" src="function.js" charset="utf-8"></script>
-<body>
+	<script type="text/javascript" src="function.js" charset="utf-8"></script>
 	<center>
 		<h1>글 올 리 기</h1>
-		<form method="post" name="form" enctype="multipart/form-data" accept-charset="UTF-8" action="post_write_ok.jsp">
+		<form method="post" name="form" enctype="multipart/form-data"
+			accept-charset="UTF-8" action="post_write_ok.jsp">
 			<table>
 				<tr height="30">
 					<td width="80">작성자</td>
-					<td width="140"><input type="text" name="name" size="10">
+					<td width="140"><%if(userid.equals("guest")){ %><input type="text" name="name" size="10"><%}else{ %><input type="text" name="name" value=<%=userid %> size="10" readonly><%} %>
 					</td>
 					<td width="80">이메일</td>
 					<td width="200"><input type="text" name="email" size="15">
@@ -60,9 +66,8 @@
 						name="password" maxlength="12" size="12"></td>
 				</tr>
 				<tr height="50" align="center">
-					<td colspan="4" width="480"><br>
-					<br>
-					<input class="btn btn-secondary" type="button" value="글쓰기"
+					<td colspan="4" width="480"><br> <br> <input
+						class="btn btn-secondary" type="button" value="글쓰기"
 						onclick="check_ok()">&nbsp;&nbsp; <input
 						class="btn btn-secondary" type="reset" value="다시작성">&nbsp;&nbsp;
 						<input type="button" class="btn btn-secondary" value="글목록"
@@ -73,13 +78,3 @@
 	</center>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

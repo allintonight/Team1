@@ -17,18 +17,15 @@
 	background-color: #585858;
 	height: 50px;
 }
-
 .alert button a {
 	text-decoration: none;
 	color: azure;
 }
-
 .badge button {
 	border-radius: 70px;
 	background-color: #585858;
 	height: 27px;
 }
-
 .badge button a {
 	text-decoration: none;
 	color: azure;

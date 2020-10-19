@@ -11,7 +11,7 @@
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	String userid = (String)session.getAttribute("userid");
 	if(userid==null){
-		userid="ghost";
+		userid="guest";
 	}
 	
 	String name="";
@@ -103,11 +103,16 @@
 				
 				<tr height="30">
 					<td colspan="4" align="right">
-					<%if(name.equals("admin")){ %>
-					<a href="#"
+					
+			<!--  관리자만 답변  -->
+					<%-- <%if(userid.equals("admin")){ %><a href="#"
+                  class="badge badge-pill badge-dark" role="button"
+                  aria-pressed="true"
+                  onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">답변</a><%} %> --%>
+						<a href="#"
 						class="badge badge-pill badge-dark" role="button"
 						aria-pressed="true"
-						onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">답변</a><%}%>
+						onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">답변</a>
 						<a href="#"
 					class="badge badge-pill badge-dark" role="button"
 					aria-pressed="true"

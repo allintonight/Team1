@@ -19,7 +19,6 @@
 	flex:2;
 	background-color: azure;
 }
-
 @media (max-width: 600px) {
   .main {
     flex-direction: column;

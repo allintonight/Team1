@@ -1,7 +1,7 @@
 <%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="community.*" %>
+<%@ page import="Community.*" %>
 <%request.setCharacterEncoding("UTF-8");%>
 
 
@@ -26,4 +26,3 @@
 		response.sendRedirect("post_list.jsp");
 	}
 %>
-	

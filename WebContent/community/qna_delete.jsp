@@ -17,18 +17,15 @@
 	background-color: #585858;
 	height: 50px;
 }
-
 .alert button a {
 	text-decoration: none;
 	color: azure;
 }
-
 .badge button {
 	border-radius: 70px;
 	background-color: #585858;
 	height: 27px;
 }
-
 .badge button a {
 	text-decoration: none;
 	color: azure;
@@ -82,8 +79,8 @@
 					</button>
 					</form>
 					<button
-						onclick="location.href='qna_list.jsp?pageNUM=<%=pageNUM%>'">
-						<a>글목록</a>
+						onclick="location.href='qna_show.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">
+						<a>취소</a>
 					</button>
 				</div></td>
 		</tr>

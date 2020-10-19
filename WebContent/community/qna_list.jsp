@@ -19,7 +19,6 @@
 	out.println(word);
 	QnaDBBean db = QnaDBBean.getInstance();
 	ArrayList<QnaBean> QnaList = db.listQna(pageNUM, subject, word);
-
 	String name, password, title, content, comment;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	int no = 0;
@@ -63,7 +62,6 @@
 			<%
 				for (int i = 0; i < QnaList.size(); i++) {
 					QnaBean qna = QnaList.get(i);
-
 					no = qna.getNo();
 					title = qna.getTitle();
 					name = qna.getName();

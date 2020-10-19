@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="community.*" %>
+<%@ page import="Community.*"%>
 <%request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="qna" class="community.QnaBean">
+<jsp:useBean id="qna" class="Community.QnaBean">
 	<jsp:setProperty name="qna" property="*" />
 </jsp:useBean>
 
