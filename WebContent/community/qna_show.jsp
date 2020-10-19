@@ -41,6 +41,8 @@
 			<h1>
 				글 내 용 보 기
 			</h1>
+			<form name="form" method="post"
+				action="qna_comment_ok.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>">
 			<table border="2" width="800" align="center">
 				<tr height="30" align="center">
 					<td width="100">
@@ -97,7 +99,9 @@
 						답변
 					</td>
 					<td width="200" colspan="3">
-						<textarea rows="10" cols="60" readonly><%if(comment!=null)%><%=comment%></textarea>
+						 <%if(userid.equals("admin")){ %>
+						 <textarea rows="10" cols="60" name="comment"/><%}else{ %>
+						<textarea rows="10" cols="60" readonly><%if(comment!=null)%><%=comment%></textarea><%} %>
 					</td>
 				</tr>
 				
@@ -105,15 +109,11 @@
 					<td colspan="4" align="right">
 					
 			<!--  관리자만 답변  -->
-					<%-- <%if(userid.equals("admin")){ %><a href="#"
-                  class="badge badge-pill badge-dark" role="button"
-                  aria-pressed="true"
-                  onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">답변</a><%} %> --%>
-						<a href="#"
-						class="badge badge-pill badge-dark" role="button"
-						aria-pressed="true"
-						onclick="location.href='qna_comment.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">답변</a>
-						<a href="#"
+				 <%if(userid.equals("admin")){ %>
+                  			<a href="#"
+							class="badge badge-pill badge-dark" role="button"
+							aria-pressed="true" onclick="check_cmt()">답변</a><%} %>
+					<a href="#"
 					class="badge badge-pill badge-dark" role="button"
 					aria-pressed="true"
 					onclick="location.href='qna_edit.jsp?no=<%=no%>&pageNUM=<%=pageNUM%>'">글수정</a>
@@ -129,6 +129,7 @@
 					</td>
 				</tr>
 			</table>
+			</form>
 		</center>
 	</body>
 </html>
